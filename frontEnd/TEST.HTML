@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .expert-card {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px;
+  width: 320px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.expert-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.expert-name {
+  margin: 0 0 10px;
+  color: #2c3e50;
+  font-size: 1.5rem;
+}
+
+.expert-card p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.expert-card a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.expert-card a:hover {
+  text-decoration: underline;
+}
+
+.button-group {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.approve-btn {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.approve-btn:hover {
+  background-color: #219150;
+}
+
+.reject-btn {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.reject-btn:hover {
+  background-color: #c0392b;
+}
+
+  </style>
+</head>
+<body>
+  <div class="expert-card">
+  <div class="expert-info">
+    <h3 class="expert-name">userName</h3>
+    <p><strong>Email:</strong> expert.email</p>
+    <p><strong>Specialty:</strong> expert.specialty</p>
+    <p><strong>Certificate:</strong> 
+      <a href="${expert.certificateUrl}" target="_blank">View Certificate</a>
+    </p>
+  </div>
+  <div class="button-group">
+    <button class="approve-btn">Approve</button>
+    <button class="reject-btn">Reject</button>
+  </div>
+</div>
+
+</body>
+</html>

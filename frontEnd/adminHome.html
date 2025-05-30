@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Dashboard - TechGalaxy</title>
+	<link rel="shortcut icon" href="./Images/logo-icon.png" type="image/png">
+    <link rel="stylesheet" href="./css/adminHome.css">
+</head>
+<body>
+	<header class="header active" data-header>
+    <div class="container">
+
+      <a href="#" class="logo">
+        <img src="./Images/logo-page.png" width="110" height="53" alt="TechGalaxy">
+      </a>
+
+      <div class="profile-icon-container" style="display: flex;">
+        <div class="user-info" style="display: block;">
+          <div class="user-type">Admin</div>
+          <div class="user-name">Admin</div>
+        </div>
+        <button class="profile-icon-btn" id="profileBtn">
+          <svg class="profile-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M6 19C6 16.7909 8.68629 15 12 15C15.3137 15 18 16.7909 18 19" stroke="currentColor"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu (Hidden by default) -->
+        <div class="profile-dropdown" id="profileDropdown">
+          <ul class="dropdown-list">
+            <li class="dropdown-item"><a href="home.html" id="logoutBtn">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="header-content">
+	<h1><span>Admin</span> Dashboard</h1>
+	<p>Review and manage expert registrations</p>
+  </div>
+	<main id="expertListContainer">
+		<!-- Expert cards will be injected here -->
+	</main>
+
+	<script src="./js/adminHome.js"></script>
+</body>
+</html>

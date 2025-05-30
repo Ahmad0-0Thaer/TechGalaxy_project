@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TechGalaxy | Show Roadmaps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Work+Sans:wght@600&display=swap"
+    rel="stylesheet">
+  <link rel="shortcut icon" href="./Images/logo-icon.png" type="image/png">
+  <link rel="stylesheet" href="./css/roadmap.css" />
+</head>
+<body id="top">
+   <header class="header active" data-header>
+    <div class="container">
+
+      <a href="#" class="logo">
+        <img src="./Images/logo-page.png" width="110" height="53" alt="TechGalaxy">
+      </a>
+
+      <nav class="navbar" data-navbar>
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <a href="#Home" class="navbar-link" data-nav-link>Home</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#Discover" class="navbar-link" data-nav-link>Discover</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#Roadmap" class="navbar-link" data-nav-link>Roadmap</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#contact" class="navbar-link" data-nav-link>contact</a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <div class="profile-icon-container" id="profileContainer" style="display: flex;">
+        <div class="user-info" id="userInfo" style="display: block;">
+          <div class="user-type" id="userType">Learner</div>
+          <div class="user-name" id="userName"><span id="user-name"></span></div>
+        </div>
+        <button class="profile-icon-btn" id="profileBtn">
+          <svg class="profile-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M6 19C6 16.7909 8.68629 15 12 15C15.3137 15 18 16.7909 18 19" stroke="currentColor"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu (Hidden by default) -->
+        <div class="profile-dropdown" id="profileDropdown">
+          <ul class="dropdown-list">
+            <li class="dropdown-item"><a href="profile.html">Profile</a></li>
+            <li class="dropdown-item"><a href="home.html" id="logoutBtn">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+      </button>
+
+    </div>
+  </header>
+
+  <main>
+     <section class="section Roadmap" aria-label="our latest Roadmap" id="Roadmap">
+        <div class="container">
+
+          <p class="section-subtitle" data-reveal="bottom">Navigate Your Tech Path</p>
+
+          <h2 class="h2 section-title" data-reveal="bottom">
+            Learning Roadmaps <br> Designed for  <span class="span">Every Level</span>
+          </h2>
+
+          <p class="section-text" data-reveal="bottom">
+            Whether you're just starting or looking to specialize,
+             our curated roadmaps guide you through the essential skills and resources to grow in the tech world. 
+            </p>
+            <section class="stats-container">
+                  <div class="stat-box">
+                    <h3>Total Roadmaps</h3>
+                    <p id="total-count">0</p>
+                  </div>
+                  <div class="stat-box">
+                    <h3>Beginner</h3>
+                    <p id="beginner-count">0</p>
+                  </div>
+                  <div class="stat-box">
+                    <h3>Intermediate</h3>
+                    <p id="intermediate-count">0</p>
+                  </div>
+                  <div class="stat-box">
+                    <h3>Advanced</h3>
+                    <p id="advanced-count">0</p>
+                  </div>
+            </section> 
+
+           <div class="roadmap-controls" data-reveal="bottom">
+              <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search roadmap..." />
+              </div>
+            
+              <div class="filters" id="sort-section">
+                <label for="sortOptions">Sort by:</label>
+                <select id="sortOptions">
+                  <option value="az">Title (A-Z)</option>
+                  <option value="za">Title (Z-A)</option>
+                  <option value="like">Like</option>
+                </select>
+              
+                <label for="levelFilter">All Levels:</label>
+                <select id="levelFilter">
+                  <option value="all">All</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+             </div>
+            </div>
+
+
+           <ul class="Roadmap-list">
+
+            <li data-reveal="bottom">
+              <div class="Roadmap-card">
+
+                <figure class="card-banner img-holder" style="--width: 600; --height: 400;">
+                  <img src="./Images/course-1.avif" width="600" height="400" loading="lazy" alt="roadmaps"
+                    class="img-cover">
+                </figure>
+
+                <div class="card-content">
+
+
+                  <ul class="card-meta-list" id="roadmapContainer">
+
+                    <li class="card-meta-item">
+                      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+
+                      <time class="card-meta-text" datetime="2022-01-01">Jan 01 2022</time>
+                    </li>
+
+                    <li class="card-meta-item">
+                      <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+
+                      <p class="card-meta-text">Elliot Alderson</p>
+                    </li>
+
+                  </ul>
+
+                  <h3 class="h3">
+                    <a href="./roadmapUser.html" class="card-title">Python</a>
+                  </h3>
+
+                  <p class="card-text">
+                    Learn programming fundamentals such as variables, control flow, and loops with the world's most
+                    popular and versatile coding language — Python!
+                  </p>
+
+                  <div class="card-footer">
+                    <a href="./roadmapUser.html" class="link has-before">Read More</a>
+                    <button class="like-btn" aria-label="like roadmap">
+                      <ion-icon name="heart-outline" class="like-icon"></ion-icon>
+                      <span class="like-count">0</span>
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li data-reveal="bottom">
+              <div class="Roadmap-card">
+
+                <figure class="card-banner img-holder" style="--width: 600; --height: 400;">
+                  <img src="./Images/course-2.avif" width="600" height="400" loading="lazy" alt="roadmaps"
+                    class="img-cover">
+                </figure>
+
+                <div class="card-content">
+
+
+                  <ul class="card-meta-list" id="roadmapContainer">
+
+                    <li class="card-meta-item">
+                      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+
+                      <time class="card-meta-text" datetime="2022-01-01">Jan 01 2022</time>
+                    </li>
+
+                    <li class="card-meta-item">
+                      <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+
+                      <p class="card-meta-text">Elliot Alderson</p>
+                    </li>
+
+                  </ul>
+
+                  <h3 class="h3">
+                    <a href="./roadmapUser.html" class="card-title">Data Structures & Algorithms</a>
+                  </h3>
+
+                  <p class="card-text">
+                    Learn fundamental concepts for organizing, storing, and processing data in Python to ace technical
+                    interviews, LeetCode problems, or a college DSA class!
+                  </p>
+
+                  <div class="card-footer">
+                    <a href="./roadmapUser.html" class="link has-before">Read More</a>
+                    <button class="like-btn" aria-label="like roadmap">
+                      <ion-icon name="heart-outline" class="like-icon"></ion-icon>
+                      <span class="like-count">0</span>
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+            </li>
+
+            <li data-reveal="bottom">
+              <div class="Roadmap-card">
+
+                <figure class="card-banner img-holder" style="--width: 600; --height: 400;">
+                  <img src="./Images/course-3.avif" width="600" height="400" loading="lazy" alt="roadmaps"
+                    class="img-cover">
+                </figure>
+
+                <div class="card-content">
+
+                  <ul class="card-meta-list" id="roadmapContainer">
+
+                    <li class="card-meta-item">
+                      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+
+                      <time class="card-meta-text" datetime="2022-01-01">Jan 01 2022</time>
+                    </li>
+
+                    <li class="card-meta-item">
+                      <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
+
+                      <p class="card-meta-text">Elliot Alderson</p>
+                    </li>
+
+                  </ul>
+
+                  <h3 class="h3">
+                    <a href="./roadmapUser.html" class="card-title">Node.js</a>
+                  </h3>
+
+                  <p class="card-text">
+                    Combine JavaScript with the power of Node.js—unleash your full-stack potential with server-side
+                    programming & dynamic web applications!
+                  </p>
+
+                  <div class="card-footer">
+                    <a href="./roadmapUser.html" class="link has-before">Read More</a>
+                    <button class="like-btn" aria-label="like roadmap">
+                      <ion-icon name="heart-outline" class="like-icon"></ion-icon>
+                      <span class="like-count">0</span>
+                    </button>
+                  </div>
+
+                </div>
+
+              </div>
+            </li>
+
+          </ul>
+
+        </div>
+        </section>
+  </main>
+  
+
+  <footer class="footer">
+
+    <div class="section footer-top">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <a href="#" class="logo">
+            <img src="./Images/logo-page.png" width="150" height="73" loading="lazy" alt="TechGalaxy logo">
+          </a>
+
+          <p class="footer-text">
+            Our success in developing this project is largely attributed to the guidance and support of the professors
+            at Jordan University of Science and Technology.
+          </p>
+
+        </div>
+
+        <div class="footer-list">
+
+          <p class="title footer-list-title has-after">Usefull Links</p>
+
+          <ul>
+
+            <li>
+              <a href="#Home" class="footer-link">Home</a>
+            </li>
+            <li>
+              <a href="#Discover" class="footer-link">Discover</a>
+            </li>
+
+            <li>
+              <a href="#Roadmap" class="footer-link">Roadmap</a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="footer-list">
+
+          <p class="title footer-list-title has-after" id="contact">Contact Us</p>
+
+          <div class="contact-item">
+            <span class="span">AHMAD THA'ER MOHAMMAD ALBOZEYAH:</span>
+            <a href="mailto:atalbozeyah21@cit.just.edu.jo" class="contact-link">atalbozeyah21@cit.just.edu.jo</a>
+          </div>
+
+          <div class="contact-item">
+            <span class="span">AMRO MARWAN FAWZI ALQURAN:</span>
+
+            <a href="mailto:amalquran21@cit.just.edu.jo" class="contact-link">amalquran21@cit.just.edu.jo</a>
+          </div>
+
+          <div class="contact-item">
+            <span class="span">MO'MEN MOHAMMAD MAHMOUD MAKABLEH:</span>
+
+            <a href="mailto:mmmakableh21@cit.just.edu.jo" class="contact-link">mmmakableh21@cit.just.edu.jo</a>
+          </div>
+          <div class="contact-item">
+            <span class="span">MOHAMMAD ZAHIR MOHAMMAD ALKHALEEL:</span>
+
+            <a href="mailto:mzalkhaleel20@cit.just.edu.jo" class="contact-link">mzalkhaleel20@cit.just.edu.jo</a>
+          </div>
+
+          <div class="contact-item">
+            <span class="span">HATEM AHMAD ABDALLAH EID:</span>
+
+            <a href="mailto:haeid21@cit.just.edu.jo" class="contact-link">haeid21@cit.just.edu.jo</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+
+        <p class="copyright">
+          &copy; All Rights Reserved for Jordan University of Science and Technology .
+
+        </p>
+
+      </div>
+    </div>
+
+  </footer>
+    <!-- 
+    - #BACK TO TOP
+  -->
+  <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
+  </a>
+  
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script src="./js/roadmap.js"></script>
+</body>
+</html>

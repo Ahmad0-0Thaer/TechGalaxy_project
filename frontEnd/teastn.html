@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech Galaxy - Courses</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --primary-light: #ebf0ff;
+      --secondary: #f72585;
+      --accent: #4cc9f0;
+      --dark: #0e1420;
+      --darker: #090e16;
+      --light: #f8fafc;
+      --lighter: #ffffff;
+      --gray: #94a3b8;
+      --gray-dark: #64748b;
+      --gray-light: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --border-radius: 12px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+      --shadow-xl: 0 20px 25px rgba(0,0,0,0.1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+    }
+
+    header {
+      padding: 18px 40px;
+      background: linear-gradient(135deg, var(--darker), var(--dark));
+      color: var(--lighter);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    header h1 {
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      color: var(--accent);
+      font-size: 32px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .search-filter {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-filter input,
+    .search-filter select {
+      padding: 12px 16px;
+      border-radius: var(--border-radius);
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background-color: rgba(255,255,255,0.9);
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      font-weight: 500;
+    }
+
+    .search-filter input:focus,
+    .search-filter select:focus {
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .search-filter input {
+      min-width: 280px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 16px center;
+      background-size: 16px;
+      padding-left: 42px;
+    }
+
+    .search-filter select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 12px;
+      padding-right: 40px;
+    }
+
+    main {
+      padding: 40px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--lighter);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      flex: 1;
+      min-width: 200px;
+      transition: var(--transition);
+      border: 1px solid var(--gray-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .stat-card h3 {
+      font-size: 14px;
+      color: var(--gray-dark);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .stat-card p {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--dark);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .courses-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .courses-header h2 {
+      font-size: 26px;
+      color: var(--dark);
+      position: relative;
+      display: inline-block;
+    }
+
+    .courses-header h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+
+    .sort-options {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .sort-options label {
+      font-size: 14px;
+      color: var(--gray-dark);
+      font-weight: 500;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .course-card {
+      background-color: var(--lighter);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 1px solid var(--gray-light);
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-light);
+    }
+
+    .course-image {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .course-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+    }
+
+    .course-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background-color: var(--secondary);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .course-content {
+      padding: 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--dark);
+      line-height: 1.4;
+    }
+
+    .course-instructor {
+      font-size: 14px;
+      color: var(--gray-dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .course-desc {
+      font-size: 15px;
+      color: var(--gray-dark);
+      margin-bottom: 18px;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .course-tags {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .level, .duration {
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .level {
+      background-color: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .level.beginner {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .level.intermediate {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: var(--warning);
+    }
+
+    .level.advanced {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .duration {
+      background-color: rgba(100, 116, 139, 0.1);
+      color: var(--gray-dark);
+    }
+
+    .view-btn {
+      background-color: var(--primary);
+      color: var(--lighter);
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 4px rgba(67, 97, 238, 0.2);
+    }
+
+    .view-btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    }
+
+    /* Slide-in Resource Panel */
+    .resource-panel {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 450px;
+      height: 100%;
+      background-color: var(--lighter);
+      box-shadow: -4px 0 25px rgba(0,0,0,0.1);
+      padding: 30px;
+      overflow-y: auto;
+      transition: var(--transition);
+      z-index: 999;
+      border-left: 1px solid var(--gray-light);
+    }
+
+    .resource-panel.active {
+      right: 0;
+    }
+
+    .resource-panel h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: var(--dark);
+      padding-right: 30px;
+    }
+
+    .resource-meta {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .resource-meta span {
+      font-size: 14px;
+      color: var(--gray-dark);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--gray-light);
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    .resource-description {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--gray-dark);
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .resource-panel h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .resource-panel h3::before {
+      content: '';
+      display: block;
+      width: 6px;
+      height: 20px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+
+    .resource-panel ul {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .resource-panel ul li {
+      padding: 14px;
+      border-radius: var(--border-radius);
+      background-color: var(--light);
+      transition: var(--transition);
+      border: 1px solid var(--gray-light);
+    }
+
+    .resource-panel ul li:hover {
+      background-color: var(--primary-light);
+      border-color: var(--primary);
+      transform: translateX(5px);
+    }
+
+    .resource-panel a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: var(--transition);
+    }
+
+    .resource-panel a:hover {
+      color: var(--primary-dark);
+    }
+
+    .resource-panel a i {
+      width: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .close-btn {
+      background: var(--light);
+      color: var(--gray-dark);
+      border: none;
+      font-size: 15px;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-weight: 500;
+    }
+
+    .close-btn:hover {
+      background: var(--gray-light);
+      color: var(--dark);
+    }
+
+    .panel-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(14, 20, 32, 0.7);
+      z-index: 998;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+      backdrop-filter: blur(3px);
+    }
+
+    .panel-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Loading skeleton */
+    .skeleton {
+      animation: skeleton-loading 1.5s ease-in-out infinite alternate;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skeleton::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes skeleton-loading {
+      0% {
+        background-color: hsl(210, 20%, 92%);
+      }
+      100% {
+        background-color: hsl(210, 20%, 96%);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .skeleton-text {
+      width: 100%;
+      height: 0.8rem;
+      margin-bottom: 0.6rem;
+      border-radius: 4px;
+    }
+
+    .skeleton-text:last-child {
+      margin-bottom: 0;
+      width: 80%;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--dark);
+      color: white;
+      padding: 14px 28px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-xl);
+      z-index: 1000;
+      opacity: 0;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 90%;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+
+    .toast.success {
+      background-color: var(--success);
+    }
+
+    .toast.error {
+      background-color: var(--danger);
+    }
+
+    .toast i {
+      font-size: 20px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 40px;
+      grid-column: 1 / -1;
+      background: var(--lighter);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      border: 1px dashed var(--gray-light);
+    }
+
+    .empty-state img {
+      max-width: 220px;
+      margin-bottom: 25px;
+      opacity: 0.8;
+      filter: grayscale(50%);
+    }
+
+    .empty-state h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: var(--dark);
+    }
+
+    .empty-state p {
+      color: var(--gray-dark);
+      margin-bottom: 25px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .empty-state button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(67, 97, 238, 0.2);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .empty-state button:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 1024px) {
+      .courses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 25px;
+      }
+
+      header h1 {
+        font-size: 24px;
+      }
+
+      .search-filter input {
+        min-width: 100%;
+      }
+
+      main {
+        padding: 25px;
+      }
+
+      .stat-card {
+        min-width: calc(50% - 10px);
+      }
+
+      .resource-panel {
+        width: 85%;
+        padding: 25px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 12px 20px;
+        gap: 15px;
+      }
+
+      .search-filter {
+        width: 100%;
+      }
+
+      .search-filter input,
+      .search-filter select {
+        width: 100%;
+      }
+
+      main {
+        padding: 20px 15px;
+      }
+
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-card {
+        min-width: 100%;
+      }
+
+      .resource-panel {
+        width: 100%;
+        padding: 20px 15px;
+      }
+
+      .resource-panel h2 {
+        font-size: 22px;
+        margin-top: 10px;
+      }
+
+      .toast {
+        width: 90%;
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1><i class="fas fa-rocket logo-icon"></i> Tech Galaxy Courses</h1>
+    <div class="search-filter">
+      <input type="text" id="searchInput" placeholder="Search courses...">
+      <select id="levelFilter">
+        <option value="all">All Levels</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+      <select id="sortFilter">
+        <option value="default">Sort by</option>
+        <option value="title-asc">Title (A-Z)</option>
+        <option value="title-desc">Title (Z-A)</option>
+        <option value="duration-asc">Duration (Shortest)</option>
+        <option value="duration-desc">Duration (Longest)</option>
+      </select>
+    </div>
+  </header>
+
+  <main>
+    <div class="stats-bar">
+      <div class="stat-card">
+        <h3>Total Courses</h3>
+        <p id="totalCourses">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Beginner Courses</h3>
+        <p id="beginnerCourses">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Intermediate Courses</h3>
+        <p id="intermediateCourses">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Advanced Courses</h3>
+        <p id="advancedCourses">0</p>
+      </div>
+    </div>
+
+    <div class="courses-header">
+      <h2>Available Courses</h2>
+      <div class="sort-options">
+        <label for="sortFilterMobile">Sort by:</label>
+        <select id="sortFilterMobile">
+          <option value="default">Default</option>
+          <option value="title-asc">Title (A-Z)</option>
+          <option value="title-desc">Title (Z-A)</option>
+          <option value="duration-asc">Duration (Shortest)</option>
+          <option value="duration-desc">Duration (Longest)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="courses-grid" id="coursesContainer">
+      <!-- Courses will be loaded here -->
+    </div>
+  </main>
+
+  <div class="resource-panel" id="resourcePanel">
+    <button class="close-btn" onclick="closePanel()"><i class="fas fa-times"></i> Close</button>
+    <h2 id="resourceTitle">Resources</h2>
+    <div class="resource-meta">
+      <span id="resourceInstructor"></span>
+      <span id="resourceDuration"></span>
+    </div>
+    <p id="resourceDescription" class="resource-description"></p>
+    <h3><i class="fas fa-book-open"></i> Learning Materials</h3>
+    <ul id="resourceList"></ul>
+    <button class="view-btn" id="enrollBtn" style="margin-top: 20px; width: 100%;">
+      <i class="fas fa-book-open"></i> Enroll in Course
+    </button>
+  </div>
+
+  <div class="panel-overlay" id="panelOverlay"></div>
+
+  <div class="toast" id="toastNotification">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">Course enrolled successfully!</span>
+  </div>
+
+  <script>
+    const courses = [
+      {
+        title: "HTML & CSS Mastery",
+        instructor: "Sarah Johnson",
+        description: "Learn how to create and style modern, responsive websites using HTML5 and CSS3. This comprehensive course covers Flexbox, Grid, animations, and best practices for building professional web interfaces.",
+        level: "beginner",
+        duration: "3h 20m",
+        image: "https://source.unsplash.com/random/600x400/?html,css",
+        resources: [
+          { name: "W3Schools HTML", link: "https://www.w3schools.com/html/", icon: "fas fa-globe" },
+          { name: "CSS Tricks", link: "https://css-tricks.com/", icon: "fas fa-paint-brush" },
+          { name: "HTML Cheat Sheet", link: "https://htmlcheatsheet.com/", icon: "fas fa-file-alt" },
+          { name: "Flexbox Guide", link: "https://css-tricks.com/snippets/css/a-guide-to-flexbox/", icon: "fas fa-boxes" }
+        ],
+        popular: true
+      },
+      {
+        title: "JavaScript Deep Dive",
+        instructor: "Ahmed Zayed",
+        description: "Master the fundamentals of JavaScript including ES6+ features, asynchronous programming, DOM manipulation, and modern JavaScript patterns used in professional development.",
+        level: "intermediate",
+        duration: "5h 10m",
+        image: "https://source.unsplash.com/random/600x400/?javascript",
+        resources: [
+          { name: "JavaScript Guide", link: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide", icon: "fas fa-book" },
+          { name: "JS Info", link: "https://javascript.info/", icon: "fas fa-info-circle" },
+          { name: "ES6 Features", link: "https://es6-features.org/", icon: "fas fa-star" },
+          { name: "You Don't Know JS", link: "https://github.com/getify/You-Dont-Know-JS", icon: "fas fa-brain" }
+        ],
+        popular: true
+      },
+      {
+        title: "React Framework Fundamentals",
+        instructor: "Emily Lee",
+        description: "Build modern web applications using React components, hooks, and context API. Learn state management, routing, and how to create reusable UI components with best practices.",
+        level: "intermediate",
+        duration: "4h 45m",
+        image: "https://source.unsplash.com/random/600x400/?react",
+        resources: [
+          { name: "React Docs", link: "https://react.dev/", icon: "fas fa-file-code" },
+          { name: "React Tutorial", link: "https://react.dev/learn", icon: "fas fa-graduation-cap" },
+          { name: "React Patterns", link: "https://reactpatterns.com/", icon: "fas fa-shapes" },
+          { name: "Awesome React", link: "https://github.com/enaqx/awesome-react", icon: "fas fa-list-ul" }
+        ]
+      },
+      {
+        title: "Node.js & Express Pro",
+        instructor: "John Smith",
+        description: "Learn how to build robust REST APIs using Node.js and Express. This course covers middleware, routing, authentication, error handling, and connecting to databases like MongoDB.",
+        level: "advanced",
+        duration: "6h 15m",
+        image: "https://source.unsplash.com/random/600x400/?nodejs",
+        resources: [
+          { name: "Node.js Docs", link: "https://nodejs.org/en/docs/", icon: "fas fa-server" },
+          { name: "Express Guide", link: "https://expressjs.com/", icon: "fas fa-route" },
+          { name: "REST API Best Practices", link: "https://www.moesif.com/blog/api-guide/api-best-practices/", icon: "fas fa-check-double" },
+          { name: "Node Best Practices", link: "https://github.com/goldbergyoni/nodebestpractices", icon: "fas fa-medal" }
+        ]
+      },
+      {
+        title: "Python Programming Bootcamp",
+        instructor: "Lina Thomas",
+        description: "Start your journey with Python programming. Learn syntax, data structures, OOP concepts, and build real-world applications while following Pythonic best practices.",
+        level: "beginner",
+        duration: "4h 30m",
+        image: "https://source.unsplash.com/random/600x400/?python",
+        resources: [
+          { name: "Python Docs", link: "https://docs.python.org/3/", icon: "fab fa-python" },
+          { name: "Real Python", link: "https://realpython.com/", icon: "fas fa-book-open" },
+          { name: "Python Exercises", link: "https://www.w3resource.com/python-exercises/", icon: "fas fa-dumbbell" },
+          { name: "Awesome Python", link: "https://github.com/vinta/awesome-python", icon: "fas fa-list-ul" }
+        ]
+      },
+      {
+        title: "Git & GitHub Workflows",
+        instructor: "Kevin White",
+        description: "Master version control with Git and collaborate effectively using GitHub. Learn branching strategies, pull requests, rebasing, and professional workflows used in tech teams.",
+        level: "beginner",
+        duration: "2h 45m",
+        image: "https://source.unsplash.com/random/600x400/?git,github",
+        resources: [
+          { name: "Git Basics", link: "https://git-scm.com/doc", icon: "fab fa-git-alt" },
+          { name: "GitHub Docs", link: "https://docs.github.com/", icon: "fab fa-github" },
+          { name: "Git Cheat Sheet", link: "https://education.github.com/git-cheat-sheet-education.pdf", icon: "fas fa-file-pdf" },
+          { name: "Git Flight Rules", link: "https://github.com/k88hudson/git-flight-rules", icon: "fas fa-bookmark" }
+        ],
+        popular: true
+      },
+      {
+        title: "SQL & Database Design",
+        instructor: "Rachel Green",
+        description: "Learn to design efficient databases and write complex SQL queries. Understand normalization, indexing, transactions, and how to optimize database performance.",
+        level: "intermediate",
+        duration: "3h 50m",
+        image: "https://source.unsplash.com/random/600x400/?database,sql",
+        resources: [
+          { name: "SQL Tutorial", link: "https://www.w3schools.com/sql/", icon: "fas fa-database" },
+          { name: "Mode SQL", link: "https://mode.com/sql-tutorial/", icon: "fas fa-chart-line" },
+          { name: "SQL Style Guide", link: "https://www.sqlstyle.guide/", icon: "fas fa-pen-fancy" },
+          { name: "Use The Index", link: "https://use-the-index-luke.com/", icon: "fas fa-search" }
+        ]
+      },
+      {
+        title: "Java OOP Masterclass",
+        instructor: "Michael Kim",
+        description: "Dive deep into object-oriented programming with Java. Learn classes, objects, inheritance, polymorphism, design patterns, and modern Java features.",
+        level: "intermediate",
+        duration: "5h 00m",
+        image: "https://source.unsplash.com/random/600x400/?java,code",
+        resources: [
+          { name: "Java Docs", link: "https://docs.oracle.com/javase/8/docs/", icon: "fab fa-java" },
+          { name: "Java OOP", link: "https://www.geeksforgeeks.org/object-oriented-programming-oops-concept-in-java/", icon: "fas fa-cube" },
+          { name: "Design Patterns", link: "https://refactoring.guru/design-patterns/java", icon: "fas fa-puzzle-piece" },
+          { name: "Effective Java", link: "https://www.amazon.com/Effective-Java-Joshua-Bloch/dp/0134685997", icon: "fas fa-book" }
+        ]
+      },
+      {
+        title: "UI/UX Design Principles",
+        instructor: "Nora Adams",
+        description: "Learn user-centered design principles, wireframing, prototyping, and usability testing. Master tools like Figma and Adobe XD to create beautiful, functional interfaces.",
+        level: "beginner",
+        duration: "3h 10m",
+        image: "https://source.unsplash.com/random/600x400/?design,ui",
+        resources: [
+          { name: "UX Design Guide", link: "https://www.interaction-design.org/literature/topics/ux-design", icon: "fas fa-user-friends" },
+          { name: "Figma Basics", link: "https://help.figma.com/", icon: "fas fa-pen-ruler" },
+          { name: "Color Theory", link: "https://color.adobe.com/create/color-wheel", icon: "fas fa-palette" },
+          { name: "UI Patterns", link: "https://ui-patterns.com/", icon: "fas fa-th-large" }
+        ]
+      },
+      {
+        title: "Full Stack Development",
+        instructor: "Amro Quraan",
+        description: "Become a full stack developer by building complete applications with MongoDB, Express, React, and Node.js (MERN stack). Learn deployment and DevOps basics.",
+        level: "advanced",
+        duration: "7h 30m",
+        image: "https://source.unsplash.com/random/600x400/?web,developer",
+        resources: [
+          { name: "MERN Stack Intro", link: "https://www.mongodb.com/mern-stack", icon: "fas fa-layer-group" },
+          { name: "Full Stack Path", link: "https://roadmap.sh/full-stack", icon: "fas fa-road" },
+          { name: "Deployment Guide", link: "https://devcenter.heroku.com/articles/deploying-nodejs", icon: "fas fa-cloud-upload-alt" },
+          { name: "Full Stack Open", link: "https://fullstackopen.com/en/", icon: "fas fa-university" }
+        ]
+      },
+      {
+        title: "Data Structures & Algorithms",
+        instructor: "David Chen",
+        description: "Master essential computer science concepts with practical implementations in JavaScript and Python. Prepare for technical interviews with hands-on coding challenges.",
+        level: "advanced",
+        duration: "8h 15m",
+        image: "https://source.unsplash.com/random/600x400/?algorithm,data",
+        resources: [
+          { name: "Big-O Cheat Sheet", link: "https://www.bigocheatsheet.com/", icon: "fas fa-chart-bar" },
+          { name: "Visual Go", link: "https://visualgo.net/en", icon: "fas fa-project-diagram" },
+          { name: "LeetCode", link: "https://leetcode.com/", icon: "fas fa-code" },
+          { name: "Tech Interview Handbook", link: "https://www.techinterviewhandbook.org/", icon: "fas fa-clipboard-list" }
+        ]
+      },
+      {
+        title: "Mobile App Development with Flutter",
+        instructor: "Sophia Martinez",
+        description: "Build beautiful, native-quality iOS and Android apps using Flutter framework. Learn widget tree, state management, Firebase integration, and app publishing.",
+        level: "intermediate",
+        duration: "5h 45m",
+        image: "https://source.unsplash.com/random/600x400/?flutter,app",
+        resources: [
+          { name: "Flutter Docs", link: "https://flutter.dev/docs", icon: "fas fa-mobile-alt" },
+          { name: "Flutter Samples", link: "https://flutter.github.io/samples/", icon: "fas fa-code-branch" },
+          { name: "Pub.dev", link: "https://pub.dev/", icon: "fas fa-box-open" },
+          { name: "Flutter Awesome", link: "https://github.com/Solido/awesome-flutter", icon: "fas fa-list-ul" }
+        ],
+        popular: true
+      }
+    ];
+
+    const container = document.getElementById('coursesContainer');
+    const searchInput = document.getElementById('searchInput');
+    const levelFilter = document.getElementById('levelFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    const sortFilterMobile = document.getElementById('sortFilterMobile');
+    const resourcePanel = document.getElementById('resourcePanel');
+    const resourceTitle = document.getElementById('resourceTitle');
+    const resourceInstructor = document.getElementById('resourceInstructor');
+    const resourceDuration = document.getElementById('resourceDuration');
+    const resourceDescription = document.getElementById('resourceDescription');
+    const resourceList = document.getElementById('resourceList');
+    const panelOverlay = document.getElementById('panelOverlay');
+    const toastNotification = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+    const enrollBtn = document.getElementById('enrollBtn');
+    
+    // Stats elements
+    const totalCoursesEl = document.getElementById('totalCourses');
+    const beginnerCoursesEl = document.getElementById('beginnerCourses');
+    const intermediateCoursesEl = document.getElementById('intermediateCourses');
+    const advancedCoursesEl = document.getElementById('advancedCourses');
+
+    let selectedCourseIndex = -1;
+    let enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses')) || [];
+
+    // Initialize the app
+    function init() {
+      displayCourses();
+      updateStats();
+      
+      // Add event listeners
+      searchInput.addEventListener('input', displayCourses);
+      levelFilter.addEventListener('change', displayCourses);
+      sortFilter.addEventListener('change', displayCourses);
+      sortFilterMobile.addEventListener('change', displayCourses);
+      panelOverlay.addEventListener('click', closePanel);
+      enrollBtn.addEventListener('click', enrollInCourse);
+      
+      // Show loading skeleton
+      showSkeletonLoading();
+      
+      // Simulate loading data (in a real app, this would be an API call)
+      setTimeout(() => {
+        displayCourses();
+        updateStats();
+      }, 800);
+    }
+
+    function showSkeletonLoading() {
+      container.innerHTML = '';
+      for (let i = 0; i < 8; i++) {
+        const card = document.createElement('div');
+        card.className = 'course-card skeleton';
+        card.innerHTML = `
+          <div class="course-image skeleton" style="height: 180px;"></div>
+          <div class="course-content" style="padding: 20px;">
+            <div class="skeleton-text" style="height: 20px; width: 80%; margin-bottom: 15px;"></div>
+            <div class="skeleton-text" style="height: 16px; width: 60%; margin-bottom: 10px;"></div>
+            <div class="skeleton-text" style="height: 14px; margin-bottom: 8px;"></div>
+            <div class="skeleton-text" style="height: 14px; margin-bottom: 8px;"></div>
+            <div class="skeleton-text" style="height: 14px; width: 70%; margin-bottom: 15px;"></div>
+            <div style="display: flex; justify-content: space-between;">
+              <div class="skeleton-text" style="height: 24px; width: 70px; border-radius: 12px;"></div>
+              <div class="skeleton-text" style="height: 24px; width: 70px; border-radius: 12px;"></div>
+              <div class="skeleton-text" style="height: 32px; width: 80px; border-radius: 8px;"></div>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    function updateStats() {
+      const total = courses.length;
+      const beginner = courses.filter(c => c.level === 'beginner').length;
+      const intermediate = courses.filter(c => c.level === 'intermediate').length;
+      const advanced = courses.filter(c => c.level === 'advanced').length;
+      
+      totalCoursesEl.textContent = total;
+      beginnerCoursesEl.textContent = beginner;
+      intermediateCoursesEl.textContent = intermediate;
+      advancedCoursesEl.textContent = advanced;
+    }
+
+    function displayCourses() {
+      const searchQuery = searchInput.value.toLowerCase();
+      const level = levelFilter.value;
+      const sortValue = sortFilter.value || sortFilterMobile.value;
+      
+      let filteredCourses = courses.filter(course => {
+        const matchesSearch = course.title.toLowerCase().includes(searchQuery) || 
+                            course.description.toLowerCase().includes(searchQuery) ||
+                            course.instructor.toLowerCase().includes(searchQuery);
+        const matchesLevel = level === 'all' || course.level === level;
+        return matchesSearch && matchesLevel;
+      });
+      
+      // Sort courses
+      if (sortValue !== 'default') {
+        filteredCourses = sortCourses(filteredCourses, sortValue);
+      }
+      
+      container.innerHTML = '';
+      
+      if (filteredCourses.length === 0) {
+        showEmptyState();
+        return;
+      }
+      
+      filteredCourses.forEach((course, index) => {
+        const card = document.createElement('div');
+        card.className = 'course-card';
+        card.innerHTML = `
+          <div class="course-image" style="background-image: url('${course.image}');">
+            ${course.popular ? '<div class="course-badge"><i class="fas fa-bolt"></i> Popular</div>' : ''}
+          </div>
+          <div class="course-content">
+            <div class="course-title">${course.title}</div>
+            <div class="course-instructor"><i class="fas fa-user-tie"></i> ${course.instructor}</div>
+            <div class="course-desc">${course.description}</div>
+            <div class="course-tags">
+              <span class="level ${course.level}"><i class="fas fa-signal"></i> ${formatLevel(course.level)}</span>
+              <span class="duration"><i class="far fa-clock"></i> ${course.duration}</span>
+              <button class="view-btn" onclick="showResources(${index})">
+                <i class="fas fa-eye"></i> View
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function sortCourses(courses, sortValue) {
+      return [...courses].sort((a, b) => {
+        switch (sortValue) {
+          case 'title-asc':
+            return a.title.localeCompare(b.title);
+          case 'title-desc':
+            return b.title.localeCompare(a.title);
+          case 'duration-asc':
+            return convertDurationToMinutes(a.duration) - convertDurationToMinutes(b.duration);
+          case 'duration-desc':
+            return convertDurationToMinutes(b.duration) - convertDurationToMinutes(a.duration);
+          default:
+            return 0;
+        }
+      });
+    }
+
+    function convertDurationToMinutes(duration) {
+      const parts = duration.split(' ');
+      let total = 0;
+      for (let part of parts) {
+        if (part.includes('h')) {
+          total += parseInt(part) * 60;
+        } else if (part.includes('m')) {
+          total += parseInt(part);
+        }
+      }
+      return total;
+    }
+
+    function formatLevel(level) {
+      return level.charAt(0).toUpperCase() + level.slice(1);
+    }
+
+    function showResources(index) {
+      selectedCourseIndex = index;
+      const course = courses[index];
+      
+      resourceTitle.textContent = course.title;
+      resourceInstructor.innerHTML = `<i class="fas fa-user-tie"></i> ${course.instructor}`;
+      resourceDuration.innerHTML = `<i class="far fa-clock"></i> ${course.duration}`;
+      resourceDescription.textContent = course.description;
+      
+      resourceList.innerHTML = '';
+      course.resources.forEach(res => {
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${res.link}" target="_blank"><i class="${res.icon}"></i> ${res.name}</a>`;
+        resourceList.appendChild(li);
+      });
+      
+      // Update enroll button state
+      if (enrolledCourses.includes(index)) {
+        enrollBtn.innerHTML = '<i class="fas fa-check"></i> Already Enrolled';
+        enrollBtn.style.backgroundColor = 'var(--success)';
+        enrollBtn.disabled = true;
+      } else {
+        enrollBtn.innerHTML = '<i class="fas fa-book-open"></i> Enroll in Course';
+        enrollBtn.style.backgroundColor = '';
+        enrollBtn.disabled = false;
+      }
+      
+      resourcePanel.classList.add('active');
+      panelOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePanel() {
+      resourcePanel.classList.remove('active');
+      panelOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function enrollInCourse() {
+      if (selectedCourseIndex === -1) return;
+      
+      if (!enrolledCourses.includes(selectedCourseIndex)) {
+        enrolledCourses.push(selectedCourseIndex);
+        localStorage.setItem('enrolledCourses', JSON.stringify(enrolledCourses));
+        
+        // Update UI
+        enrollBtn.innerHTML = '<i class="fas fa-check"></i> Already Enrolled';
+        enrollBtn.style.backgroundColor = 'var(--success)';
+        enrollBtn.disabled = true;
+        
+        // Show success notification
+        showToast('Course enrolled successfully!', 'success');
+      }
+    }
+
+    function showToast(message, type = '') {
+      toastMessage.textContent = message;
+      toastNotification.className = `toast ${type}`;
+      toastNotification.classList.add('show');
+      
+      setTimeout(() => {
+        toastNotification.classList.remove('show');
+      }, 3000);
+    }
+
+    function showEmptyState() {
+      container.innerHTML = `
+        <div class="empty-state">
+          <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="No courses found">
+          <h3>No courses match your search</h3>
+          <p>We couldn't find any courses that match your current filters. Try adjusting your search criteria or resetting the filters.</p>
+          <button onclick="resetFilters()"><i class="fas fa-sync-alt"></i> Reset Filters</button>
+        </div>
+      `;
+    }
+
+    function resetFilters() {
+      searchInput.value = '';
+      levelFilter.value = 'all';
+      sortFilter.value = 'default';
+      sortFilterMobile.value = 'default';
+      displayCourses();
+      showToast('Filters reset successfully');
+    }
+
+    // Initialize the app when DOM is loaded
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+</body>
+</html>
