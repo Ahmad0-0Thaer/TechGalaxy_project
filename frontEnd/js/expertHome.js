@@ -145,7 +145,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", function (e) {
   e.preventDefault();
   // Add your logout logic here
-  window.location.href = "home.html";
+  window.location.href = "./index.html"; // Redirect to home page or login page
 });
 
 /**
