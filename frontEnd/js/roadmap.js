@@ -1,4 +1,4 @@
-'use strict';
+/* 'use strict';
 
 // Function to add event listener on multiple elements
 const addEventOnElements = (elements, eventType, callback) => {
@@ -265,4 +265,42 @@ document.addEventListener("DOMContentLoaded", () => {
   updateRoadmapStats();
 });
 
- 
+  */
+ const container = document.getElementById("roadmaps-container");
+
+async function fetchRoadmaps() {
+  try {
+    const res = await fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/all");
+    const data = await res.json();
+    renderRoadmaps(data);
+  } catch (err) {
+    container.innerHTML = "<p style='color:red;'>Failed to load roadmaps.</p>";
+    console.error("Error fetching roadmaps:", err);
+  }
+}
+
+function renderRoadmaps(roadmaps) {
+  container.innerHTML = "";
+
+  roadmaps.forEach((roadmap) => {
+    const card = document.createElement("div");
+    card.className = "roadmap-card";
+
+    card.innerHTML = `
+      <img src="${roadmap.coverImageUrl}" alt="${roadmap.title}" />
+      <div class="roadmap-content">
+        <div class="roadmap-title">${roadmap.title}</div>
+        <div class="roadmap-desc">${roadmap.description}</div>
+        <div class="roadmap-meta"><strong>Category:</strong> ${roadmap.category}</div>
+        <div class="roadmap-meta"><strong>Level:</strong> ${roadmap.difficultyLevel}</div>
+        <div class="roadmap-meta"><strong>Expert:</strong> ${roadmap.expertName}</div>
+        <div class="roadmap-meta"><strong>Date:</strong> ${roadmap.createdAt}</div>
+      </div>
+      <div class="roadmap-footer">❤️ ${roadmap.likesCount} likes</div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+fetchRoadmaps();
