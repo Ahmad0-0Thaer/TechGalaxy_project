@@ -73,8 +73,9 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // API URLs
-const API_BASE = "https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps";
+const API_BASE = "https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/all";
 const roadmapList = document.getElementById('roadmapList');
+
 
 // Fetch and display roadmaps
 function fetchAndDisplayRoadmaps() {
@@ -264,3 +265,4 @@ document.addEventListener("DOMContentLoaded", () => {
   updateRoadmapStats();
 });
 
+ 
