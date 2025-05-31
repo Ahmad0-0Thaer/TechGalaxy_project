@@ -1,19 +1,21 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TechGalaxy | Show Roadmaps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechGalaxy Roadmaps</title>
+  <link rel="stylesheet" href="./css/roadmap.css" />
+  <link rel="shortcut icon" href="./Images/logo-icon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Work+Sans:wght@600&display=swap"
     rel="stylesheet">
-  <link rel="shortcut icon" href="./Images/logo-icon.png" type="image/png">
-  <link rel="stylesheet" href="./css/roadmap.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 <body id="top">
-   <header class="header active" data-header>
+  <header class="header active" data-header>
     <div class="container">
 
       <a href="#" class="logo">
@@ -59,10 +61,10 @@
             <path d="M6 19C6 16.7909 8.68629 15 12 15C15.3137 15 18 16.7909 18 19" stroke="currentColor"
               stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
-        </button> -->
+        </button>
 
         <!-- Dropdown Menu (Hidden by default) -->
-       <!--  <div class="profile-dropdown" id="profileDropdown">
+        <div class="profile-dropdown" id="profileDropdown">
           <ul class="dropdown-list">
             <li class="dropdown-item"><a href="profile.html">Profile</a></li>
             <li class="dropdown-item"><a href="./index.html" id="logoutBtn">Logout</a></li>
@@ -78,78 +80,51 @@
 
     </div>
   </header>
-
-  <main>
-     <section class="section Roadmap" aria-label="our latest Roadmap" id="Roadmap">
-        <div class="container">
-
+  
+          <div class="container">
           <p class="section-subtitle" data-reveal="bottom">Navigate Your Tech Path</p>
 
           <h2 class="h2 section-title" data-reveal="bottom">
-            Learning Roadmaps <br> Designed for  <span class="span">Every Level</span>
+            Learning Roadmaps <br> Designed for <span class="span">Every Level</span>
           </h2>
 
           <p class="section-text" data-reveal="bottom">
             Whether you're just starting or looking to specialize,
-             our curated roadmaps guide you through the essential skills and resources to grow in the tech world. 
-            </p>
-            <section class="stats-container">
-                  <div class="stat-box">
-                    <h3>Total Roadmaps</h3>
-                    <p id="total-count">0</p>
-                  </div>
-                  <div class="stat-box">
-                    <h3>Beginner</h3>
-                    <p id="beginner-count">0</p>
-                  </div>
-                  <div class="stat-box">
-                    <h3>Intermediate</h3>
-                    <p id="intermediate-count">0</p>
-                  </div>
-                  <div class="stat-box">
-                    <h3>Advanced</h3>
-                    <p id="advanced-count">0</p>
-                  </div>
-            </section> 
+            our curated roadmaps guide you through the essential skills and resources to grow in the tech world.
+          </p>
+          </div>
 
-           <div class="roadmap-controls" data-reveal="bottom">
-              <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search roadmap..." />
-              </div>
-            
-              <div class="filters" id="sort-section">
-                <label for="sortOptions">Sort by:</label>
-                <select id="categoryFilter">
-                    <option value="all">Select a category</option>
-                    <option value="web">Web Development</option>
-                    <option value="mobile">Mobile Development</option>
-                    <option value="data">Data Science</option>
-                    <option value="ux">UX/UI Design</option>
-                    <option value="devops">DevOps</option>
-                    <option value="ai">AI & Machine Learning</option>
-                    <option value="cyber">Cybersecurity</option>
-                    <option value="game">Game Development</option>
-                    <option value="cloud">Cloud Computing</option>
-                    <option value="other">Other</option>
-                </select>
-              
-                <label for="levelFilter">All Levels:</label>
-                <select id="levelFilter">
-                  <option value="all">All</option>
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
-                </select>
-             </div>
-            </div>
-        </div>
+<div class="filter-container">
+  <input type="text" id="searchInput" placeholder="Search for a roadmap..." class="search-box" />
 
-        <div id="roadmapList" class="Roadmap-list"></div>
+  <select id="categoryFilter" class="filter-select">
+    <option value="">Select a category</option>
+    <option value="Web Development">Web Development</option>
+    <option value="Mobile Development">Mobile Development</option>
+    <option value="Data Science">Data Science</option>
+    <option value="UX/UI Design">UX/UI Design</option>
+    <option value="DevOps">DevOps</option>
+    <option value="AI & Machine Learning">AI & Machine Learning</option>
+    <option value="Cybersecurity">Cybersecurity</option>
+    <option value="Game Development">Game Development</option>
+    <option value="Cloud Computing">Cloud Computing</option>
+    <option value="Other">Other</option>
+  </select>
 
-        </section>
-  </main>
-  
-    <a href="createRoadmap.html" class="fixed-btn btn" data-btn>Create Roadmap</a>
+  <select id="difficultyFilter" class="filter-select">
+    <option value="">All Levels</option>
+    <option value="Beginner">Beginner</option>
+    <option value="Intermediate">Intermediate</option>
+    <option value="Advanced">Advanced</option>
+  </select>
+</div>
+
+  <section class="roadmap-section">
+    <ul class="roadmap-list" id="roadmapList"></ul>
+  </section>
+  <!-- 
+    - #FOOTER
+  -->
 
   <footer class="footer">
 
@@ -238,39 +213,30 @@
       </div>
     </div>
 
-  </footer> -->
-    <!-- 
+  </footer>
+
+   <!-- 
     - #BACK TO TOP
   -->
-  <!-- <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+
+  <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
     <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
   </a>
-  
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
+
+
+
+
+  <!-- 
+    - #CUSTOM CURSOR
+  -->
+
+  <div class="cursor" data-cursor></div>
+
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script src="./js/roadmap.js"></script>
 </body>
-</html> -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>All Roadmaps | TechGalaxy</title>
-  <link rel="stylesheet" href="roadmaps.css"/>
-</head>
-<body>
-  <header>
-    <h1>Explore All Roadmaps</h1>
-  </header>
-
-  <main>
-    <section id="roadmaps-container">
-      <!-- Roadmaps will be injected here -->
-    </section>
-  </main>
-
-  <script src="roadmaps.js"></script>
-</body>
 </html>
+

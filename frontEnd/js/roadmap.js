@@ -1,306 +1,267 @@
-/* 'use strict';
+/**
+ * add event on multiple elements
+ */
 
-// Function to add event listener on multiple elements
-const addEventOnElements = (elements, eventType, callback) => {
-  elements.forEach(el => el.addEventListener(eventType, callback));
-};
+const addEventOnElements = function (elements, eventType, callback) {
+  for (let i = 0, len = elements.length; i < len; i++) {
+    elements[i].addEventListener(eventType, callback);
+  }
+}
 
-// Navbar toggle functionality
+
+
+/**
+ * MOBILE NAVBAR
+ * navbar will show after clicking menu button
+ */
+
 const navbar = document.querySelector("[data-navbar]");
 const navToggler = document.querySelector("[data-nav-toggler]");
 const navLinks = document.querySelectorAll("[data-nav-link]");
 
-const toggleNav = () => {
+const toggleNav = function () {
   navbar.classList.toggle("active");
-  navToggler.classList.toggle("active");
-};
-const closeNav = () => {
+  this.classList.toggle("active");
+}
+
+navToggler.addEventListener("click", toggleNav);
+
+const navClose = () => {
   navbar.classList.remove("active");
   navToggler.classList.remove("active");
-};
-navToggler.addEventListener("click", toggleNav);
-addEventOnElements(navLinks, "click", closeNav);
+}
 
-// Header & Back-to-top button on scroll
+addEventOnElements(navLinks, "click", navClose);
+
+
+
+/**
+ * HEADER and BACK TOP BTN
+ * header and back top btn will be active after scrolled down to 100px of screen
+ */
+
 const header = document.querySelector("[data-header]");
 const backTopBtn = document.querySelector("[data-back-top-btn]");
-const handleScroll = () => {
-  const shouldShow = window.scrollY > 100;
-  header.classList.toggle("active", shouldShow);
-  backTopBtn.classList.toggle("active", shouldShow);
-};
-window.addEventListener("scroll", handleScroll);
 
-// Button ripple effect
+const activeEl = function () {
+  if (window.scrollY > 100) {
+    header.classList.add("active");
+    backTopBtn.classList.add("active");
+  } else {
+    header.classList.remove("active");
+    backTopBtn.classList.remove("active");
+  }
+}
+
+window.addEventListener("scroll", activeEl);
+
+
+
+/**
+ * Button hover ripple effect
+ */
+
 const buttons = document.querySelectorAll("[data-btn]");
-addEventOnElements(buttons, "mousemove", function (event) {
+
+const buttonHoverRipple = function (event) {
   this.style.setProperty("--top", `${event.offsetY}px`);
   this.style.setProperty("--left", `${event.offsetX}px`);
-});
+}
 
-// Scroll reveal effect
+addEventOnElements(buttons, "mousemove", buttonHoverRipple);
+
+
+
+/**
+ * Scroll reveal
+ */
+
 const revealElements = document.querySelectorAll("[data-reveal]");
-const revealElementOnScroll = () => {
-  revealElements.forEach(el => {
-    const isVisible = el.getBoundingClientRect().top < window.innerHeight / 1.1;
-    if (isVisible) el.classList.add("revealed");
-  });
-};
+
+const revealElementOnScroll = function () {
+  for (let i = 0, len = revealElements.length; i < len; i++) {
+    const isElementInsideWindow = revealElements[i].getBoundingClientRect().top < window.innerHeight / 1.1;
+
+    if (isElementInsideWindow) {
+      revealElements[i].classList.add("revealed");
+    }
+  }
+}
+
 window.addEventListener("scroll", revealElementOnScroll);
+
 window.addEventListener("load", revealElementOnScroll);
 
-// Profile dropdown
+
+
+/**
+ * Custom cursor
+ */
+
+const cursor = document.querySelector("[data-cursor]");
+const hoverElements = [...document.querySelectorAll("a"), ...document.querySelectorAll("button")];
+
+const cursorMove = function (event) {
+  cursor.style.top = `${event.clientY}px`;
+  cursor.style.left = `${event.clientX}px`;
+}
+
+window.addEventListener("mousemove", cursorMove);
+
+addEventOnElements(hoverElements, "mouseover", function () {
+  cursor.classList.add("hovered");
+});
+
+addEventOnElements(hoverElements, "mouseout", function () {
+  cursor.classList.remove("hovered");
+});
+
+/**
+ * Profile Dropdown
+ */
+
 const profileBtn = document.getElementById("profileBtn");
 const profileDropdown = document.getElementById("profileDropdown");
-profileBtn.addEventListener("click", e => {
+
+// Toggle dropdown
+profileBtn.addEventListener("click", function (e) {
   e.stopPropagation();
   profileDropdown.classList.toggle("active");
 });
-document.addEventListener("click", e => {
+
+// Close dropdown when clicking outside
+document.addEventListener("click", function (e) {
   if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
     profileDropdown.classList.remove("active");
   }
 });
-document.getElementById("logoutBtn")?.addEventListener("click", e => {
+
+// Handle logout
+const logoutBtn = document.getElementById("logoutBtn");
+logoutBtn.addEventListener("click", function (e) {
   e.preventDefault();
-  window.location.href = "./index.html";
+  // Add your logout logic here
+  window.location.href = "./index.html"; // Redirect to home page or login page
 });
 
-// Display user name from localStorage
+// userName display
 window.addEventListener('DOMContentLoaded', () => {
-  const userName = localStorage.getItem("userName") || "Guest";
-  document.getElementById("user-name").textContent = userName;
-});
-
-// API URLs
-const API_BASE = "https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/all";
-const roadmapList = document.getElementById('roadmapList');
-
-
-// Fetch and display roadmaps
-function fetchAndDisplayRoadmaps() {
-  fetch(`${API_BASE}/all`)
-    .then(res => res.json())
-    .then(data => {
-      roadmapList.innerHTML = "";
-      
-      if (!Array.isArray(data) || data.length === 0) {
-        roadmapList.innerHTML = "<p>No roadmaps found.</p>";
-        return;
-      }
-
-      data.forEach(roadmap => {
-        const card = document.createElement("div");
-card.setAttribute("data-reveal", "bottom");
-card.setAttribute("data-difficulty", (roadmap.difficultyLevel || "").toLowerCase());
-card.setAttribute("data-category", (roadmap.category || "").toLowerCase());
-card.classList.add("roadmap-card"); // Capital R to match your class
-
-card.innerHTML = `
-  <div class="preview-bar">${roadmap.category || "Uncategorized"}</div>
-  <figure class="card-banner img-holder" style="--width: 600; --height: 400;">
-    <a href="./roadmap.html?id=${roadmap.id}">
-      <img src="${roadmap.coverImageUrl || './Images/default.avif'}" width="600" height="400" loading="lazy"
-        alt="${roadmap.title}" class="img-cover">
-    </a>
-  </figure>
-
-  <div class="card-content">
-    <ul class="card-meta-list">
-      <li class="card-meta-item">
-        <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-        <time class="card-meta-text">${roadmap.createdAt || "Unknown"}</time>
-      </li>
-      <li class="card-meta-item">
-        <ion-icon name="person-outline" aria-hidden="true"></ion-icon>
-        <p class="card-meta-text">${roadmap.expertName || "Anonymous"}</p>
-      </li>
-    </ul>
-
-    <h3 class="h3">
-      <a href="./roadmap.html?id=${roadmap.id}" class="card-title">${roadmap.title}</a>
-    </h3>
-
-    <a href="./roadmap.html?id=${roadmap.id}">
-      <p class="card-text">${roadmap.description}</p>
-    </a>
-
-    <span class="badge ${(roadmap.difficultyLevel || "").toLowerCase()}">
-      <i class="fas fa-signal"></i>
-      ${roadmap.difficultyLevel}
-    </span>
-
-    <button class="like-btn" data-roadmap-id="${roadmap.id}">
-    <ion-icon class="like-icon" name="heart-outline"></ion-icon>
-    <span class="like-count">${roadmap.likesCount || 0}</span>
-  </button>
-
-  </div>
-`;
-
-roadmapList.appendChild(card);
-
-      });
-
-      addLikeButtonEvents();
-      updateRoadmapStats(); // optional: based on loaded cards
-      revealElementOnScroll();
-    })
-    .catch(err => {
-      console.error("Failed to fetch roadmaps:", err);
-      roadmapList.innerHTML = "<p>Failed to load roadmaps.</p>";
-    });
-}
-
-// Like button functionality
-function addLikeButtonEvents() {
-  document.querySelectorAll('.like-btn').forEach(button => {
-    button.addEventListener('click', function (e) {
-      e.stopPropagation();
-
-      const roadmapId = this.getAttribute("data-roadmap-id");
-      const likeCountEl = this.querySelector('.like-count');
-      const likeIcon = this.querySelector('.like-icon');
-
-      const isLiked = this.classList.contains("liked");
-      const method = isLiked ? "DELETE" : "POST";
-
-      fetch(`${API_BASE}/${roadmapId}/like`, {
-        method: method,
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(res => {
-        if (!res.ok) throw new Error("Request failed");
-        return res.json();
-      })
-      .then(data => {
-        // إذا API رجع likeCount محدث:
-        if (typeof data.likesCount === 'number') {
-          likeCountEl.textContent = data.likesCount;
-        } else {
-          // احتياطي
-          let count = parseInt(likesCountEl.textContent);
-          likeCountEl.textContent = isLiked ? count - 1 : count + 1;
-        }
-
-        // تغيير الشكل
-        this.classList.toggle("liked");
-        likeIcon.setAttribute("name", isLiked ? "heart-outline" : "heart");
-      })
-      .catch(err => {
-        console.error("Like/unlike failed", err);
-        alert("حدث خطأ أثناء تحديث الإعجاب.");
-      });
-    });
-  });
-}
-
-
-// Fetch roadmap stats
-function updateRoadmapStats() {
-  fetch(`${API_BASE}/stats`)
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("beginner-count").textContent = data.beginner;
-      document.getElementById("intermediate-count").textContent = data.intermediate;
-      document.getElementById("advanced-count").textContent = data.advanced;
-
-      const total = data.beginner + data.intermediate + data.advanced;
-      document.getElementById("total-count").textContent = total;
-    })
-    .catch(err => {
-      console.error("Failed to fetch stats:", err);
-      fallbackStats();
-    });
-}
-
-// Fallback in case API fails
-function fallbackStats() {
-  const cards = document.querySelectorAll('.roadmap-card');
-
-  let beginner = 0, intermediate = 0, advanced = 0;
-  cards.forEach(card => {
-    const level = card.dataset.difficulty;
-    if (level === "beginner") beginner++;
-    if (level === "intermediate") intermediate++;
-    if (level === "advanced") advanced++;
-  });
-
-  document.getElementById("total-count").textContent = cards.length;
-  document.getElementById("beginner-count").textContent = beginner;
-  document.getElementById("intermediate-count").textContent = intermediate;
-  document.getElementById("advanced-count").textContent = advanced;
-}
-
-// Filters: search, level, category
-document.getElementById('searchInput').addEventListener('input', function () {
-  const query = this.value.toLowerCase();
-  document.querySelectorAll('.roadmap-card').forEach(card => {
-    const title = card.querySelector('.card-title').textContent.toLowerCase();
-    card.style.display = title.includes(query) ? 'block' : 'none';
-  });
-});
-
-document.getElementById('levelFilter').addEventListener('change', function () {
-  const level = this.value;
-  document.querySelectorAll('.roadmap-card').forEach(card => {
-    const levelTag = card.getAttribute('data-difficulty');
-    card.style.display = (level === 'all' || level === levelTag) ? 'block' : 'none';
-  });
-});
-
-document.getElementById('categoryFilter').addEventListener('change', function () {
-  const selectedCategory = this.value;
-  document.querySelectorAll('.roadmap-card').forEach(card => {
-    const category = card.getAttribute('data-category');
-    card.style.display = (selectedCategory === 'all' || category === selectedCategory) ? 'block' : 'none';
-  });
-});
-
-// Load data
-document.addEventListener("DOMContentLoaded", () => {
-  fetchAndDisplayRoadmaps();
-  updateRoadmapStats();
-});
-
-  */
- const container = document.getElementById("roadmaps-container");
-
-async function fetchRoadmaps() {
-  try {
-    const res = await fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/all");
-    const data = await res.json();
-    renderRoadmaps(data);
-  } catch (err) {
-    container.innerHTML = "<p style='color:red;'>Failed to load roadmaps.</p>";
-    console.error("Error fetching roadmaps:", err);
+  const userName = localStorage.getItem("userName");
+  if (userName) {
+    document.getElementById("user-name").textContent = userName;
+  } else {
+    document.getElementById("user-name").textContent = "Guest";
   }
+});
+
+
+const roadmapList = document.getElementById("roadmapList");
+fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/all", {
+  headers: {
+    "Authorization": `Bearer ${localStorage.getItem("token")}`
+  }
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  })
+  .then(roadmaps => {
+    roadmaps.forEach(roadmap => {
+      const li = document.createElement("li");
+      const card = document.createElement("div");
+      card.classList.add("roadmap-card");
+
+      card.innerHTML = `
+        <figure class="card-banner img-holder" style="--width: 600; --height: 400; position: relative;">
+          <a href="./roadmap.html?id=${roadmap.id}">
+            <img src="${roadmap.coverImageUrl}" width="600" height="400" loading="lazy"
+              alt="${roadmap.title}" class="img-cover">
+            <span class="preview-bar">${roadmap.category || "Uncategorized"}</span>
+          </a>
+        </figure>
+
+        <div class="card-content">
+          <ul class="card-meta-list">
+            <li class="card-meta-item">
+              <ion-icon name="calendar-outline"></ion-icon>
+              <time class="card-meta-text">${roadmap.createdAt}</time>
+            </li>
+            <li class="card-meta-item">
+              <ion-icon name="person-outline"></ion-icon>
+              <p class="card-meta-text">${roadmap.expertName}</p>
+            </li>
+          </ul>
+
+          <h3 class="h3">
+            <a href="./roadmap.html?id=${roadmap.id}" class="card-title">${roadmap.title}</a>
+          </h3>
+
+          <a href="./roadmap.html?id=${roadmap.id}">
+            <p class="card-text">${roadmap.description}</p>
+          </a>
+
+          <span class="badge ${roadmap.difficultyLevel.toLowerCase()}">
+            <i class="fas fa-signal"></i>
+            ${roadmap.difficultyLevel}
+          </span>
+
+          <button class="like-btn" data-id="${roadmap.id}" data-liked="${roadmap.likedByCurrentUser}">
+            <i class="fas fa-heart"></i>
+            <span class="like-count">${roadmap.likesCount}</span>
+          </button>
+        </div>
+      `;
+
+      li.appendChild(card);
+      roadmapList.appendChild(li);
+      if (roadmap.likedByCurrentUser) {
+      li.querySelector(".like-btn").classList.add("liked");
 }
-
-function renderRoadmaps(roadmaps) {
-  container.innerHTML = "";
-
-  roadmaps.forEach((roadmap) => {
-    const card = document.createElement("div");
-    card.className = "roadmap-card";
-
-    card.innerHTML = `
-      <img src="${roadmap.coverImageUrl}" alt="${roadmap.title}" />
-      <div class="roadmap-content">
-        <div class="roadmap-title">${roadmap.title}</div>
-        <div class="roadmap-desc">${roadmap.description}</div>
-        <div class="roadmap-meta"><strong>Category:</strong> ${roadmap.category}</div>
-        <div class="roadmap-meta"><strong>Level:</strong> ${roadmap.difficultyLevel}</div>
-        <div class="roadmap-meta"><strong>Expert:</strong> ${roadmap.expertName}</div>
-        <div class="roadmap-meta"><strong>Date:</strong> ${roadmap.createdAt}</div>
-      </div>
-      <div class="roadmap-footer">❤️ ${roadmap.likesCount} likes</div>
-    `;
-
-    container.appendChild(card);
+    });
+  })
+  .catch(error => {
+    console.error("Failed to fetch roadmaps:", error);
+    roadmapList.innerHTML = "<li>Failed to load data.</li>";
   });
-}
 
-fetchRoadmaps();
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(".like-btn")) {
+      const btn = e.target.closest(".like-btn");
+      const liked = btn.getAttribute("data-liked") === "true";
+      const roadmapId = btn.getAttribute("data-id");
+      const likeCountSpan = btn.querySelector(".like-count");
+      let likesCount = parseInt(likeCountSpan.textContent);
+
+      // إرسال الطلب إلى السيرفر
+  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/like/${roadmapId}`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem("token")}` // إذا كان عندك توكن
+  }
+})
+.then(response => {
+  if (!response.ok) {
+    throw new Error("Failed to update like status");
+  }
+  return response.json();
+})
+.then(data => {
+  if (data.liked) {
+    btn.setAttribute("data-liked", "true");
+    btn.classList.add("liked");
+  } else {
+    btn.setAttribute("data-liked", "false");
+    btn.classList.remove("liked");
+  }
+
+  likeCountSpan.textContent = data.likesCount;
+})
+.catch(error => {
+  console.error("Failed to update like status:", error);
+});
+    }
+  });
+  

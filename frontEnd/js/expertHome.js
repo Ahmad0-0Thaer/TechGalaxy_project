@@ -156,18 +156,18 @@ const likeButtons = document.querySelectorAll('.like-btn');
 
 likeButtons.forEach(button => {
   button.addEventListener('click', function () {
-    const likeCount = this.querySelector('.like-count');
+    const likesCount = this.querySelector('.like-count');
     const likeIcon = this.querySelector('.like-icon');
 
     if (this.classList.contains('liked')) {
       // Unlike
       this.classList.remove('liked');
-      likeCount.textContent = parseInt(likeCount.textContent) - 1;
+      likesCount.textContent = parseInt(likeCount.textContent) - 1;
       likeIcon.setAttribute('name', 'heart-outline');
     } else {
       // Like
       this.classList.add('liked');
-      likeCount.textContent = parseInt(likeCount.textContent) + 1;
+      likesCount.textContent = parseInt(likeCount.textContent) + 1;
       likeIcon.setAttribute('name', 'heart');
     }
   });
