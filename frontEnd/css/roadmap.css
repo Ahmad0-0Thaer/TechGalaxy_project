@@ -722,7 +722,7 @@ body {
   gap: 30px;
 }
 
-.Roadmap-card {
+.roadmap-card {
   background-color: var(--bg-oxford-blue-alpha-90);
   box-shadow: var(--shadow);
   height: 500px;
@@ -731,7 +731,7 @@ body {
   overflow: hidden;
 }
 
-.Roadmap-card .card-content {
+.roadmap-card .card-content {
   position: relative;
   padding: 30px;
   flex-grow: 1;
@@ -740,37 +740,37 @@ body {
   flex-direction: column;
 }
 
-.Roadmap-card :is(.card-meta-list, .card-meta-item) {
+.roadmap-card :is(.card-meta-list, .card-meta-item) {
   display: flex;
   align-items: center;
 }
 
-.Roadmap-card .card-meta-list {
+.roadmap-card .card-meta-list {
   flex-wrap: wrap;
   gap: 5px 10px;
 }
 
-.Roadmap-card .card-meta-item {
+.roadmap-card .card-meta-item {
   gap: 5px;
 }
 
-.Roadmap-card .card-meta-item ion-icon {
+.roadmap-card .card-meta-item ion-icon {
   color: var(--text-purple);
 }
 
-.Roadmap-card .card-meta-text,
-.Roadmap-card .link {
+.roadmap-card .card-meta-text,
+.roadmap-card .link {
   color: var(--text-champagne-pink);
   font-size: var(--fontSize-7);
   font-weight: var(--weight-bold);
   text-transform: uppercase;
 }
 
-.Roadmap-card .h3 {
+.roadmap-card .h3 {
   margin-block: 15px 10px;
 }
 
-.Roadmap-card .card-title {
+.roadmap-card .card-title {
   display: inline;
   background-image: linear-gradient(to left, var(--bg-purple), var(--bg-purple));
   background-repeat: no-repeat;
@@ -785,18 +785,18 @@ body {
 
 }
 
-.Roadmap-card .card-title:is(:hover, :focus-visible) {
+.roadmap-card .card-title:is(:hover, :focus-visible) {
   background-size: 100% 4px;
 }
 
-.Roadmap-card .link {
+.roadmap-card .link {
   max-width: max-content;
   margin-block-start: 15px;
   padding-inline-start: 30px;
   transition: var(--transition-1);
 }
 
-.Roadmap-card .link::before {
+.roadmap-card .link::before {
   top: 50%;
   left: 0;
   transform: translateY(-100%);
@@ -805,11 +805,11 @@ body {
   background-color: var(--bg-purple);
 }
 
-.Roadmap-card .link:is(:hover, :focus-visible) {
+.roadmap-card .link:is(:hover, :focus-visible) {
   color: var(--text-purple);
 }
 
-.Roadmap-card .card-text {
+.roadmap-card .card-text {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -1491,4 +1491,68 @@ body {
   background-color: hsla(0, 0%, 87%, 1);
   color: black;
 }
+
+.preview-bar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: var(--bg-purple);
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  border-radius: 0px 20px 10px 0px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.preview-bar:hover {
+  background-image:var(--gradient-1);
+}
+
+.roadmap-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  width: 300px;
+  height: 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.badge {
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.badge img {
+  width: 16px;
+  height: 16px;
+}
+
+/* ألوان المستويات */
+.badge.beginner {
+  color: #00a97f;
+}
+
+.badge.intermediate {
+  color: #f59e0b;
+}
+
+.badge.Advanced {
+  color: #ef4444;
+}
+
 
