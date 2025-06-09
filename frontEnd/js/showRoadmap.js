@@ -182,7 +182,35 @@ function renderRoadmap(data) {
 </div>
   `;
   container.appendChild(card);
+  const followButton = card.querySelector('.follow-btn');
 
+followButton.addEventListener('click', () => {
+  const userToken = localStorage.getItem("token"); // تأكد أن عندك التوكن في localStorage
+
+  if (!userToken) {
+    alert("Please log in to follow roadmaps.");
+    return;
+  }
+
+  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/FollowedRoadmaps/${data.id}/toggle-follow`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${userToken}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    if (!response.ok) throw new Error("Failed to toggle follow");
+    return response.json(); // نفترض أن الـ API يرجع حالة جديدة مثل: { isFollowed: true }
+  })
+  .then(result => {
+    followButton.textContent = result.isFollowed ? "Unfollow" : "Follow";
+  })
+  .catch(err => {
+    console.error("Toggle follow error:", err);
+    alert("Something went wrong.");
+  });
+});
   // ثانياً – كارد الـ nodes مع Progress Bar
   const progressCard = document.createElement("div");
   progressCard.className = "custom-card";
