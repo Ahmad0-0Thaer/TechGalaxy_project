@@ -176,7 +176,7 @@ fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/ap
 
       card.innerHTML = `
         <figure class="card-banner img-holder" style="--width: 600; --height: 400; position: relative;">
-          <a href="./showRoadmap.html?id=${roadmap.id}">
+          <a href="./showRoadmapUser.html?id=${roadmap.id}">
             <img src="${roadmap.coverImageUrl}" width="600" height="400" loading="lazy"
               alt="${roadmap.title}" class="img-cover">
             <span class="preview-bar">${roadmap.category || "Uncategorized"}</span>
