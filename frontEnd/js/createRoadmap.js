@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
     createdAt: new Date().toISOString()
   };
   function sendRoadmapToBackend(step) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("Title", roadmap.title);
     formData.append("Category", roadmap.category);
@@ -17,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const tagInput = document.getElementById('roadmap-tag');
     if (tagInput && tagInput.value.trim()) {
-      roadmap.tag = tagInput.value.trim(); // خذ القيمة المدخلة مباشرة
+      roadmap.tag = tagInput.value.trim();
     }
     formData.append("Tag", roadmap.tag || "default-tag");
 
@@ -26,14 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
       formData.append("StepDescription", step.description);
     }
 
-
-
     // صورة الغلاف
     const fileInput = document.getElementById("roadmap-cover");
     if (fileInput && fileInput.files[0]) {
       formData.append("CoverImage", fileInput.files[0]);
     }
 
+    // طباعة البيانات للتحقق
     for (let [key, value] of formData.entries()) {
       console.log(`${key}: ${value}`);
     }
@@ -41,24 +46,29 @@ document.addEventListener('DOMContentLoaded', function () {
     fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update", {
       method: "POST",
       headers: {
-        "Authorization": "Bearer " + localStorage.getItem("token")
+        "Authorization": `Bearer ${token}`
       },
       body: formData
     })
-
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          return response.text().then(text => {
+            throw new Error(text || 'Network response was not ok');
+          });
         }
         return response.json();
       })
       .then((data) => {
         console.log("Saved successfully:", data);
+        // تحديث معرف الخطوة بعد الحفظ
+        if (data && data.length > 0) {
+          step.id = data[0].Id;
+        }
         alert("Step added and roadmap saved!");
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("Failed to save roadmap.");
+        alert("Failed to save roadmap: " + error.message);
       });
   }
 
@@ -378,6 +388,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Delete step (global function)
   window.deleteStep = function (stepId) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
     if (confirm('Are you sure you want to delete this step?')) {
       // حذف من الـ frontend
       roadmap.steps = roadmap.steps.filter(s => s.id !== stepId);
@@ -388,12 +404,14 @@ document.addEventListener('DOMContentLoaded', function () {
       fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${stepId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': `Bearer ${token}`
         }
       })
         .then(response => {
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            return response.text().then(text => {
+              throw new Error(text || 'Network response was not ok');
+            });
           }
           return response.text();
         })
@@ -402,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => {
           console.error('Error deleting step:', error);
-          alert('Failed to delete step from server. Please try again.');
+          alert('Failed to delete step: ' + error.message);
           // إعادة الخطوة إلى القائمة في حالة فشل الحذف
           const step = roadmap.steps.find(s => s.id === stepId);
           if (step) {
