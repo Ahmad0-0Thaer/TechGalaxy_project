@@ -6,19 +6,18 @@ document.addEventListener('DOMContentLoaded', function () {
     tag: '',
     steps: [],
     coverImage: null,
-    createdAt: new Date().toISOString(),
-    difficultyLevel: 'intermediate'
+    createdAt: new Date().toISOString()
   };
   function sendRoadmapToBackend(step) {
     const formData = new FormData();
     formData.append("Title", roadmap.title);
     formData.append("Category", roadmap.category);
     formData.append("Description", roadmap.description);
-    formData.append("DifficultyLevel", roadmap.difficultyLevel);
+    formData.append("DifficultyLevel", selectedDifficulty);
 
     const tagInput = document.getElementById('roadmap-tag');
     if (tagInput && tagInput.value.trim()) {
-      roadmap.tag = tagInput.value.trim();
+      roadmap.tag = tagInput.value.trim(); // خذ القيمة المدخلة مباشرة
     }
     formData.append("Tag", roadmap.tag || "default-tag");
 
@@ -26,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
       formData.append("StepTitle", step.title);
       formData.append("StepDescription", step.description);
     }
+
+
 
     // صورة الغلاف
     const fileInput = document.getElementById("roadmap-cover");
@@ -158,24 +159,23 @@ document.addEventListener('DOMContentLoaded', function () {
     renderTags();
   };
 
-  // تحديث مستمعي أحداث مستوى الصعوبة
+  let selectedDifficulty = 'intermediate'; // Default
+
   const difficultyRadios = document.querySelectorAll('input[name="difficultyLevel"]');
+
   difficultyRadios.forEach(radio => {
     radio.addEventListener('change', () => {
       if (radio.checked) {
-        roadmap.difficultyLevel = radio.value;
-        // تحديث الفئة النشطة للأزرار
-        document.querySelectorAll('.difficulty-btn').forEach(label => {
-          label.classList.remove('active');
-        });
-        const selectedLabel = document.querySelector(`label[for="${radio.id}"]`);
-        selectedLabel.classList.add('active');
+        selectedDifficulty = radio.value;
       }
     });
   });
 
   // اجعل "intermediate" مفعّلة افتراضياً
   document.getElementById('diff-intermediate').checked = true;
+
+
+  // Set intermediate as default
   document.querySelector('.difficulty-btn.medium').classList.add('active');
 
   // Add new step
@@ -236,11 +236,6 @@ document.addEventListener('DOMContentLoaded', function () {
       stepElement.dataset.id = step.id;
       stepElement.draggable = true;
 
-      let difficultyColor = '';
-      if (roadmap.difficultyLevel === 'beginner') difficultyColor = 'var(--success)';
-      if (roadmap.difficultyLevel === 'intermediate') difficultyColor = 'var(--warning)';
-      if (roadmap.difficultyLevel === 'advanced') difficultyColor = 'var(--danger)';
-
       stepElement.innerHTML = `
       <div class="step-number">${index + 1}</div>
       <div class="step-header">
@@ -253,10 +248,6 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
       </div>
       <div class="step-description">${step.description || 'No description provided'}</div>
-      <div style="margin-top: 10px; display: inline-flex; align-items: center;">
-        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${difficultyColor}; margin-right: 5px;"></span>
-        ${roadmap.difficultyLevel.charAt(0).toUpperCase() + roadmap.difficultyLevel.slice(1)}
-      </div>
       <div class="resources-section">
         <div class="resources-title">Resources</div>
         <div class="resources-list" id="resources-${step.id}">
@@ -274,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
       </div>
     `;
 
-      // Add drag/drop events (نفس الكود الحالي)
+      // Add drag/drop events
       stepElement.addEventListener('dragstart', handleDragStart);
       stepElement.addEventListener('dragover', handleDragOver);
       stepElement.addEventListener('dragleave', handleDragLeave);
@@ -297,6 +288,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fill the form with step data
     stepTitle.value = step.title;
     stepDescription.value = step.description;
+
+
+
+    selectedDifficulty = step.difficulty;
 
     // Remove the step being edited
     roadmap.steps = roadmap.steps.filter(s => s.id !== stepId);
@@ -404,6 +399,23 @@ document.addEventListener('DOMContentLoaded', function () {
     previewCategory.textContent = roadmap.category || 'Uncategorized';
     previewDescription.textContent = roadmap.description || 'No description provided';
 
+    // إضافة مستوى الصعوبة في المعاينة
+    let difficultyColor = '';
+    if (selectedDifficulty === 'beginner') difficultyColor = 'var(--success)';
+    if (selectedDifficulty === 'intermediate') difficultyColor = 'var(--warning)';
+    if (selectedDifficulty === 'advanced') difficultyColor = 'var(--danger)';
+
+    const difficultyElement = document.createElement('div');
+    difficultyElement.style.marginTop = '1rem';
+    difficultyElement.style.marginBottom = '1rem';
+    difficultyElement.innerHTML = `
+      <div style="display: inline-flex; align-items: center;">
+        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${difficultyColor}; margin-right: 5px;"></span>
+        ${selectedDifficulty.charAt(0).toUpperCase() + selectedDifficulty.slice(1)} Level
+      </div>
+    `;
+    previewDescription.appendChild(difficultyElement);
+
     // Add cover image to preview if exists
     if (roadmap.coverImage) {
       const previewCover = document.createElement('img');
@@ -430,21 +442,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add steps to preview
     roadmap.steps.forEach((step, index) => {
-      let difficultyColor = '';
-      if (roadmap.difficultyLevel === 'beginner') difficultyColor = 'var(--success)';
-      if (roadmap.difficultyLevel === 'intermediate') difficultyColor = 'var(--warning)';
-      if (roadmap.difficultyLevel === 'advanced') difficultyColor = 'var(--danger)';
-
       const stepElement = document.createElement('div');
       stepElement.className = 'preview-step';
       stepElement.innerHTML = `
             <div class="preview-step-number">${index + 1}</div>
             <div class="preview-step-title">${step.title}</div>
             <div class="preview-step-description">${step.description || 'No description provided'}</div>
-            <div style="margin-top: 10px; display: inline-flex; align-items: center;">
-              <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${difficultyColor}; margin-right: 5px;"></span>
-              ${roadmap.difficultyLevel.charAt(0).toUpperCase() + roadmap.difficultyLevel.slice(1)}
-            </div>
             ${step.resources.length > 0 ? `
               <div class="preview-resources">
                 <div class="preview-resources-title">Resources</div>
@@ -491,6 +494,9 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.setItem('lastRoadmap', JSON.stringify(roadmap));
   }
 
+
+
+
   function exportToMarkdown() {
     if (roadmap.steps.length === 0) {
       alert('Please add at least one step to export');
@@ -509,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     roadmap.steps.forEach((step, index) => {
       markdown += `### ${index + 1}. ${step.title}\n`;
-      markdown += `**Difficulty:** ${roadmap.difficultyLevel.charAt(0).toUpperCase() + roadmap.difficultyLevel.slice(1)}\n\n`;
+      markdown += `**Difficulty:** ${step.difficulty.charAt(0).toUpperCase() + step.difficulty.slice(1)}\n\n`;
       markdown += `${step.description || 'No description provided'}\n\n`;
 
       if (step.resources.length > 0) {
@@ -652,6 +658,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+// Toggle active class for difficulty buttons
+document.querySelectorAll('input[name="difficultyLevel"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    // Remove active class from all labels
+    document.querySelectorAll('.difficulty-btn').forEach(label => {
+      label.classList.remove('active');
+    });
+
+    // Add active class to the selected label
+    const selectedLabel = document.querySelector(`label[for="${radio.id}"]`);
+    selectedLabel.classList.add('active');
+  });
+});
+
 
 function postRoadmap() {
   fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update', {
