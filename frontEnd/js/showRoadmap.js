@@ -184,26 +184,33 @@ function renderRoadmap(data) {
   container.appendChild(card);
   // تفعيل زر المتابعة
 const token = localStorage.getItem("token");
-const followBtn = document.getElementById("follow-btn");
+const followBtn = document.querySelector(".follow-btn"); // تأكد أن الزر عنده class "follow-btn"
 
-if (token) {
-  // استعلام لمعرفة إذا المستخدم متابع فعلاً
-  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/FollowedRoadmaps/${data.id}`, {
-    method: "GET",
+followBtn.addEventListener("click", () => {
+  if (!token) {
+    alert("Please log in first.");
+    return;
+  }
+
+  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/FollowedRoadmaps/${data.id}/toggle-follow`, {
+    method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
     }
   })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error("Request failed");
+      return res.json(); // يحتوي على { isFollowed: true/false }
+    })
     .then(result => {
-      if (result && typeof result.isFollowed === 'boolean') {
-        followBtn.textContent = result.isFollowed ? "Unfollow" : "Follow";
-      }
+      followBtn.textContent = result.isFollowed ? "Unfollow" : "Follow";
     })
     .catch(err => {
-      console.warn("Error checking follow status:", err);
+      console.error("Toggle follow error:", err);
+      alert("Failed to toggle follow status.");
     });
-}
+});
 
 // عند الضغط – toggle follow
 followBtn.addEventListener("click", () => {
