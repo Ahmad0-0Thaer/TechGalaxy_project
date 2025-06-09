@@ -389,6 +389,11 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
+    // تحديث الواجهة مباشرة
+    step.resources.push(resource);
+    renderSteps();
+    input.value = '';
+
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Please login first");
@@ -417,21 +422,31 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(data => {
         console.log("Resource added successfully:", data);
-        // تحديث قائمة الموارد في الخطوة
-        step.resources = data.Resources || [];
-        renderSteps();
-        input.value = '';
+        // تحديث قائمة الموارد في الخطوة مع البيانات المحدثة من الـ backend
+        if (data.Resources) {
+          step.resources = data.Resources;
+          renderSteps();
+        }
       })
       .catch(error => {
         console.error("Error adding resource:", error);
         alert("Failed to add resource: " + error.message);
+        // إزالة الرابط من الواجهة في حالة فشل الحفظ
+        step.resources = step.resources.filter(r => r !== resource);
+        renderSteps();
       });
   };
 
   // Remove resource from step (global function)
   window.removeResource = function (stepId, resource) {
     const step = roadmap.steps.find(s => s.id === stepId);
-    if (!step || !step.backendId) {
+    if (!step) return;
+
+    // تحديث الواجهة مباشرة
+    step.resources = step.resources.filter(r => r !== resource);
+    renderSteps();
+
+    if (!step.backendId) {
       console.warn("Cannot remove resource: step not saved to backend");
       return;
     }
@@ -464,13 +479,18 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(data => {
         console.log("Resource removed successfully:", data);
-        // تحديث قائمة الموارد في الخطوة
-        step.resources = data.Resources || [];
-        renderSteps();
+        // تحديث قائمة الموارد في الخطوة مع البيانات المحدثة من الـ backend
+        if (data.Resources) {
+          step.resources = data.Resources;
+          renderSteps();
+        }
       })
       .catch(error => {
         console.error("Error removing resource:", error);
         alert("Failed to remove resource: " + error.message);
+        // إعادة الرابط إلى الواجهة في حالة فشل الحذف
+        step.resources.push(resource);
+        renderSteps();
       });
   };
 
