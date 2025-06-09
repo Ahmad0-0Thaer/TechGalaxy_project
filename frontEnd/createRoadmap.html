@@ -1,150 +1,395 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roadmap Creator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 1000px;
-            margin: auto;
-        }
-        .box {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        input, select, textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #6200ea;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .field {
-            border: 1px solid #ddd;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            background: #fafafa;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>إنشاء Roadmap و Fields</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #ccc;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+    input[type="text"],
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .fields-container {
+      margin-top: 20px;
+    }
+    .field-item {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      background: #fafafa;
+      position: relative;
+    }
+    .remove-field-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #ff4d4f;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .resources-container {
+      margin-top: 10px;
+    }
+    .resource-input {
+      display: flex;
+      margin-top: 5px;
+      gap: 10px;
+    }
+    .resource-input input {
+      flex: 1;
+    }
+    .add-resource-btn {
+      background-color: #28a745;
+      margin-top: 10px;
+    }
+    .success-message,
+    .error-message {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Roadmap Creation Box -->
-        <div class="box">
-            <h2>Create Roadmap</h2>
-            <label>Roadmap Title</label>
-            <input type="text" id="roadmapTitle">
-            <label>Description</label>
-            <textarea id="roadmapDescription"></textarea>
-            <label>Difficulty Level</label>
-            <select id="difficulty">
-                <option>Beginner</option>
-                <option>Intermediate</option>
-                <option>Advanced</option>
-            </select>
-            <label>Category</label>
-            <select id="category">
-                <option>Web Development</option>
-                <option>Mobile Development</option>
-                <option>Data Science</option>
-                <option>UX/UI Design</option>
-                <option>DevOps</option>
-                <option>AI & Machine Learning</option>
-                <option>Cybersecurity</option>
-                <option>Game Development</option>
-                <option>Cloud Computing</option>
-                <option>Other</option>
-            </select>
-            <label>Tag</label>
-            <input type="text" id="tag">
-            <label>Cover Image</label>
-            <input type="file" id="coverImage">
-            <button onclick="createRoadmap()">Create Roadmap</button>
-        </div>
 
-        <!-- Fields Creation Box -->
-        <div class="box">
-            <h2>Add Field</h2>
-            <label>Field Title</label>
-            <input type="text" id="fieldTitle">
-            <label>Field Description</label>
-            <textarea id="fieldDescription"></textarea>
-            <label>Resource Link</label>
-            <input type="text" id="resourceLink">
-            <button onclick="addField()">Add Field</button>
-            <div id="fieldsContainer"></div>
-        </div>
+  <h2>إنشاء Roadmap</h2>
+
+  <form id="roadmapForm">
+    <label for="roadmapTitle">اسم Roadmap</label>
+    <input type="text" id="roadmapTitle" name="roadmapTitle" required />
+
+    <label for="roadmapDescription">وصف Roadmap</label>
+    <textarea id="roadmapDescription" name="roadmapDescription" rows="3" required></textarea>
+
+    <label for="difficultyLevel">مستوى الصعوبة</label>
+    <select id="difficultyLevel" name="difficultyLevel" required>
+      <option value="">اختر المستوى</option>
+      <option value="Beginner">Beginner</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+
+    <label for="roadmapCategory">التصنيف</label>
+    <select id="roadmapCategory" name="roadmapCategory" required>
+      <option value="">اختر التصنيف</option>
+      <option value="Web Development">Web Development</option>
+      <option value="Mobile Development">Mobile Development</option>
+      <option value="Data Science">Data Science</option>
+      <option value="UX/UI Design">UX/UI Design</option>
+      <option value="DevOps">DevOps</option>
+      <option value="AI & Machine Learning">AI & Machine Learning</option>
+      <option value="Cybersecurity">Cybersecurity</option>
+      <option value="Game Development">Game Development</option>
+      <option value="Cloud Computing">Cloud Computing</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="roadmapTags">التاغ (Tags) - افصل بين الكلمات بفاصلة</label>
+    <input type="text" id="roadmapTags" name="roadmapTags" placeholder="مثال: Frontend, React, JavaScript" />
+
+    <label for="roadmapImage">صورة Roadmap</label>
+    <input type="file" id="roadmapImage" name="roadmapImage" accept="image/*" />
+
+    <button type="button" id="saveRoadmapBtn">حفظ Roadmap</button>
+  </form>
+
+  <h2>إضافة Fields للرود ماب</h2>
+
+  <form id="fieldsForm" style="display:none;">
+    <div class="fields-container" id="fieldsContainer">
+      <!-- الحقول ستضاف هنا -->
     </div>
+    <button type="button" id="addFieldBtn">إضافة Field جديد</button>
+    <button type="button" id="submitFieldsBtn" style="background-color: #28a745;">حفظ Fields</button>
+  </form>
 
-    <script>
-        let roadmapId = null;
-        async function createRoadmap() {
-            const formData = new FormData();
-            formData.append("Title", document.getElementById("roadmapTitle").value);
-            formData.append("Description", document.getElementById("roadmapDescription").value);
-            formData.append("DifficultyLevel", document.getElementById("difficulty").value);
-            formData.append("Category", document.getElementById("category").value);
-            formData.append("Tag", document.getElementById("tag").value);
-            formData.append("CoverImage", document.getElementById("coverImage").files[0]);
-            formData.append("StepTitle", "");
-            formData.append("StepDescription", "");
+  <div id="message"></div>
 
-            const res = await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await res.json();
-            roadmapId = data.id;
-            alert("Roadmap created with ID: " + roadmapId);
+  <script>
+    const roadmapForm = document.getElementById('roadmapForm');
+    const saveRoadmapBtn = document.getElementById('saveRoadmapBtn');
+    const fieldsForm = document.getElementById('fieldsForm');
+    const fieldsContainer = document.getElementById('fieldsContainer');
+    const addFieldBtn = document.getElementById('addFieldBtn');
+    const submitFieldsBtn = document.getElementById('submitFieldsBtn');
+    const messageDiv = document.getElementById('message');
+
+    let roadmapId = null; // بعد الحفظ نستخدمه لتحديد الرودماب الحالي
+    let roadmapData = null; // لتخزين بيانات الرودماب
+
+    function showMessage(text, type = 'success') {
+      messageDiv.innerHTML = `<div class="${type === 'success' ? 'success-message' : 'error-message'}">${text}</div>`;
+      setTimeout(() => messageDiv.innerHTML = '', 5000);
+    }
+
+    // رفع صورة وتحويلها لـ base64
+    function toBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    saveRoadmapBtn.addEventListener('click', async () => {
+      // تحقق من صحة الفورم
+      if (!roadmapForm.reportValidity()) return;
+
+      const title = document.getElementById('roadmapTitle').value.trim();
+      const description = document.getElementById('roadmapDescription').value.trim();
+      const difficultyLevel = document.getElementById('difficultyLevel').value;
+      const category = document.getElementById('roadmapCategory').value;
+      const tags = document.getElementById('roadmapTags').value.trim();
+      const imageInput = document.getElementById('roadmapImage');
+      let coverImageBase64 = '';
+
+      if (imageInput.files.length > 0) {
+        try {
+          coverImageBase64 = await toBase64(imageInput.files[0]);
+        } catch (err) {
+          showMessage('حدث خطأ أثناء قراءة الصورة', 'error');
+          return;
+        }
+      }
+
+      const data = {
+        Title: title,
+        Description: description,
+        DifficultyLevel: difficultyLevel,
+        Category: category,
+        Tag: tags,
+        CoverImage: coverImageBase64 // حسب ال API صورة بصيغة base64 بدون data:image/jpeg;base64,
+      };
+
+      try {
+        const res = await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (!res.ok) throw new Error(`خطأ في الخادم: ${res.status}`);
+
+        roadmapData = await res.json();
+        // حسب ال API المفترض يرجع شيء يدل على نجاح العملية
+        showMessage('تم إنشاء Roadmap بنجاح');
+
+        roadmapId = roadmapData.id || null; // إذا الـ id موجود نستخدمه
+
+        if (roadmapId) {
+          fieldsForm.style.display = 'block';
+          saveRoadmapBtn.disabled = true;
+          roadmapForm.querySelectorAll('input, textarea, select, button').forEach(el => el.disabled = true);
+        } else {
+          showMessage('لم يتم الحصول على ID للـ Roadmap', 'error');
         }
 
-        async function addField() {
-            if (!roadmapId) {
-                alert("Please create a roadmap first.");
-                return;
+      } catch (error) {
+        showMessage('فشل في إنشاء Roadmap: ' + error.message, 'error');
+      }
+    });
+
+    // إضافة field جديد مع دعم إضافة resources
+    function createFieldElement(index) {
+      const fieldDiv = document.createElement('div');
+      fieldDiv.classList.add('field-item');
+      fieldDiv.dataset.index = index;
+
+      fieldDiv.innerHTML = `
+        <button type="button" class="remove-field-btn" title="حذف هذا الحقل">X</button>
+
+        <label>عنوان Field</label>
+        <input type="text" name="fieldTitle" required />
+
+        <label>وصف Field</label>
+        <textarea name="fieldDescription" rows="3" required></textarea>
+
+        <label>Resources</label>
+        <div class="resources-container">
+          <div class="resource-input">
+            <input type="text" name="resourceLink" placeholder="رابط resource" required />
+            <button type="button" class="remove-resource-btn" title="حذف resource">-</button>
+          </div>
+        </div>
+        <button type="button" class="add-resource-btn">إضافة Resource</button>
+      `;
+
+      // حذف field
+      fieldDiv.querySelector('.remove-field-btn').addEventListener('click', () => {
+        fieldDiv.remove();
+      });
+
+      // إضافة resource داخل field
+      const addResourceBtn = fieldDiv.querySelector('.add-resource-btn');
+      const resourcesContainer = fieldDiv.querySelector('.resources-container');
+
+      addResourceBtn.addEventListener('click', () => {
+        const resourceInputDiv = document.createElement('div');
+        resourceInputDiv.classList.add('resource-input');
+        resourceInputDiv.innerHTML = `
+          <input type="text" name="resourceLink" placeholder="رابط resource" required />
+          <button type="button" class="remove-resource-btn" title="حذف resource">-</button>
+        `;
+
+        resourceInputDiv.querySelector('.remove-resource-btn').addEventListener('click', () => {
+          resourceInputDiv.remove();
+        });
+
+        resourcesContainer.appendChild(resourceInputDiv);
+      });
+
+      // حذف resource اولي
+      fieldDiv.querySelector('.remove-resource-btn').addEventListener('click', e => {
+        e.target.parentElement.remove();
+      });
+
+      return fieldDiv;
+    }
+
+    addFieldBtn.addEventListener('click', () => {
+      const index = fieldsContainer.children.length;
+      const newField = createFieldElement(index);
+      fieldsContainer.appendChild(newField);
+    });
+
+    // عند الضغط على حفظ ال fields
+    submitFieldsBtn.addEventListener('click', async () => {
+      if (!roadmapId) {
+        showMessage('الرجاء إنشاء Roadmap أولاً', 'error');
+        return;
+      }
+
+      // جمع البيانات
+      const fields = [];
+      const fieldDivs = fieldsContainer.querySelectorAll('.field-item');
+
+      for (const div of fieldDivs) {
+        const title = div.querySelector('input[name="fieldTitle"]').value.trim();
+        const description = div.querySelector('textarea[name="fieldDescription"]').value.trim();
+        if (!title || !description) {
+          showMessage('الرجاء ملء عنوان ووصف كل Field', 'error');
+          return;
+        }
+        fields.push({ title, description, resources: [] });
+
+        // جمع resources لكل field
+        const resourceInputs = div.querySelectorAll('input[name="resourceLink"]');
+        for (const input of resourceInputs) {
+          const link = input.value.trim();
+          if (link) fields[fields.length - 1].resources.push(link);
+        }
+      }
+
+      if (fields.length === 0) {
+        showMessage('الرجاء إضافة حقل واحد على الأقل', 'error');
+        return;
+      }
+
+      try {
+        // أولاً: حفظ كل field في API
+        for (const field of fields) {
+          // حسب ما ذكرت ليس هناك API محدد لإنشاء field جديد فقط تعديل أو حذف لذا افترضنا أنه يتم إنشاء field عند ارسال بيانات (قد تحتاج تعديل حسب API حقيقي)
+          // سنستخدم create-or-update بشكل افتراضي، أو إرسال بيانات هنا للAPI الخاص بالحقل إذا موجود
+          const createFieldResponse = await fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/create-or-update`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              RoadmapId: roadmapId,
+              StepTitle: field.title,
+              StepDescription: field.description,
+              DifficultyLevel: roadmapData.DifficultyLevel,
+            }),
+          });
+          if (!createFieldResponse.ok) throw new Error('فشل في إنشاء Field');
+          const createdField = await createFieldResponse.json();
+
+          // إضافة resources لكل field
+          for (const resourceLink of field.resources) {
+            const resAddResource = await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/add-resource', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                fieldId: createdField.id,
+                link: resourceLink,
+              }),
+            });
+            if (!resAddResource.ok) {
+              console.warn('فشل في إضافة resource:', resourceLink);
             }
-            const title = document.getElementById("fieldTitle").value;
-            const description = document.getElementById("fieldDescription").value;
-            const link = document.getElementById("resourceLink").value;
-
-            const fieldRes = await fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${roadmapId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, description })
-            });
-            const fieldData = await fieldRes.json();
-
-            await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/add-resource', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ fieldId: fieldData.id, link })
-            });
-
-            const fieldBox = document.createElement("div");
-            fieldBox.className = "field";
-            fieldBox.innerHTML = `<strong>${title}</strong><p>${description}</p><a href="${link}" target="_blank">${link}</a>`;
-            document.getElementById("fieldsContainer").appendChild(fieldBox);
+          }
         }
-    </script>
+
+        showMessage('تم حفظ الحقول والموارد بنجاح');
+        // تفريغ الفورم
+        fieldsContainer.innerHTML = '';
+      } catch (err) {
+        showMessage('حدث خطأ أثناء حفظ الحقول: ' + err.message, 'error');
+      }
+    });
+  </script>
 </body>
 </html>
