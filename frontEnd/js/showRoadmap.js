@@ -170,7 +170,7 @@ function renderRoadmap(data) {
     <div class="custom-image-wrapper">
       <span class="category-badge">${data.category}</span>
       <img src="${fullImageUrl}" alt="Roadmap Image" class="custom-image" />
-      <button class="btn follow-btn">Follow</button>
+      <button class="btn follow-btn" id="follow-btn">Follow</button>
     </div>
     <div class="custom-content">
       <h2 class="custom-title">${data.title}</h2>
@@ -182,35 +182,55 @@ function renderRoadmap(data) {
 </div>
   `;
   container.appendChild(card);
-  const followButton = card.querySelector('.follow-btn');
+  // تفعيل زر المتابعة
+const token = localStorage.getItem("token");
+const followBtn = document.getElementById("follow-btn");
 
-followButton.addEventListener('click', () => {
-  const userToken = localStorage.getItem("token"); // تأكد أن عندك التوكن في localStorage
+if (token) {
+  // استعلام لمعرفة إذا المستخدم متابع فعلاً
+  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/FollowedRoadmaps/${data.id}`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    }
+  })
+    .then(res => res.json())
+    .then(result => {
+      if (result && typeof result.isFollowed === 'boolean') {
+        followBtn.textContent = result.isFollowed ? "Unfollow" : "Follow";
+      }
+    })
+    .catch(err => {
+      console.warn("Error checking follow status:", err);
+    });
+}
 
-  if (!userToken) {
-    alert("Please log in to follow roadmaps.");
+// عند الضغط – toggle follow
+followBtn.addEventListener("click", () => {
+  if (!token) {
+    alert("Please log in first.");
     return;
   }
 
   fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/FollowedRoadmaps/${data.id}/toggle-follow`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${userToken}`,
-      'Content-Type': 'application/json'
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json"
     }
   })
-  .then(response => {
-    if (!response.ok) throw new Error("Failed to toggle follow");
-    return response.json(); // نفترض أن الـ API يرجع حالة جديدة مثل: { isFollowed: true }
-  })
-  .then(result => {
-    followButton.textContent = result.isFollowed ? "Unfollow" : "Follow";
-  })
-  .catch(err => {
-    console.error("Toggle follow error:", err);
-    alert("Something went wrong.");
-  });
+    .then(res => res.json())
+    .then(result => {
+      if (result && typeof result.isFollowed === 'boolean') {
+        followBtn.textContent = result.isFollowed ? "Unfollow" : "Follow";
+      }
+    })
+    .catch(err => {
+      console.error("Toggle follow error:", err);
+      alert("An error occurred while toggling follow status.");
+    });
 });
+
   // ثانياً – كارد الـ nodes مع Progress Bar
   const progressCard = document.createElement("div");
   progressCard.className = "custom-card";
