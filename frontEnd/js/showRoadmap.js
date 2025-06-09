@@ -20,9 +20,9 @@ function renderRoadmap(data) {
       <p class="custom-description">${data.description}</p>
       <span class="custom-name">${data.createdBy}</span>
     </div>
-    <div class="difficulty-badge ${data.difficultyLevel}">
-      <i class="fas fa-signal"></i> ${data.difficultyLevel}
-    </div>
+    <div class="difficulty-badge ${data.difficultyLevel.toLowerCase()}">
+  <i class="fas fa-signal"></i> ${data.difficultyLevel}
+</div>
   `;
   container.appendChild(card);
 
