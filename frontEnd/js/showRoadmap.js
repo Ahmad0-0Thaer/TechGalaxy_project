@@ -1,0 +1,122 @@
+ 
+ // هذه هي وظيفة البناء
+function renderRoadmap(data) {
+  const container = document.getElementById("roadmap-container");
+  container.innerHTML = ""; // مسح المحتوى السابق
+
+  // أولاً – كارد الصورة والتفاصيل
+  const card = document.createElement("div");
+  card.className = "custom-card";
+  card.innerHTML = `
+    <div class="custom-image-wrapper">
+      <span class="category-badge">${data.category}</span>
+      <img src="${data.coverImageUrl}" alt="Roadmap Image" class="custom-image" />
+      <button class="btn follow-btn">Follow</button>
+    </div>
+    <div class="custom-content">
+      <h2 class="custom-title">${data.title}</h2>
+      <p class="custom-description">${data.description}</p>
+      <span class="custom-name">${data.category}</span>
+    </div>
+    <div class="difficulty-badge ${data.difficultyLevel}">
+      <i class="fas fa-signal"></i> ${data.difficultyLevel}
+    </div>
+  `;
+  container.appendChild(card);
+
+  // ثانياً – كارد الـ nodes مع Progress Bar
+  const progressCard = document.createElement("div");
+  progressCard.className = "custom-card";
+  let nodesHTML = "";
+
+    data.fields.forEach((node, i) => {
+    const resLinks = node.resources.map(url => `<li><a href="${url}" target="_blank">${url}</a></li>`).join("");
+    nodesHTML += `
+      <div class="node">
+        <div class="node-header">
+          <h3>${node.title}</h3>
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="node-body">
+          <p>${node.description}</p><hr>
+          <p><strong>Resources:</strong></p><ul>${resLinks}</ul><hr>
+          <label class="custom-checkbox">
+            <input type="checkbox" class="node-check" />
+            Mark this section as completed once you're done
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+    `;
+  });
+
+  progressCard.innerHTML = `
+    <div class="custom-content">
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="node-list">${nodesHTML}</div>
+    </div>
+  `;
+  container.appendChild(progressCard);
+
+  // تابع مفتاح الفتح والإغلاق (accordion)
+  progressCard.querySelectorAll('.node-header').forEach(h => {
+    h.addEventListener('click', () => h.parentElement.classList.toggle('open'));
+  });
+
+  // تابع progress Update
+  function updateProgress() {
+    const checks = progressCard.querySelectorAll('.node-check');
+    const total = checks.length;
+    const done = Array.from(checks).filter(c => c.checked).length;
+    const p = Math.round((done / total) * 100);
+    progressCard.querySelector('#progress-bar').style.width = p + '%';
+  }
+
+  // حدث عند كل تغيير
+  progressCard.querySelectorAll('.node-check').forEach(cb => {
+    cb.addEventListener('change', updateProgress);
+  });
+  updateProgress();
+}
+
+// استخراج الـ ID من الرابط
+const params = new URLSearchParams(window.location.search);
+const roadmapId = params.get("id");
+
+if (!roadmapId) {
+  alert("No roadmap ID provided in the URL.");
+} else {
+  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/${roadmapId}`)
+    .then(r => r.json())
+    .then(data => {
+      renderRoadmap(data);
+    })
+    .catch(e => console.error("Error loading roadmap:", e));
+}
+ /* new */
+
+ /* document.querySelectorAll('.node-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const node = header.parentElement;
+      node.classList.toggle('open');
+    });
+  });
+
+  function updateProgress() {
+  const checkboxes = document.querySelectorAll('.node-check');
+  const total = checkboxes.length;
+  const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+  const percent = Math.round((checked / total) * 100);
+  document.getElementById('progress-bar').style.width = percent + '%';
+}
+
+// تحديث عند كل تغيير للـ checkbox
+document.querySelectorAll('.node-check').forEach(cb => {
+  cb.addEventListener('change', updateProgress);
+});
+
+// تحديث أولي عند تحميل الصفحة
+updateProgress(); */
+
