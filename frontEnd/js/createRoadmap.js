@@ -9,58 +9,58 @@ document.addEventListener('DOMContentLoaded', function () {
     createdAt: new Date().toISOString()
   };
   function sendRoadmapToBackend(step) {
-  const formData = new FormData();
-  formData.append("Title", roadmap.title);
-  formData.append("Category", roadmap.category);
-  formData.append("Description", roadmap.description);
-  formData.append("DifficultyLevel", selectedDifficulty);
-  
-  const tagInput = document.getElementById('roadmap-tag');
-if (tagInput && tagInput.value.trim()) {
-  roadmap.tag = tagInput.value.trim(); // خذ القيمة المدخلة مباشرة
-}
-  formData.append("Tag", roadmap.tag || "default-tag");
+    const formData = new FormData();
+    formData.append("Title", roadmap.title);
+    formData.append("Category", roadmap.category);
+    formData.append("Description", roadmap.description);
+    formData.append("DifficultyLevel", selectedDifficulty);
 
-  if (step) {
-    formData.append("StepTitle", step.title);
-    formData.append("StepDescription", step.description);
-  }
+    const tagInput = document.getElementById('roadmap-tag');
+    if (tagInput && tagInput.value.trim()) {
+      roadmap.tag = tagInput.value.trim(); // خذ القيمة المدخلة مباشرة
+    }
+    formData.append("Tag", roadmap.tag || "default-tag");
 
-  
+    if (step) {
+      formData.append("StepTitle", step.title);
+      formData.append("StepDescription", step.description);
+    }
 
-  // صورة الغلاف
-  const fileInput = document.getElementById("roadmap-cover");
-  if (fileInput && fileInput.files[0]) {
-    formData.append("CoverImage", fileInput.files[0]);
-  }
 
-  for (let [key, value] of formData.entries()) {
-  console.log(`${key}: ${value}`);
-}
 
-  fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update", {
-  method: "POST",
-  headers: {
-    "Authorization": "Bearer " + localStorage.getItem("token")
-  },
-  body: formData
-})
+    // صورة الغلاف
+    const fileInput = document.getElementById("roadmap-cover");
+    if (fileInput && fileInput.files[0]) {
+      formData.append("CoverImage", fileInput.files[0]);
+    }
 
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      },
+      body: formData
     })
-    .then((data) => {
-      console.log("Saved successfully:", data);
-      alert("Step added and roadmap saved!");
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Failed to save roadmap.");
-    });
-}
+
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Saved successfully:", data);
+        alert("Step added and roadmap saved!");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to save roadmap.");
+      });
+  }
 
   // DOM elements
   const roadmapTitle = document.getElementById('roadmap-title');
@@ -125,34 +125,34 @@ if (tagInput && tagInput.value.trim()) {
 
   // Tag functionality
   roadmapTags.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter' && roadmapTags.value.trim()) {
-    e.preventDefault();
-    const tag = roadmapTags.value.trim();
-    roadmap.tag = tag;
-    renderSingleTag(tag);
-    roadmapTags.value = '';
-  }
-});
-
-function renderSingleTag(tag) {
-  tagsContainer.innerHTML = ''; // امسح القديم
-  if (!tag) return;
-  const tagElement = document.createElement('span');
-  tagElement.className = 'tag';
-  tagElement.textContent = tag;
-
-  const removeBtn = document.createElement('span');
-  removeBtn.className = 'tag-remove';
-  removeBtn.textContent = '×';
-
-  removeBtn.addEventListener('click', () => {
-    roadmap.tag = '';
-    tagsContainer.innerHTML = '';
+    if (e.key === 'Enter' && roadmapTags.value.trim()) {
+      e.preventDefault();
+      const tag = roadmapTags.value.trim();
+      roadmap.tag = tag;
+      renderSingleTag(tag);
+      roadmapTags.value = '';
+    }
   });
 
-  tagElement.appendChild(removeBtn);
-  tagsContainer.appendChild(tagElement);
-}
+  function renderSingleTag(tag) {
+    tagsContainer.innerHTML = ''; // امسح القديم
+    if (!tag) return;
+    const tagElement = document.createElement('span');
+    tagElement.className = 'tag';
+    tagElement.textContent = tag;
+
+    const removeBtn = document.createElement('span');
+    removeBtn.className = 'tag-remove';
+    removeBtn.textContent = '×';
+
+    removeBtn.addEventListener('click', () => {
+      roadmap.tag = '';
+      tagsContainer.innerHTML = '';
+    });
+
+    tagElement.appendChild(removeBtn);
+    tagsContainer.appendChild(tagElement);
+  }
 
   window.removeTag = function (tag) {
     roadmap.tag = roadmap.tag.filter(t => t !== tag);
@@ -161,18 +161,18 @@ function renderSingleTag(tag) {
 
   let selectedDifficulty = 'intermediate'; // Default
 
-const difficultyRadios = document.querySelectorAll('input[name="difficultyLevel"]');
+  const difficultyRadios = document.querySelectorAll('input[name="difficultyLevel"]');
 
-difficultyRadios.forEach(radio => {
-  radio.addEventListener('change', () => {
-    if (radio.checked) {
-      selectedDifficulty = radio.value;
-    }
+  difficultyRadios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.checked) {
+        selectedDifficulty = radio.value;
+      }
+    });
   });
-});
 
-// اجعل "intermediate" مفعّلة افتراضياً
-document.getElementById('diff-intermediate').checked = true;
+  // اجعل "intermediate" مفعّلة افتراضياً
+  document.getElementById('diff-intermediate').checked = true;
 
 
   // Set intermediate as default
@@ -218,77 +218,173 @@ document.getElementById('diff-intermediate').checked = true;
 
   // Render all steps
   function renderSteps() {
-  // 1. احذف كل العناصر السابقة
-  const existingSteps = roadmapVisual.querySelectorAll('.step-card');
-  existingSteps.forEach(step => step.remove());
+    // 1. احذف كل العناصر السابقة
+    const existingSteps = roadmapVisual.querySelectorAll('.step-card');
+    existingSteps.forEach(step => step.remove());
 
-  // 2. تحقق إذا في خطوات
-  if (roadmap.steps.length === 0) {
-    emptyState.style.display = 'block';
-    return;
-  } else {
-    emptyState.style.display = 'none';
+    // 2. تحقق إذا في خطوات
+    if (roadmap.steps.length === 0) {
+      emptyState.style.display = 'block';
+      return;
+    } else {
+      emptyState.style.display = 'none';
+    }
+
+    // 3. أضف كل خطوة جديدة للواجهة
+    roadmap.steps.forEach((step, index) => {
+      const stepElement = document.createElement('div');
+      stepElement.className = 'step-card new';
+      stepElement.dataset.id = step.id;
+      stepElement.draggable = true;
+
+      let difficultyColor = '';
+      if (step.difficulty === 'beginner') difficultyColor = 'var(--success)';
+      if (step.difficulty === 'intermediate') difficultyColor = 'var(--warning)';
+      if (step.difficulty === 'advanced') difficultyColor = 'var(--danger)';
+
+      stepElement.innerHTML = `
+        <div class="step-number">${index + 1}</div>
+        <div class="step-header">
+          <div class="step-title" contenteditable="false">${step.title}</div>
+          <div class="step-actions">
+            <button class="action-btn edit-step" title="Edit step">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button class="action-btn delete-step" title="Delete step">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="step-description" contenteditable="false">${step.description}</div>
+        <div class="difficulty-indicator" style="background: ${difficultyColor}"></div>
+        <div class="edit-controls" style="display: none;">
+          <button class="btn btn-primary save-edit">Save</button>
+          <button class="btn btn-secondary cancel-edit">Cancel</button>
+        </div>
+      `;
+
+      // Add edit functionality
+      const editBtn = stepElement.querySelector('.edit-step');
+      const titleElement = stepElement.querySelector('.step-title');
+      const descriptionElement = stepElement.querySelector('.step-description');
+      const editControls = stepElement.querySelector('.edit-controls');
+      const saveBtn = stepElement.querySelector('.save-edit');
+      const cancelBtn = stepElement.querySelector('.cancel-edit');
+
+      let originalTitle = step.title;
+      let originalDescription = step.description;
+
+      editBtn.addEventListener('click', () => {
+        // Enable editing
+        titleElement.contentEditable = true;
+        descriptionElement.contentEditable = true;
+        editControls.style.display = 'flex';
+        editBtn.style.display = 'none';
+
+        // Focus on title
+        titleElement.focus();
+      });
+
+      saveBtn.addEventListener('click', () => {
+        const newTitle = titleElement.textContent.trim();
+        const newDescription = descriptionElement.textContent.trim();
+
+        if (!newTitle) {
+          alert('Title cannot be empty');
+          return;
+        }
+
+        if (step.id) {
+          // Update in backend
+          fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${step.id}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+              title: newTitle,
+              description: newDescription
+            })
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to update step');
+              }
+              // Update local data
+              step.title = newTitle;
+              step.description = newDescription;
+              // Disable editing
+              titleElement.contentEditable = false;
+              descriptionElement.contentEditable = false;
+              editControls.style.display = 'none';
+              editBtn.style.display = 'block';
+            })
+            .catch(error => {
+              console.error('Error updating step:', error);
+              alert('Failed to update step. Please try again.');
+              // Revert changes
+              titleElement.textContent = originalTitle;
+              descriptionElement.textContent = originalDescription;
+            });
+        } else {
+          // Update local data only
+          step.title = newTitle;
+          step.description = newDescription;
+          // Disable editing
+          titleElement.contentEditable = false;
+          descriptionElement.contentEditable = false;
+          editControls.style.display = 'none';
+          editBtn.style.display = 'block';
+        }
+      });
+
+      cancelBtn.addEventListener('click', () => {
+        // Revert changes
+        titleElement.textContent = originalTitle;
+        descriptionElement.textContent = originalDescription;
+        // Disable editing
+        titleElement.contentEditable = false;
+        descriptionElement.contentEditable = false;
+        editControls.style.display = 'none';
+        editBtn.style.display = 'block';
+      });
+
+      // Add delete functionality
+      const deleteBtn = stepElement.querySelector('.delete-step');
+      deleteBtn.addEventListener('click', () => {
+        if (step.id) {
+          // If the step has an ID, delete it from the backend
+          fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${step.id}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to delete step');
+              }
+              // Remove step from local array
+              roadmap.steps = roadmap.steps.filter(s => s.id !== step.id);
+              renderSteps();
+              updateProgress();
+            })
+            .catch(error => {
+              console.error('Error deleting step:', error);
+              alert('Failed to delete step. Please try again.');
+            });
+        } else {
+          // If the step doesn't have an ID (not yet saved), just remove it from local array
+          roadmap.steps = roadmap.steps.filter(s => s !== step);
+          renderSteps();
+          updateProgress();
+        }
+      });
+
+      roadmapVisual.appendChild(stepElement);
+    });
   }
-
-  // 3. أضف كل خطوة جديدة للواجهة
-  roadmap.steps.forEach((step, index) => {
-    const stepElement = document.createElement('div');
-    stepElement.className = 'step-card new';
-    stepElement.dataset.id = step.id;
-    stepElement.draggable = true;
-
-    let difficultyColor = '';
-    if (step.difficulty === 'beginner') difficultyColor = 'var(--success)';
-    if (step.difficulty === 'intermediate') difficultyColor = 'var(--warning)';
-    if (step.difficulty === 'advanced') difficultyColor = 'var(--danger)';
-
-    stepElement.innerHTML = `
-      <div class="step-number">${index + 1}</div>
-      <div class="step-header">
-        <div class="step-title">${step.title}</div>
-        <div class="step-actions">
-          <button class="action-btn" onclick="deleteStep(${step.id})" title="Delete step">×</button>
-          <button class="action-btn" onclick="editStep(${step.id})" title="Edit step">
-            <i class="fas fa-pencil-alt" style="font-size: 0.8rem;"></i>
-          </button>
-        </div>
-      </div>
-      <div class="step-description">${step.description || 'No description provided'}</div>
-      <div style="margin-top: 10px; display: inline-flex; align-items: center;">
-        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: ${difficultyColor}; margin-right: 5px;"></span>
-        ${step.difficulty.charAt(0).toUpperCase() + step.difficulty.slice(1)}
-      </div>
-      <div class="resources-section">
-        <div class="resources-title">Resources</div>
-        <div class="resources-list" id="resources-${step.id}">
-          ${step.resources.map(resource => `
-            <div class="resource-tag">
-              <a href="${resource}" target="_blank">${resource}</a>
-              <span class="remove-resource" onclick="removeResource(${step.id}, '${resource.replace(/'/g, "\\'")}')">×</span>
-            </div>
-          `).join('')}
-        </div>
-        <div class="add-resource">
-          <input type="text" id="resource-input-${step.id}" placeholder="Add resource URL">
-          <button class="add-resource-btn" onclick="addResource(${step.id})">+</button>
-        </div>
-      </div>
-    `;
-
-    // Add drag/drop events (نفس الكود الحالي)
-    stepElement.addEventListener('dragstart', handleDragStart);
-    stepElement.addEventListener('dragover', handleDragOver);
-    stepElement.addEventListener('dragleave', handleDragLeave);
-    stepElement.addEventListener('drop', handleDrop);
-    stepElement.addEventListener('dragend', handleDragEnd);
-
-    roadmapVisual.insertBefore(stepElement, emptyState);
-
-    setTimeout(() => {
-      stepElement.classList.remove('new');
-    }, 400);
-  });
-}
 
   // Edit step functionality
   window.editStep = function (stepId) {
@@ -299,7 +395,7 @@ document.getElementById('diff-intermediate').checked = true;
     stepTitle.value = step.title;
     stepDescription.value = step.description;
 
-   
+
 
     selectedDifficulty = step.difficulty;
 
@@ -424,11 +520,11 @@ document.getElementById('diff-intermediate').checked = true;
     // Render tag in preview
     previewTags.innerHTML = '';
     if (roadmap.tag) {
-  const tagElement = document.createElement('span');
-  tagElement.className = 'tag';
-  tagElement.textContent = roadmap.tag;
-  previewTags.appendChild(tagElement);
-}
+      const tagElement = document.createElement('span');
+      tagElement.className = 'tag';
+      tagElement.textContent = roadmap.tag;
+      previewTags.appendChild(tagElement);
+    }
 
     // Clear previous preview steps
     previewSteps.innerHTML = '';
@@ -498,7 +594,7 @@ document.getElementById('diff-intermediate').checked = true;
   }
 
 
-  
+
 
   function exportToMarkdown() {
     if (roadmap.steps.length === 0) {
@@ -612,9 +708,9 @@ document.getElementById('diff-intermediate').checked = true;
       if (loadedData.steps) roadmap.steps = loadedData.steps;
       if (loadedData.coverImage) roadmap.coverImage = loadedData.coverImage;
       if (loadedData.tag) {
-      roadmap.tag = loadedData.tag;
-      renderSingleTag(roadmap.tag); // ✅ إضافة التاغ إلى الواجهة
-    }
+        roadmap.tag = loadedData.tag;
+        renderSingleTag(roadmap.tag); // ✅ إضافة التاغ إلى الواجهة
+      }
       // Update form fields
       roadmapTitle.value = roadmap.title;
       roadmapDescription.value = roadmap.description;
@@ -711,18 +807,18 @@ function postRoadmap() {
     },
     body: JSON.stringify(roadmap)
   })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Roadmap sent successfully:', data);
-    alert('Step added and roadmap saved!');
-  })
-  .catch(error => {
-    console.error('Error sending roadmap:', error);
-    alert('Failed to save roadmap.');
-  });
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Roadmap sent successfully:', data);
+      alert('Step added and roadmap saved!');
+    })
+    .catch(error => {
+      console.error('Error sending roadmap:', error);
+      alert('Failed to save roadmap.');
+    });
 }
