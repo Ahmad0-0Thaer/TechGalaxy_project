@@ -62,7 +62,12 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Saved successfully:", data);
         // تحديث معرف الخطوة بعد الحفظ
         if (data && data.length > 0) {
-          step.id = data[0].Id;
+          // تحديث معرف الخطوة في الـ frontend
+          const stepIndex = roadmap.steps.findIndex(s => s.id === step.id);
+          if (stepIndex !== -1) {
+            roadmap.steps[stepIndex].backendId = data[0].Id; // حفظ معرف الـ backend
+            renderSteps(); // إعادة عرض الخطوات مع المعرف الجديد
+          }
         }
         alert("Step added and roadmap saved!");
       })
@@ -208,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const newStep = {
-      id: Date.now(),
+      id: Date.now(), // معرف مؤقت للـ frontend
       title,
       description,
       resources: []
@@ -243,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
     roadmap.steps.forEach((step, index) => {
       const stepElement = document.createElement('div');
       stepElement.className = 'step-card new';
-      stepElement.dataset.id = step.id;
+      stepElement.dataset.id = step.backendId || step.id; // استخدام معرف الـ backend إذا كان متوفراً
       stepElement.draggable = true;
 
       stepElement.innerHTML = `
@@ -251,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="step-header">
         <div class="step-title">${step.title}</div>
         <div class="step-actions">
-          <button class="action-btn" onclick="deleteStep(${step.id})" title="Delete step">×</button>
+          <button class="action-btn" onclick="deleteStep(${step.backendId || step.id})" title="Delete step">×</button>
           <button class="action-btn" onclick="editStep(${step.id})" title="Edit step">
             <i class="fas fa-pencil-alt" style="font-size: 0.8rem;"></i>
           </button>
@@ -396,7 +401,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (confirm('Are you sure you want to delete this step?')) {
       // حذف من الـ frontend
-      roadmap.steps = roadmap.steps.filter(s => s.id !== stepId);
+      roadmap.steps = roadmap.steps.filter(s => (s.backendId || s.id) !== stepId);
       renderSteps();
       updateProgress();
 
@@ -422,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
           console.error('Error deleting step:', error);
           alert('Failed to delete step: ' + error.message);
           // إعادة الخطوة إلى القائمة في حالة فشل الحذف
-          const step = roadmap.steps.find(s => s.id === stepId);
+          const step = roadmap.steps.find(s => (s.backendId || s.id) === stepId);
           if (step) {
             roadmap.steps.push(step);
             renderSteps();
