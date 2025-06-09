@@ -379,9 +379,38 @@ document.addEventListener('DOMContentLoaded', function () {
   // Delete step (global function)
   window.deleteStep = function (stepId) {
     if (confirm('Are you sure you want to delete this step?')) {
+      // حذف من الـ frontend
       roadmap.steps = roadmap.steps.filter(s => s.id !== stepId);
       renderSteps();
       updateProgress();
+
+      // حذف من الـ backend
+      fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${stepId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(data => {
+          console.log('Step deleted successfully:', data);
+        })
+        .catch(error => {
+          console.error('Error deleting step:', error);
+          alert('Failed to delete step from server. Please try again.');
+          // إعادة الخطوة إلى القائمة في حالة فشل الحذف
+          const step = roadmap.steps.find(s => s.id === stepId);
+          if (step) {
+            roadmap.steps.push(step);
+            renderSteps();
+            updateProgress();
+          }
+        });
     }
   };
 
