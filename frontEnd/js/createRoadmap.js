@@ -398,60 +398,61 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Delete step (global function)
   window.deleteStep = function (stepId) {
-    console.log("Attempting to delete step with ID:", stepId, "Type:", typeof stepId);
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Please login first");
+  console.log("Attempting to delete step with ID:", stepId, "Type:", typeof stepId);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  if (confirm('Are you sure you want to delete this step?')) {
+    const step = roadmap.steps.find(s => (s.backendId || s.id) == stepId);
+
+    // أولاً، حذف الخطوة من الواجهة
+    roadmap.steps = roadmap.steps.filter(s => (s.backendId || s.id) != stepId);
+    renderSteps();
+    updateProgress();
+
+    // إذا لم يكن للخطوة backendId، لا تحاول حذفها من السيرفر
+    if (!step || !step.backendId) {
+      console.log("Step not saved to backend, skipping DELETE request.");
       return;
     }
 
-    if (confirm('Are you sure you want to delete this step?')) {
-      // حذف من الـ frontend
-      roadmap.steps = roadmap.steps.filter(s => {
-        const currentId = s.backendId || s.id;
-        console.log("Comparing step ID:", currentId, "Type:", typeof currentId, "with delete ID:", stepId, "Type:", typeof stepId);
-        return currentId !== stepId;
-      });
-      renderSteps();
-      updateProgress();
+    const deleteUrl = `https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${step.backendId}`;
+    console.log("Sending DELETE request to:", deleteUrl);
 
-      // حذف من الـ backend
-      const deleteUrl = `https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${stepId}`;
-      console.log("Sending DELETE request to:", deleteUrl);
-
-      fetch(deleteUrl, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+    fetch(deleteUrl, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        console.log("Delete response status:", response.status);
+        if (!response.ok) {
+          return response.text().then(text => {
+            console.log("Error response text:", text);
+            throw new Error(text || 'Network response was not ok');
+          });
         }
+        return response.text();
       })
-        .then(response => {
-          console.log("Delete response status:", response.status);
-          if (!response.ok) {
-            return response.text().then(text => {
-              console.log("Error response text:", text);
-              throw new Error(text || 'Network response was not ok');
-            });
-          }
-          return response.text();
-        })
-        .then(data => {
-          console.log('Step deleted successfully:', data);
-        })
-        .catch(error => {
-          console.error('Error deleting step:', error);
-          alert('Failed to delete step: ' + error.message);
-          // إعادة الخطوة إلى القائمة في حالة فشل الحذف
-          const step = roadmap.steps.find(s => (s.backendId || s.id) === stepId);
-          if (step) {
-            roadmap.steps.push(step);
-            renderSteps();
-            updateProgress();
-          }
-        });
-    }
-  };
+      .then(data => {
+        console.log('Step deleted successfully:', data);
+      })
+      .catch(error => {
+        console.error('Error deleting step:', error);
+        alert('Failed to delete step: ' + error.message);
+
+        // استرجاع الخطوة إذا فشل الحذف من السيرفر
+        roadmap.steps.push(step);
+        renderSteps();
+        updateProgress();
+      });
+  }
+};
 
   // Preview functionality
   previewBtn.addEventListener('click', showPreview);
