@@ -1,162 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechGalaxy Roadmap Creator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="shortcut icon" href="./Images/logo-icon.png" type="image/png">
-  <link rel="stylesheet" href="./css/createRoadmap.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .field {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="app-container">
-    <div class="app-header">
-      <div class="stars" id="stars-container"></div>
-      <h1>
-        <i class="fas fa-rocket app-icon"></i>
-        TechGalaxy Roadmap Creator
-      </h1>
-      <p>Create your learning journey through the tech universe</p>
-    </div>
-    
-    <div class="creator-flow">
-      <form id="roadmap-form" onsubmit="return false;"> <!-- ✅ FORM ADDED HERE -->
-        <div class="setup-panel">
-          <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-          </div>
-
-          <div class="form-group">
-            <label for="roadmap-title">Roadmap Title</label>
-            <input name="title" type="text" id="roadmap-title" placeholder="e.g., Modern Frontend Development" value="">
-          </div>
-
-          <div class="form-group">
-            <label for="roadmap-tag">Tag (Press Enter to add)</label>
-            <div class="tag-input">
-              <input name="tag" type="text" id="roadmap-tag" class="tag-input" placeholder="Add tag..." value="">
-            </div>
-            <div id="tag-container"></div>
-          </div>
-
-          <div class="form-group">
-            <label for="roadmap-cover">Cover Image</label>
-            <div class="cover-upload">
-              <div class="cover-preview" id="cover-preview">
-                <img id="cover-image" src="" alt="" style="display: none;">
-                <div class="upload-placeholder">
-                  <i class="fas fa-image"></i>
-                  <span>Click to upload cover image</span>
-                </div>
-              </div>
-              <input name="coverImageUrl" type="file" id="roadmap-cover" accept="image/*" style="display: none;">
-              <button class="btn btn-secondary" id="upload-cover-btn" type="button">
-                <span class="btn-icon"><i class="fas fa-upload"></i></span> Upload Cover
-              </button>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="roadmap-category">Category</label>
-            <select name="category" id="roadmap-category">
-              <option value="">Select a category</option>
-              <option value="web-dev">Web Development</option>
-              <option value="mobile-dev">Mobile Development</option>
-              <option value="data-science">Data Science</option>
-              <option value="design">UX/UI Design</option>
-              <option value="devops">DevOps</option>
-              <option value="ai-ml">AI & Machine Learning</option>
-              <option value="cybersecurity">Cybersecurity</option>
-              <option value="game-dev">Game Development</option>
-              <option value="cloud">Cloud Computing</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="roadmap-description">Description</label>
-            <textarea name="description" id="roadmap-description" placeholder="What will learners achieve with this roadmap?"></textarea>
-          </div>
-
-          <div class="form-group">
+    <div class="container">
+        <!-- Roadmap Creation Box -->
+        <div class="box">
+            <h2>Create Roadmap</h2>
+            <label>Roadmap Title</label>
+            <input type="text" id="roadmapTitle">
+            <label>Description</label>
+            <textarea id="roadmapDescription"></textarea>
             <label>Difficulty Level</label>
-            <div class="difficulty-selector">
-            <input type="radio" id="diff-beginner" name="difficultyLevel" value="beginner">
-            <label for="diff-beginner" class="difficulty-btn easy">Beginner</label>
-                    
-            <input type="radio" id="diff-intermediate" name="difficultyLevel" value="intermediate">
-            <label for="diff-intermediate" class="difficulty-btn medium">Intermediate</label>
-                    
-            <input type="radio" id="diff-advanced" name="difficultyLevel" value="advanced">
-            <label for="diff-advanced" class="difficulty-btn hard">Advanced</label>
-          </div>
-          </div>
-          
-          
-
-          <div class="form-group">
-            <label for="step-title">New Step</label>
-            <input type="text" name="stepTitle" id="step-title" placeholder="Step title (e.g., Learn HTML Basics)" value="">
-          </div>
-
-          <div class="form-group">
-            <label for="step-description">Step Description</label>
-            <textarea name="stepDescription" id="step-description" placeholder="What should learners do in this step?"></textarea>
-          </div>
-
-          <button class="btn btn-primary"  id="add-step-btn" type="button">
-            <span class="btn-icon">+</span> Add Step
-          </button>
+            <select id="difficulty">
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+            </select>
+            <label>Category</label>
+            <select id="category">
+                <option>Web Development</option>
+                <option>Mobile Development</option>
+                <option>Data Science</option>
+                <option>UX/UI Design</option>
+                <option>DevOps</option>
+                <option>AI & Machine Learning</option>
+                <option>Cybersecurity</option>
+                <option>Game Development</option>
+                <option>Cloud Computing</option>
+                <option>Other</option>
+            </select>
+            <label>Tag</label>
+            <input type="text" id="tag">
+            <label>Cover Image</label>
+            <input type="file" id="coverImage">
+            <button onclick="createRoadmap()">Create Roadmap</button>
         </div>
 
-        <button type="button" id="save-btn" class="btn btn-success">Save Roadmap</button>
-
-      </form>
-
-      <div class="visual-panel">
-        <div class="roadmap-visual" id="roadmap-visual">
-          <div class="roadmap-path"></div>
-
-          <div class="empty-state" id="empty-state">
-            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="No steps yet">
-            <h3>Your roadmap is empty</h3>
-            <p>Start by adding your first step</p>
-          </div>
-
-          <!-- Steps will be added here dynamically -->
+        <!-- Fields Creation Box -->
+        <div class="box">
+            <h2>Add Field</h2>
+            <label>Field Title</label>
+            <input type="text" id="fieldTitle">
+            <label>Field Description</label>
+            <textarea id="fieldDescription"></textarea>
+            <label>Resource Link</label>
+            <input type="text" id="resourceLink">
+            <button onclick="addField()">Add Field</button>
+            <div id="fieldsContainer"></div>
         </div>
-
-        <div class="toolbar">
-          <button class="btn btn-secondary" id="preview-btn">
-            <span class="btn-icon"><i class="fas fa-eye"></i></span> Preview
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Preview Modal -->
-  <div class="preview-container" id="preview-container">
-    <div class="preview-content">
-      <button class="close-preview" id="close-preview">×</button>
-      <div class="preview-header">
-        <h2 id="preview-title">Roadmap Title</h2>
-        <div class="preview-category" id="preview-category">Category</div>
-        <div id="preview-tag" style="margin-top: 0.5rem;"></div>
-      </div>
-      <div class="preview-description" id="preview-description">
-        Roadmap description goes here...
-      </div>
-      <div class="preview-steps" id="preview-steps">
-        <!-- Steps will be added here dynamically -->
-      </div>
-    </div>
-  </div>
+    <script>
+        let roadmapId = null;
+        async function createRoadmap() {
+            const formData = new FormData();
+            formData.append("Title", document.getElementById("roadmapTitle").value);
+            formData.append("Description", document.getElementById("roadmapDescription").value);
+            formData.append("DifficultyLevel", document.getElementById("difficulty").value);
+            formData.append("Category", document.getElementById("category").value);
+            formData.append("Tag", document.getElementById("tag").value);
+            formData.append("CoverImage", document.getElementById("coverImage").files[0]);
+            formData.append("StepTitle", "");
+            formData.append("StepDescription", "");
 
-  <script src="./js/createRoadmap.js"></script>
+            const res = await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            roadmapId = data.id;
+            alert("Roadmap created with ID: " + roadmapId);
+        }
+
+        async function addField() {
+            if (!roadmapId) {
+                alert("Please create a roadmap first.");
+                return;
+            }
+            const title = document.getElementById("fieldTitle").value;
+            const description = document.getElementById("fieldDescription").value;
+            const link = document.getElementById("resourceLink").value;
+
+            const fieldRes = await fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${roadmapId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description })
+            });
+            const fieldData = await fieldRes.json();
+
+            await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/add-resource', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fieldId: fieldData.id, link })
+            });
+
+            const fieldBox = document.createElement("div");
+            fieldBox.className = "field";
+            fieldBox.innerHTML = `<strong>${title}</strong><p>${description}</p><a href="${link}" target="_blank">${link}</a>`;
+            document.getElementById("fieldsContainer").appendChild(fieldBox);
+        }
+    </script>
 </body>
-
 </html>
