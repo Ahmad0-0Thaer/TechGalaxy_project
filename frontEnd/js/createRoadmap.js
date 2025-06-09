@@ -65,7 +65,9 @@ document.addEventListener('DOMContentLoaded', function () {
           // تحديث معرف الخطوة في الـ frontend
           const stepIndex = roadmap.steps.findIndex(s => s.id === step.id);
           if (stepIndex !== -1) {
-            roadmap.steps[stepIndex].backendId = data[0].Id; // حفظ معرف الـ backend
+            const backendId = parseInt(data[0].Id);
+            console.log("Setting backendId:", backendId);
+            roadmap.steps[stepIndex].backendId = backendId;
             renderSteps(); // إعادة عرض الخطوات مع المعرف الجديد
           }
         }
@@ -246,9 +248,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 3. أضف كل خطوة جديدة للواجهة
     roadmap.steps.forEach((step, index) => {
+      console.log("Rendering step:", step); // تسجيل معلومات الخطوة
       const stepElement = document.createElement('div');
       stepElement.className = 'step-card new';
-      stepElement.dataset.id = step.backendId || step.id; // استخدام معرف الـ backend إذا كان متوفراً
+      const stepId = step.backendId || step.id;
+      console.log("Using stepId:", stepId); // تسجيل معرف الخطوة المستخدم
+      stepElement.dataset.id = stepId;
       stepElement.draggable = true;
 
       stepElement.innerHTML = `
@@ -256,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="step-header">
         <div class="step-title">${step.title}</div>
         <div class="step-actions">
-          <button class="action-btn" onclick="deleteStep(${step.backendId || step.id})" title="Delete step">×</button>
+          <button class="action-btn" onclick="deleteStep(${stepId})" title="Delete step">×</button>
           <button class="action-btn" onclick="editStep(${step.id})" title="Edit step">
             <i class="fas fa-pencil-alt" style="font-size: 0.8rem;"></i>
           </button>
@@ -393,6 +398,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Delete step (global function)
   window.deleteStep = function (stepId) {
+    console.log("Attempting to delete step with ID:", stepId); // تسجيل معرف الخطوة المراد حذفها
     const token = localStorage.getItem("token");
     if (!token) {
       alert("Please login first");
@@ -401,20 +407,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (confirm('Are you sure you want to delete this step?')) {
       // حذف من الـ frontend
-      roadmap.steps = roadmap.steps.filter(s => (s.backendId || s.id) !== stepId);
+      roadmap.steps = roadmap.steps.filter(s => {
+        const currentId = s.backendId || s.id;
+        console.log("Comparing step ID:", currentId, "with delete ID:", stepId); // تسجيل مقارنة المعرفات
+        return currentId !== stepId;
+      });
       renderSteps();
       updateProgress();
 
       // حذف من الـ backend
-      fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${stepId}`, {
+      const deleteUrl = `https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${stepId}`;
+      console.log("Sending DELETE request to:", deleteUrl); // تسجيل عنوان الطلب
+
+      fetch(deleteUrl, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
         .then(response => {
+          console.log("Delete response status:", response.status); // تسجيل حالة الاستجابة
           if (!response.ok) {
             return response.text().then(text => {
+              console.log("Error response text:", text); // تسجيل نص الخطأ
               throw new Error(text || 'Network response was not ok');
             });
           }
