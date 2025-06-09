@@ -1663,15 +1663,15 @@ margin: 50px auto;
 }
 
 /* ألوان المستويات */
-.Beginner {
+.difficulty-badge .Beginner {
   color: #00a97f;
 }
 
-.Intermediate {
+.difficulty-badge .Intermediate {
   color: #f59e0b;
 }
 
-.Advanced {
+.difficulty-badge .Advanced {
   color: #ef4444;
 }
 .node-list {

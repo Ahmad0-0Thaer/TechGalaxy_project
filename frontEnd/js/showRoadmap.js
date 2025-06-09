@@ -7,10 +7,12 @@ function renderRoadmap(data) {
   // أولاً – كارد الصورة والتفاصيل
   const card = document.createElement("div");
   card.className = "custom-card";
+  const fullImageUrl = `https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net${data.coverImageUrl}`;
+  
   card.innerHTML = `
     <div class="custom-image-wrapper">
       <span class="category-badge">${data.category}</span>
-      <img src="${data.coverImageUrl}" alt="Roadmap Image" class="custom-image" />
+      <img src="${fullImageUrl}" alt="Roadmap Image" class="custom-image" />
       <button class="btn follow-btn">Follow</button>
     </div>
     <div class="custom-content">
