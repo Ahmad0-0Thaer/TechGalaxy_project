@@ -53,30 +53,31 @@ document.addEventListener('DOMContentLoaded', function () {
       return response.json();
     })
     .then((data) => {
-      console.log("✅ Saved successfully:", data);
+  console.log("✅ Saved successfully:", data); // تطبع الرد
+  
+  // ✅ بما أن الرد عبارة عن مصفوفة steps مثل: [ { id: 27, title: ..., description: ... } ]
+  if (Array.isArray(data) && data.length > 0) {
+    const createdStep = data.find(f =>
+      f.title === step.title &&
+      f.description === step.description
+    );
 
-      // جرّب طباعة شكل الرد
-      console.log("🔁 API Full Response:", data);
-
-      // نحاول استخراج backendId للخطوة من الرد
-      if (data && data.steps && Array.isArray(data.steps)) {
-        const matchedStep = data.steps.find(s => s.title === step.title && s.description === step.description);
-        if (matchedStep) {
-          const stepIndex = roadmap.steps.findIndex(s => s.id === step.id);
-          if (stepIndex !== -1) {
-            roadmap.steps[stepIndex].backendId = matchedStep.id;
-            console.log("🎯 backendId linked:", matchedStep.id);
-            renderSteps();
-          }
-        } else {
-          console.warn("🚫 Could not match step in response.");
-        }
-      } else {
-        console.warn("🚫 No steps array in response.");
+    if (createdStep) {
+      const stepIndex = roadmap.steps.findIndex(s => s.id === step.id);
+      if (stepIndex !== -1) {
+        roadmap.steps[stepIndex].backendId = createdStep.id;
+        console.log("🎯 Linked backendId:", createdStep.id);
+        renderSteps(); // إعادة عرض الخطوات بعد التحديث
       }
+    } else {
+      console.warn("❌ No matching step found in response");
+    }
+  } else {
+    console.warn("❌ Unexpected response from backend");
+  }
 
-      alert("Step added and roadmap saved!");
-    })
+  alert("Step added and roadmap saved!");
+})
     .catch((error) => {
       console.error("❌ Error saving roadmap:", error);
       alert("Failed to save roadmap: " + error.message);
