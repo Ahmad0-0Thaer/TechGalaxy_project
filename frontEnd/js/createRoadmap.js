@@ -9,80 +9,80 @@ document.addEventListener('DOMContentLoaded', function () {
     createdAt: new Date().toISOString()
   };
   function sendRoadmapToBackend(step) {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("Please login first");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("Title", roadmap.title);
-  formData.append("Category", roadmap.category);
-  formData.append("Description", roadmap.description);
-  formData.append("DifficultyLevel", selectedDifficulty);
-
-  const tagInput = document.getElementById('roadmap-tag');
-  if (tagInput && tagInput.value.trim()) {
-    roadmap.tag = tagInput.value.trim();
-  }
-  formData.append("Tag", roadmap.tag || "default-tag");
-
-  if (step) {
-    formData.append("StepTitle", step.title);
-    formData.append("StepDescription", step.description);
-  }
-
-  const fileInput = document.getElementById("roadmap-cover");
-  if (fileInput && fileInput.files[0]) {
-    formData.append("CoverImage", fileInput.files[0]);
-  }
-
-  fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update", {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${token}`
-    },
-    body: formData
-  })
-    .then((response) => {
-      if (!response.ok) {
-        return response.text().then(text => {
-          throw new Error(text || 'Network response was not ok');
-        });
-      }
-      return response.json();
-    })
-    .then((data) => {
-  console.log("✅ Saved successfully:", data); // تطبع الرد
-  
-  // ✅ بما أن الرد عبارة عن مصفوفة steps مثل: [ { id: 27, title: ..., description: ... } ]
-  if (Array.isArray(data) && data.length > 0) {
-    const createdStep = data.find(f =>
-      f.title === step.title &&
-      f.description === step.description
-    );
-
-    if (createdStep) {
-      const stepIndex = roadmap.steps.findIndex(s => s.id === step.id);
-      if (stepIndex !== -1) {
-        roadmap.steps[stepIndex].backendId = createdStep.id;
-        console.log("🎯 Linked backendId:", createdStep.id);
-        renderSteps(); // إعادة عرض الخطوات بعد التحديث
-      }
-    } else {
-      console.warn("❌ No matching step found in response");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
+      return;
     }
-  } else {
-    console.warn("❌ Unexpected response from backend");
-  }
 
-  alert("Step added and roadmap saved!");
-})
-    .catch((error) => {
-      console.error("❌ Error saving roadmap:", error);
-      alert("Failed to save roadmap: " + error.message);
-    });
-}
+    const formData = new FormData();
+    formData.append("Title", roadmap.title);
+    formData.append("Category", roadmap.category);
+    formData.append("Description", roadmap.description);
+    formData.append("DifficultyLevel", selectedDifficulty);
+
+    const tagInput = document.getElementById('roadmap-tag');
+    if (tagInput && tagInput.value.trim()) {
+      roadmap.tag = tagInput.value.trim();
+    }
+    formData.append("Tag", roadmap.tag || "default-tag");
+
+    if (step) {
+      formData.append("StepTitle", step.title);
+      formData.append("StepDescription", step.description);
+    }
+
+    const fileInput = document.getElementById("roadmap-cover");
+    if (fileInput && fileInput.files[0]) {
+      formData.append("CoverImage", fileInput.files[0]);
+    }
+
+    fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+      body: formData
+    })
+      .then((response) => {
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(text || 'Network response was not ok');
+          });
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("✅ Saved successfully:", data); // تطبع الرد
+
+        // ✅ بما أن الرد عبارة عن مصفوفة steps مثل: [ { id: 27, title: ..., description: ... } ]
+        if (Array.isArray(data) && data.length > 0) {
+          const createdStep = data.find(f =>
+            f.title === step.title &&
+            f.description === step.description
+          );
+
+          if (createdStep) {
+            const stepIndex = roadmap.steps.findIndex(s => s.id === step.id);
+            if (stepIndex !== -1) {
+              roadmap.steps[stepIndex].backendId = createdStep.id;
+              console.log("🎯 Linked backendId:", createdStep.id);
+              renderSteps(); // إعادة عرض الخطوات بعد التحديث
+            }
+          } else {
+            console.warn("❌ No matching step found in response");
+          }
+        } else {
+          console.warn("❌ Unexpected response from backend");
+        }
+
+        alert("Step added and roadmap saved!");
+      })
+      .catch((error) => {
+        console.error("❌ Error saving roadmap:", error);
+        alert("Failed to save roadmap: " + error.message);
+      });
+  }
 
   // DOM elements
   const roadmapTitle = document.getElementById('roadmap-title');
@@ -389,75 +389,148 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    step.resources.push(resource);
-    renderSteps();
-    input.value = '';
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
+    // إرسال الرابط إلى الـ backend
+    fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/add-resource", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        FieldId: step.backendId,
+        Link: resource
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(text || 'Network response was not ok');
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Resource added successfully:", data);
+        // تحديث قائمة الموارد في الخطوة
+        step.resources = data.Resources || [];
+        renderSteps();
+        input.value = '';
+      })
+      .catch(error => {
+        console.error("Error adding resource:", error);
+        alert("Failed to add resource: " + error.message);
+      });
   };
 
   // Remove resource from step (global function)
   window.removeResource = function (stepId, resource) {
     const step = roadmap.steps.find(s => s.id === stepId);
-    step.resources = step.resources.filter(r => r !== resource);
-    renderSteps();
+    if (!step || !step.backendId) {
+      console.warn("Cannot remove resource: step not saved to backend");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
+      return;
+    }
+
+    // إرسال طلب حذف الرابط إلى الـ backend
+    fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/remove-resource`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        FieldId: step.backendId,
+        Link: resource
+      })
+    })
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(text || 'Network response was not ok');
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Resource removed successfully:", data);
+        // تحديث قائمة الموارد في الخطوة
+        step.resources = data.Resources || [];
+        renderSteps();
+      })
+      .catch(error => {
+        console.error("Error removing resource:", error);
+        alert("Failed to remove resource: " + error.message);
+      });
   };
 
   // Delete step (global function)
   window.deleteStep = function (stepId) {
-  console.log("Attempting to delete step with ID:", stepId, "Type:", typeof stepId);
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("Please login first");
-    return;
-  }
-
-  if (confirm('Are you sure you want to delete this step?')) {
-    const step = roadmap.steps.find(s => (s.backendId || s.id) == stepId);
-
-    // أولاً، حذف الخطوة من الواجهة
-    roadmap.steps = roadmap.steps.filter(s => (s.backendId || s.id) != stepId);
-    renderSteps();
-    updateProgress();
-
-    // إذا لم يكن للخطوة backendId، لا تحاول حذفها من السيرفر
-    if (!step || !step.backendId) {
-      console.log("Step not saved to backend, skipping DELETE request.");
+    console.log("Attempting to delete step with ID:", stepId, "Type:", typeof stepId);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login first");
       return;
     }
 
-    const deleteUrl = `https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${step.backendId}`;
-    console.log("Sending DELETE request to:", deleteUrl);
+    if (confirm('Are you sure you want to delete this step?')) {
+      const step = roadmap.steps.find(s => (s.backendId || s.id) == stepId);
 
-    fetch(deleteUrl, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+      // أولاً، حذف الخطوة من الواجهة
+      roadmap.steps = roadmap.steps.filter(s => (s.backendId || s.id) != stepId);
+      renderSteps();
+      updateProgress();
+
+      // إذا لم يكن للخطوة backendId، لا تحاول حذفها من السيرفر
+      if (!step || !step.backendId) {
+        console.log("Step not saved to backend, skipping DELETE request.");
+        return;
       }
-    })
-      .then(response => {
-        console.log("Delete response status:", response.status);
-        if (!response.ok) {
-          return response.text().then(text => {
-            console.log("Error response text:", text);
-            throw new Error(text || 'Network response was not ok');
-          });
-        }
-        return response.text();
-      })
-      .then(data => {
-        console.log('Step deleted successfully:', data);
-      })
-      .catch(error => {
-        console.error('Error deleting step:', error);
-        alert('Failed to delete step: ' + error.message);
 
-        // استرجاع الخطوة إذا فشل الحذف من السيرفر
-        roadmap.steps.push(step);
-        renderSteps();
-        updateProgress();
-      });
-  }
-};
+      const deleteUrl = `https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${step.backendId}`;
+      console.log("Sending DELETE request to:", deleteUrl);
+
+      fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          console.log("Delete response status:", response.status);
+          if (!response.ok) {
+            return response.text().then(text => {
+              console.log("Error response text:", text);
+              throw new Error(text || 'Network response was not ok');
+            });
+          }
+          return response.text();
+        })
+        .then(data => {
+          console.log('Step deleted successfully:', data);
+        })
+        .catch(error => {
+          console.error('Error deleting step:', error);
+          alert('Failed to delete step: ' + error.message);
+
+          // استرجاع الخطوة إذا فشل الحذف من السيرفر
+          roadmap.steps.push(step);
+          renderSteps();
+          updateProgress();
+        });
+    }
+  };
 
   // Preview functionality
   previewBtn.addEventListener('click', showPreview);
