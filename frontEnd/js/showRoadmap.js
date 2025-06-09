@@ -16,7 +16,7 @@ function renderRoadmap(data) {
     <div class="custom-content">
       <h2 class="custom-title">${data.title}</h2>
       <p class="custom-description">${data.description}</p>
-      <span class="custom-name">${data.category}</span>
+      <span class="custom-name">${data.createdBy}</span>
     </div>
     <div class="difficulty-badge ${data.difficultyLevel}">
       <i class="fas fa-signal"></i> ${data.difficultyLevel}
