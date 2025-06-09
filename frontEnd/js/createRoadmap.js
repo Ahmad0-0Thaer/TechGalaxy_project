@@ -9,75 +9,79 @@ document.addEventListener('DOMContentLoaded', function () {
     createdAt: new Date().toISOString()
   };
   function sendRoadmapToBackend(step) {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Please login first");
-      return;
-    }
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
 
-    const formData = new FormData();
-    formData.append("Title", roadmap.title);
-    formData.append("Category", roadmap.category);
-    formData.append("Description", roadmap.description);
-    formData.append("DifficultyLevel", selectedDifficulty);
+  const formData = new FormData();
+  formData.append("Title", roadmap.title);
+  formData.append("Category", roadmap.category);
+  formData.append("Description", roadmap.description);
+  formData.append("DifficultyLevel", selectedDifficulty);
 
-    const tagInput = document.getElementById('roadmap-tag');
-    if (tagInput && tagInput.value.trim()) {
-      roadmap.tag = tagInput.value.trim();
-    }
-    formData.append("Tag", roadmap.tag || "default-tag");
+  const tagInput = document.getElementById('roadmap-tag');
+  if (tagInput && tagInput.value.trim()) {
+    roadmap.tag = tagInput.value.trim();
+  }
+  formData.append("Tag", roadmap.tag || "default-tag");
 
-    if (step) {
-      formData.append("StepTitle", step.title);
-      formData.append("StepDescription", step.description);
-    }
+  if (step) {
+    formData.append("StepTitle", step.title);
+    formData.append("StepDescription", step.description);
+  }
 
-    // صورة الغلاف
-    const fileInput = document.getElementById("roadmap-cover");
-    if (fileInput && fileInput.files[0]) {
-      formData.append("CoverImage", fileInput.files[0]);
-    }
+  const fileInput = document.getElementById("roadmap-cover");
+  if (fileInput && fileInput.files[0]) {
+    formData.append("CoverImage", fileInput.files[0]);
+  }
 
-    // طباعة البيانات للتحقق
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
-    fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },
-      body: formData
+  fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${token}`
+    },
+    body: formData
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.text().then(text => {
+          throw new Error(text || 'Network response was not ok');
+        });
+      }
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then(text => {
-            throw new Error(text || 'Network response was not ok');
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Saved successfully:", data);
-        // تحديث معرف الخطوة بعد الحفظ
-        if (data && data.length > 0) {
-          // تحديث معرف الخطوة في الـ frontend
+    .then((data) => {
+      console.log("✅ Saved successfully:", data);
+
+      // جرّب طباعة شكل الرد
+      console.log("🔁 API Full Response:", data);
+
+      // نحاول استخراج backendId للخطوة من الرد
+      if (data && data.steps && Array.isArray(data.steps)) {
+        const matchedStep = data.steps.find(s => s.title === step.title && s.description === step.description);
+        if (matchedStep) {
           const stepIndex = roadmap.steps.findIndex(s => s.id === step.id);
           if (stepIndex !== -1) {
-            const backendId = data[0].Id;
-            console.log("Received backend ID:", backendId, "Type:", typeof backendId);
-            roadmap.steps[stepIndex].backendId = backendId;
-            renderSteps(); // إعادة عرض الخطوات مع المعرف الجديد
+            roadmap.steps[stepIndex].backendId = matchedStep.id;
+            console.log("🎯 backendId linked:", matchedStep.id);
+            renderSteps();
           }
+        } else {
+          console.warn("🚫 Could not match step in response.");
         }
-        alert("Step added and roadmap saved!");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("Failed to save roadmap: " + error.message);
-      });
-  }
+      } else {
+        console.warn("🚫 No steps array in response.");
+      }
+
+      alert("Step added and roadmap saved!");
+    })
+    .catch((error) => {
+      console.error("❌ Error saving roadmap:", error);
+      alert("Failed to save roadmap: " + error.message);
+    });
+}
 
   // DOM elements
   const roadmapTitle = document.getElementById('roadmap-title');
