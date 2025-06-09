@@ -296,21 +296,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (step.id) {
           // Update in backend
-          fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${step.id}`, {
-            method: 'PUT',
+          const formData = new FormData();
+          formData.append("Title", newTitle);
+          formData.append("Description", newDescription);
+          formData.append("DifficultyLevel", step.difficulty);
+
+          fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update`, {
+            method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify({
-              title: newTitle,
-              description: newDescription
-            })
+            body: formData
           })
             .then(response => {
               if (!response.ok) {
                 throw new Error('Failed to update step');
               }
+              return response.json();
+            })
+            .then(data => {
               // Update local data
               step.title = newTitle;
               step.description = newDescription;
@@ -355,11 +359,17 @@ document.addEventListener('DOMContentLoaded', function () {
       deleteBtn.addEventListener('click', () => {
         if (step.id) {
           // If the step has an ID, delete it from the backend
-          fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Fields/${step.id}`, {
-            method: 'DELETE',
+          const formData = new FormData();
+          formData.append("Title", step.title);
+          formData.append("Description", step.description);
+          formData.append("DifficultyLevel", step.difficulty);
+
+          fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/create-or-update`, {
+            method: 'POST',
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+            },
+            body: formData
           })
             .then(response => {
               if (!response.ok) {
