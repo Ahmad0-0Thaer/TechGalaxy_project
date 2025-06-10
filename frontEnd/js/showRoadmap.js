@@ -188,9 +188,8 @@ const token = localStorage.getItem("token");
 const followBtn = document.querySelector(".follow-btn");
 
 // تحديث نص الزر عند تحميل الصفحة بناءً على البيانات (إن وُجدت)
-if (typeof data.isFollowed === "boolean") {
-  followBtn.textContent = data.isFollowed ? "Unfollow" : "Follow";
-}
+let isFollowed = data.isFollowed;
+followBtn.textContent = isFollowed ? "Unfollow" : "Follow";
 
 followBtn.addEventListener("click", () => {
   if (!token) {
@@ -210,7 +209,8 @@ followBtn.addEventListener("click", () => {
       return res.json(); // يحتوي على { isFollowed: true/false }
     })
     .then(result => {
-  followBtn.textContent = result.followed ? "Unfollow" : "Follow";
+      isFollowed = result.followed;
+      followBtn.textContent = isFollowed ? "Unfollow" : "Follow";
 })
     .catch(err => {
       console.error("Toggle follow error:", err);
@@ -292,28 +292,5 @@ if (!roadmapId) {
     })
     .catch(e => console.error("Error loading roadmap:", e));
 }
- /* new */
 
- /* document.querySelectorAll('.node-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const node = header.parentElement;
-      node.classList.toggle('open');
-    });
-  });
-
-  function updateProgress() {
-  const checkboxes = document.querySelectorAll('.node-check');
-  const total = checkboxes.length;
-  const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-  const percent = Math.round((checked / total) * 100);
-  document.getElementById('progress-bar').style.width = percent + '%';
-}
-
-// تحديث عند كل تغيير للـ checkbox
-document.querySelectorAll('.node-check').forEach(cb => {
-  cb.addEventListener('change', updateProgress);
-});
-
-// تحديث أولي عند تحميل الصفحة
-updateProgress(); */
 
