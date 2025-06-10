@@ -183,8 +183,14 @@ function renderRoadmap(data) {
   `;
   container.appendChild(card);
   // تفعيل زر المتابعة
+// تفعيل زر المتابعة داخل renderRoadmap
 const token = localStorage.getItem("token");
-const followBtn = document.querySelector(".follow-btn"); // تأكد أن الزر عنده class "follow-btn"
+const followBtn = document.querySelector(".follow-btn");
+
+// تحديث نص الزر عند تحميل الصفحة بناءً على البيانات (إن وُجدت)
+if (typeof data.isFollowed === "boolean") {
+  followBtn.textContent = data.isFollowed ? "Unfollow" : "Follow";
+}
 
 followBtn.addEventListener("click", () => {
   if (!token) {
@@ -208,35 +214,12 @@ followBtn.addEventListener("click", () => {
     })
     .catch(err => {
       console.error("Toggle follow error:", err);
-      alert("Failed to toggle follow status.");
-    });
-});
-
-// عند الضغط – toggle follow
-followBtn.addEventListener("click", () => {
-  if (!token) {
-    alert("Please log in first.");
-    return;
-  }
-
-  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/FollowedRoadmaps/${data.id}/toggle-follow`, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.json())
-    .then(result => {
-      if (result && typeof result.isFollowed === 'boolean') {
-        followBtn.textContent = result.isFollowed ? "Unfollow" : "Follow";
-      }
-    })
-    .catch(err => {
-      console.error("Toggle follow error:", err);
       alert("An error occurred while toggling follow status.");
     });
 });
+
+
+
 
   // ثانياً – كارد الـ nodes مع Progress Bar
   const progressCard = document.createElement("div");
