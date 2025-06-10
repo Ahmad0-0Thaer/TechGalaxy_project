@@ -209,7 +209,7 @@ followBtn.addEventListener("click", () => {
       return res.json(); // يحتوي على { isFollowed: true/false }
     })
     .then(result => {
-      isFollowed = result.followed;
+      isFollowed = result.isFollowed ?? result.followed ?? isFollowed; 
       followBtn.textContent = isFollowed ? "Unfollow" : "Follow";
 })
     .catch(err => {
