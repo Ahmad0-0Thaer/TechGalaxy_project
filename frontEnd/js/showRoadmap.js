@@ -285,12 +285,24 @@ const roadmapId = params.get("id");
 if (!roadmapId) {
   alert("No roadmap ID provided in the URL.");
 } else {
-  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/${roadmapId}`)
-    .then(r => r.json())
-    .then(data => {
-      renderRoadmap(data);
-    })
-    .catch(e => console.error("Error loading roadmap:", e));
+  const token = localStorage.getItem("token");
+
+fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/${roadmapId}`, {
+  method: "GET",
+  headers: {
+    "Authorization": `Bearer ${token}`,
+    "Content-Type": "application/json"
+  }
+})
+  .then(r => {
+    if (!r.ok) throw new Error("Failed to fetch roadmap");
+    return r.json();
+  })
+  .then(data => {
+    renderRoadmap(data);
+  })
+  .catch(e => console.error("Error loading roadmap:", e));
+    
 }
 
 
