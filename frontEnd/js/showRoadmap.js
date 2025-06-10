@@ -210,8 +210,8 @@ followBtn.addEventListener("click", () => {
       return res.json(); // يحتوي على { isFollowed: true/false }
     })
     .then(result => {
-      followBtn.textContent = result.isFollowed ? "Unfollow" : "Follow";
-    })
+  followBtn.textContent = result.followed ? "Unfollow" : "Follow";
+})
     .catch(err => {
       console.error("Toggle follow error:", err);
       alert("An error occurred while toggling follow status.");
