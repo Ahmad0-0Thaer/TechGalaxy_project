@@ -10,9 +10,8 @@
     - primary meta tags
   -->
   <title>TechGalaxy | Profile</title>
-  <meta name="title" content="TechGalaxy - Guided Learning Roadmaps for Future Innovators">
-  <meta name="description"
-    content="Explore curated roadmaps and resources to learn and teach tech, built by students of JUST.">
+  <meta name="title" content="TechGalaxy - User Profile">
+  <meta name="description" content="View and manage your TechGalaxy profile">
 
   <!-- 
     - favicon
@@ -32,12 +31,8 @@
   <!-- 
     - custom css link
   -->
-  <link rel="stylesheet" href="./css/expertHome.css">
   <link rel="stylesheet" href="./css/profile.css">
-
-  <!-- 
-    - preload images
-  -->
+  <link rel="stylesheet" href="./css/expertHome.css">
 
 </head>
 
@@ -98,7 +93,7 @@
         <!-- Dropdown Menu (Hidden by default) -->
         <div class="profile-dropdown" id="profileDropdown">
           <ul class="dropdown-list">
-            <li class="dropdown-item"><a href="profile.html">Profile</a></li>
+            <li class="dropdown-item"><a href="./profile.HTML">Profile</a></li>
             <li class="dropdown-item"><a href="./index.html" id="logoutBtn">Logout</a></li>
           </ul>
         </div>
@@ -116,41 +111,61 @@
   <!-- 
     - #PROFILE SECTION
   -->
-  <section class="section profile-section">
+
+  <section class="section profile" id="profile">
     <div class="container">
+      <h2 class="h2 section-title">My Profile</h2>
+
       <div class="profile-container">
-
-        <div class="profile-header">
-          <div class="profile-info">
-            <h1 class="profile-name" id="profileName"></h1>
-            <p class="profile-email" id="profileEmail"></p>
-            <div class="profile-meta">
-              <span class="profile-role" id="profileRole"></span>
-              <span class="profile-specialty" id="profileSpecialty"></span>
-           </div>
+        <!-- Basic Info Card -->
+        <div class="profile-card basic-info">
+          <div class="card-header">
+            <h3>Basic Information</h3>
           </div>
-        </div>
-
-        <div class="profile-certificate" id="certificateSection">
-          <h2 class="section-title">Certificate</h2>
-          <div class="certificate-container">
-            <img id="certificateImage" src="" alt="Certificate" class="certificate-image">
-            <button class="btn upload-certificate-btn">Upload Certificate</button>
-          </div>
-        </div>
-
-        <div class="profile-roadmaps">
-          <div class="created-roadmaps">
-            <h2 class="section-title">Created Roadmaps</h2>
-            <div class="roadmaps-grid" id="createdRoadmapsGrid">
-              <!-- Created roadmaps will be inserted here by JavaScript -->
+          <div class="card-body">
+            <div class="info-item">
+              <span class="info-label">Name:</span>
+              <span class="info-value" id="profile-name">Loading...</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Email:</span>
+              <span class="info-value" id="profile-email">Loading...</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Role:</span>
+              <span class="info-value" id="profile-role">Loading...</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Specialty:</span>
+              <span class="info-value" id="profile-specialty">Loading...</span>
+            </div>
+            <div class="info-item certificate" id="certificate-item" style="display: none;">
+              <span class="info-label">Certificate:</span>
+              <a href="#" class="info-value" id="certificate-link" target="_blank">View Certificate</a>
             </div>
           </div>
+        </div>
 
-          <div class="followed-roadmaps">
-            <h2 class="section-title">Followed Roadmaps</h2>
-            <div class="roadmaps-grid" id="followedRoadmapsGrid">
-              <!-- Followed roadmaps will be inserted here by JavaScript -->
+        <!-- Created Roadmaps Card -->
+        <div class="profile-card created-roadmaps">
+          <div class="card-header">
+            <h3>Created Roadmaps</h3>
+          </div>
+          <div class="card-body">
+            <div class="roadmaps-list" id="created-roadmaps-list">
+              <div class="empty-state">Loading created roadmaps...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Followed Roadmaps Card -->
+        <div class="profile-card followed-roadmaps">
+          <div class="card-header">
+            <h3>Followed Roadmaps</h3>
+          </div>
+          <div class="card-body">
+            <div class="roadmaps-list" id="followed-roadmaps-list">
+              <div class="empty-state">Loading followed roadmaps...</div>
             </div>
           </div>
         </div>
@@ -163,98 +178,71 @@
   -->
 
   <footer class="footer">
-
     <div class="section footer-top">
       <div class="container">
-
         <div class="footer-brand">
-
           <a href="#" class="logo">
             <img src="./Images/logo-page.png" width="150" height="73" loading="lazy" alt="TechGalaxy logo">
           </a>
-
           <p class="footer-text">
             Our success in developing this project is largely attributed to the guidance and support of the professors
             at Jordan University of Science and Technology.
           </p>
-
         </div>
 
         <div class="footer-list">
-
           <p class="title footer-list-title has-after">Usefull Links</p>
-
           <ul>
-
             <li>
               <a href="#Home" class="footer-link">Home</a>
             </li>
             <li>
               <a href="#Discover" class="footer-link">Discover</a>
             </li>
-
             <li>
               <a href="#Roadmap" class="footer-link">Roadmap</a>
             </li>
-
           </ul>
-
         </div>
 
         <div class="footer-list">
-
           <p class="title footer-list-title has-after" id="contact">Contact Us</p>
-
           <div class="contact-item">
             <span class="span">AHMAD THA'ER MOHAMMAD ALBOZEYAH:</span>
             <a href="mailto:atalbozeyah21@cit.just.edu.jo" class="contact-link">atalbozeyah21@cit.just.edu.jo</a>
           </div>
-
           <div class="contact-item">
             <span class="span">AMRO MARWAN FAWZI ALQURAN:</span>
-
             <a href="mailto:amalquran21@cit.just.edu.jo" class="contact-link">amalquran21@cit.just.edu.jo</a>
           </div>
-
           <div class="contact-item">
             <span class="span">MO'MEN MOHAMMAD MAHMOUD MAKABLEH:</span>
-
             <a href="mailto:mmmakableh21@cit.just.edu.jo" class="contact-link">mmmakableh21@cit.just.edu.jo</a>
           </div>
           <div class="contact-item">
             <span class="span">MOHAMMAD ZAHIR MOHAMMAD ALKHALEEL:</span>
-
             <a href="mailto:mzalkhaleel20@cit.just.edu.jo" class="contact-link">mzalkhaleel20@cit.just.edu.jo</a>
           </div>
-
           <div class="contact-item">
             <span class="span">HATEM AHMAD ABDALLAH EID:</span>
-
             <a href="mailto:haeid21@cit.just.edu.jo" class="contact-link">haeid21@cit.just.edu.jo</a>
           </div>
-
         </div>
-
       </div>
     </div>
 
     <div class="footer-bottom">
       <div class="container">
-
         <p class="copyright">
-          &copy; All Rights Reserved for Jordan University of Science and Technology .
-
+          &copy; All Rights Reserved for Jordan University of Science and Technology.
         </p>
-
       </div>
     </div>
-
   </footer>
 
   <!-- 
     - #BACK TO TOP
   -->
-
   <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
     <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
   </a>
@@ -262,13 +250,12 @@
   <!-- 
     - #CUSTOM CURSOR
   -->
-
   <div class="cursor" data-cursor></div>
 
   <!-- 
     - custom js link
   -->
-  <script src="./js/profile.js"></script>
+  <script src="./js/profile.JS"></script>
 
   <!-- 
     - ionicon link
