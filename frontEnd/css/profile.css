@@ -1,0 +1,235 @@
+/* Profile Section Styles */
+.profile-section {
+  padding: 60px 0;
+  background-color: var(--bg-dark-purple);
+}
+
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--bg-oxford-blue-alpha-90);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--border-space-cadet);
+}
+
+.profile-avatar {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 4px solid var(--bg-purple);
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.edit-avatar-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background-color: var(--bg-purple);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-avatar-btn:hover {
+  background-color: var(--text-purple);
+  transform: scale(1.1);
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.profile-name {
+  font-size: 2.5rem;
+  color: var(--text-white);
+  margin-bottom: 5px;
+}
+
+.profile-email {
+  color: var(--text-champagne-pink);
+  margin-bottom: 15px;
+  font-size: 1.6rem;
+}
+
+.profile-meta {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.profile-role,
+.profile-specialty {
+  padding: 5px 15px;
+  background-color: var(--bg-oxford-blue);
+  border-radius: 20px;
+  font-size: 1.4rem;
+  color: var(--text-white);
+}
+
+.edit-profile-btn {
+  margin-top: 20px;
+}
+
+.profile-certificate {
+  padding: 30px 0;
+  border-bottom: 1px solid var(--border-space-cadet);
+}
+
+.certificate-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.certificate-image {
+  max-width: 100%;
+  max-height: 400px;
+  border: 2px solid var(--border-purple-alpha-30);
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-roadmaps {
+  padding: 30px 0;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  color: var(--text-white);
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--bg-purple);
+}
+
+.roadmaps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.roadmap-card {
+  background-color: var(--bg-oxford-blue);
+  border-radius: 8px;
+  padding: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--border-space-cadet);
+}
+
+.roadmap-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.roadmap-title {
+  font-size: 1.8rem;
+  color: var(--text-white);
+  margin-bottom: 10px;
+}
+
+.roadmap-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+  color: var(--text-champagne-pink);
+}
+
+.roadmap-category {
+  background-color: var(--bg-purple-alpha-30);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.roadmap-date {
+  color: var(--text-champagne-pink);
+}
+
+.roadmap-difficulty {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.roadmap-difficulty.beginner {
+  background-color: rgba(0, 169, 127, 0.2);
+  color: #00a97f;
+}
+
+.roadmap-difficulty.intermediate {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.roadmap-difficulty.advanced {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .profile-header {
+    flex-direction: row;
+    text-align: left;
+    gap: 40px;
+  }
+
+  .profile-info {
+    text-align: left;
+    flex-grow: 1;
+  }
+
+  .profile-meta {
+    justify-content: flex-start;
+  }
+
+  .edit-profile-btn {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .roadmaps-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+}
