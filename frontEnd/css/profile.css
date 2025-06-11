@@ -1515,11 +1515,8 @@ body {
 .badge.Advanced {
   color: #ef4444;
 }
- /* أنماط إضافية لصفحة البروفايل */
-        .profile-section {
-            background-color: var(--bg-dark-purple);
-            min-height: 100vh;
-        }
+
+        
         
         .profile-header {
             text-align: center;

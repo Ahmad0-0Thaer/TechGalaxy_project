@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(data => {
-            console.log('User data received:', data); // إضافة سجل للتحقق من البيانات
+            console.log('User data received:', data);
 
             // عرض بيانات المستخدم
             document.getElementById('headerUserName').textContent = data.name;
@@ -24,15 +24,37 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('userEmail').textContent = data.email;
 
             // عرض الشهادة إذا كانت موجودة
-            console.log('Certificate path:', data.certificatePath); // إضافة سجل للتحقق من مسار الشهادة
-            if (data.certificatePath && data.certificatePath.trim() !== '') {
-                console.log('Displaying certificate section'); // إضافة سجل عند عرض قسم الشهادة
-                document.getElementById('certificateSection').style.display = 'block';
-                document.getElementById('certificateImage').src = data.certificatePath;
-                document.getElementById('certificateLink').href = data.certificatePath;
+            const certificateSection = document.getElementById('certificateSection');
+            const certificateImage = document.getElementById('certificateImage');
+            const certificateLink = document.getElementById('certificateLink');
+
+            // التحقق من وجود مسار الشهادة
+            if (data.certificatePath && typeof data.certificatePath === 'string' && data.certificatePath.trim() !== '') {
+                console.log('Certificate path found:', data.certificatePath);
+
+                // التأكد من أن المسار يبدأ بـ http أو https
+                let certificateUrl = data.certificatePath;
+                if (!certificateUrl.startsWith('http://') && !certificateUrl.startsWith('https://')) {
+                    certificateUrl = 'https://' + certificateUrl;
+                }
+
+                // تعيين الصورة مع معالجة الأخطاء
+                certificateImage.onerror = function () {
+                    console.error('Error loading certificate image');
+                    certificateSection.style.display = 'none';
+                };
+
+                certificateImage.onload = function () {
+                    console.log('Certificate image loaded successfully');
+                    certificateSection.style.display = 'block';
+                };
+
+                // تعيين المصدر والرابط
+                certificateImage.src = certificateUrl;
+                certificateLink.href = certificateUrl;
             } else {
-                console.log('No certificate path found'); // إضافة سجل عندما لا يوجد مسار للشهادة
-                document.getElementById('certificateSection').style.display = 'none';
+                console.log('No valid certificate path found');
+                certificateSection.style.display = 'none';
             }
 
             // عرض الرودماب المتابعة
