@@ -277,11 +277,11 @@ function renderRoadmap(data) {
           throw new Error("Failed to update completion status");
         }
 
-        // Update progress after successful API call
+        // تحديث شريط التقدم فقط بعد نجاح عملية التحديث في قاعدة البيانات
         updateProgress();
       } catch (error) {
         console.error("Error updating completion status:", error);
-        e.target.checked = !e.target.checked; // Revert checkbox state on error
+        e.target.checked = !e.target.checked; // إعادة حالة الـ checkbox إلى ما كانت عليه
         alert("Failed to update completion status");
       }
     });
