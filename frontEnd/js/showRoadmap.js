@@ -249,15 +249,16 @@ function renderRoadmap(data) {
   // Add checkbox event listeners after rendering nodes
   progressCard.querySelectorAll('.node-check').forEach((checkbox, index) => {
     checkbox.addEventListener('change', async (e) => {
+      // منع التغيير الافتراضي للـ checkbox
+      e.preventDefault();
+
       if (!token) {
         alert("Please log in first.");
-        e.target.checked = false;
         return;
       }
 
       if (!isFollowed) {
         alert("You must follow this roadmap to mark fields as completed");
-        e.target.checked = false;
         return;
       }
 
@@ -269,7 +270,7 @@ function renderRoadmap(data) {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            completed: e.target.checked
+            completed: !checkbox.checked // استخدام الحالة المعكوسة للـ checkbox
           })
         });
 
@@ -277,11 +278,11 @@ function renderRoadmap(data) {
           throw new Error("Failed to update completion status");
         }
 
-        // تحديث شريط التقدم فقط بعد نجاح عملية التحديث في قاعدة البيانات
+        // تحديث حالة الـ checkbox وشريط التقدم فقط بعد نجاح العملية
+        checkbox.checked = !checkbox.checked;
         updateProgress();
       } catch (error) {
         console.error("Error updating completion status:", error);
-        e.target.checked = !e.target.checked; // إعادة حالة الـ checkbox إلى ما كانت عليه
         alert("Failed to update completion status");
       }
     });
