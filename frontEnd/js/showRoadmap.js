@@ -248,6 +248,16 @@ function renderRoadmap(data) {
 
   // Add checkbox event listeners after rendering nodes
   progressCard.querySelectorAll('.node-check').forEach((checkbox, index) => {
+    // Get the roadmap ID from the URL or data attribute
+    const roadmapId = new URLSearchParams(window.location.search).get('id');
+
+    // Load saved state from localStorage
+    const savedState = localStorage.getItem(`roadmap_${roadmapId}_node_${index}`);
+    if (savedState === 'true') {
+      checkbox.checked = true;
+    }
+
+    // Save state to localStorage and update API when checkbox changes
     checkbox.addEventListener('change', async (e) => {
       if (!token) {
         alert("Please log in first.");
@@ -277,7 +287,8 @@ function renderRoadmap(data) {
           throw new Error("Failed to update completion status");
         }
 
-        // Update progress after successful API call
+        // Save to localStorage only after successful API call
+        localStorage.setItem(`roadmap_${roadmapId}_node_${index}`, e.target.checked);
         updateProgress();
       } catch (error) {
         console.error("Error updating completion status:", error);
@@ -286,6 +297,7 @@ function renderRoadmap(data) {
       }
     });
   });
+  updateProgress();
 
   // Update follow button click handler to handle checkbox states
   followBtn.addEventListener("click", async () => {
