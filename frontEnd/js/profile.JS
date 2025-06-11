@@ -23,40 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('userSpecialty').textContent = data.specialty ? `| ${data.specialty}` : '';
             document.getElementById('userEmail').textContent = data.email;
 
-            // عرض الشهادة إذا كانت موجودة
-            const certificateSection = document.getElementById('certificateSection');
-            const certificateImage = document.getElementById('certificateImage');
-            const certificateLink = document.getElementById('certificateLink');
-
-            // التحقق من وجود مسار الشهادة
-            if (data.certificatePath && typeof data.certificatePath === 'string' && data.certificatePath.trim() !== '') {
-                console.log('Certificate path found:', data.certificatePath);
-
-                // التأكد من أن المسار يبدأ بـ http أو https
-                let certificateUrl = data.certificatePath;
-                if (!certificateUrl.startsWith('http://') && !certificateUrl.startsWith('https://')) {
-                    certificateUrl = 'https://' + certificateUrl;
-                }
-
-                // تعيين الصورة مع معالجة الأخطاء
-                certificateImage.onerror = function () {
-                    console.error('Error loading certificate image');
-                    certificateSection.style.display = 'none';
-                };
-
-                certificateImage.onload = function () {
-                    console.log('Certificate image loaded successfully');
-                    certificateSection.style.display = 'block';
-                };
-
-                // تعيين المصدر والرابط
-                certificateImage.src = certificateUrl;
-                certificateLink.href = certificateUrl;
-            } else {
-                console.log('No valid certificate path found');
-                certificateSection.style.display = 'none';
-            }
-
             // عرض الرودماب المتابعة
             const followedContainer = document.getElementById('followedRoadmaps');
             console.log('Followed Roadmaps data:', data.followedRoadmaps); // إضافة سجل للتحقق من البيانات
