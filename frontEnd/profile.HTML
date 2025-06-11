@@ -78,7 +78,7 @@
       <div class="profile-icon-container" id="profileContainer" style="display: flex;">
         <div class="user-info" id="userInfo" style="display: block;">
           <div class="user-type" id="userType">Expert</div>
-          <div class="user-name" id="userName"><span id="user-name"></span></div>
+          <div class="user-name" id="headerUserName"><span id="header-user-name"></span></div>
         </div>
         <button class="profile-icon-btn" id="profileBtn">
           <svg class="profile-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,52 +108,52 @@
     </div>
   </header>
 
-    <main>
-        <section class="section profile-section" style="padding-top: 150px;">
-            <div class="container">
-                <!-- قسم معلومات المستخدم -->
-                <div class="profile-header" data-reveal="bottom">
-                    <h1 class="profile-name title" id="userName"></h1>
-                    <div class="profile-meta">
-                        <span class="profile-role" id="userRole"></span>
-                        <span class="profile-specialty" id="userSpecialty"></span>
-                    </div>
-                    <div class="profile-email" id="userEmail"></div>
-                </div>
+  <main>
+    <section class="section profile-section" style="padding-top: 150px;">
+      <div class="container">
+        <!-- قسم معلومات المستخدم -->
+        <div class="profile-header" data-reveal="bottom">
+          <h1 class="profile-name title" id="profileUserName"></h1>
+          <div class="profile-meta">
+            <span class="profile-role" id="userRole"></span>
+            <span class="profile-specialty" id="userSpecialty"></span>
+          </div>
+          <div class="profile-email" id="userEmail"></div>
+        </div>
 
-                <!-- قسم الشهادات -->
-                <div class="certificate-box" data-reveal="left" id="certificateSection" style="display: none;">
-                    <h2 class="section-subtitle">My certificates</h2>
-                    <div class="certificate-container">
-                        <a href="#" id="certificateLink" target="_blank" class="certificate-preview">
-                            <img src="" alt="User Certificate" id="certificateImage" class="img-cover">
-                            <span class="preview-text">Certificate Preview</span>
-                        </a>
-                    </div>
-                </div>
+        <!-- قسم الشهادات -->
+        <div class="certificate-box" data-reveal="left" id="certificateSection" style="display: none;">
+          <h2 class="section-subtitle">My certificates</h2>
+          <div class="certificate-container">
+            <a href="#" id="certificateLink" target="_blank" class="certificate-preview">
+              <img src="" alt="User Certificate" id="certificateImage" class="img-cover">
+              <span class="preview-text">Certificate Preview</span>
+            </a>
+          </div>
+        </div>
 
-                <!-- قسم الرودماب المتابعة -->
-                <div class="profile-box" data-reveal="right">
-                    <h2 class="section-subtitle">Followed Roadmaps</h2>
-                    <div class="roadmaps-container" id="followedRoadmaps">
-                        <!-- سيتم ملؤها بالبيانات من API -->
-                        <p class="empty-message">No Roadmaps Followed</p>
-                    </div>
-                </div>
+        <!-- قسم الرودماب المتابعة -->
+        <div class="profile-box" data-reveal="right">
+          <h2 class="section-subtitle">Followed Roadmaps</h2>
+          <div class="roadmaps-container" id="followedRoadmaps">
+            <!-- سيتم ملؤها بالبيانات من API -->
+            <p class="empty-message">No Roadmaps Followed</p>
+          </div>
+        </div>
 
-                <!-- قسم الرودماب المنشأة -->
-                <div class="profile-box" data-reveal="left">
-                    <h2 class="section-subtitle">Created Roadmaps</h2>
-                    <div class="roadmaps-container" id="createdRoadmaps">
-                        <!-- سيتم ملؤها بالبيانات من API -->
-                        <p class="empty-message">No Roadmap Created</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+        <!-- قسم الرودماب المنشأة -->
+        <div class="profile-box" data-reveal="left">
+          <h2 class="section-subtitle">Created Roadmaps</h2>
+          <div class="roadmaps-container" id="createdRoadmaps">
+            <!-- سيتم ملؤها بالبيانات من API -->
+            <p class="empty-message">No Roadmap Created</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    
+
   <!-- 
     - #FOOTER
   -->
@@ -248,4 +248,5 @@
   </footer>
   <script src="./js/profile.js"></script>
 </body>
+
 </html>
