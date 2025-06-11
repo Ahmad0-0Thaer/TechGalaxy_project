@@ -10,9 +10,6 @@
     - primary meta tags
   -->
   <title>TechGalaxy | Profile</title>
-  <meta name="title" content="TechGalaxy - User Profile">
-  <meta name="description" content="View and manage your TechGalaxy profile">
-
   <!-- 
     - favicon
   -->
@@ -32,7 +29,10 @@
     - custom css link
   -->
   <link rel="stylesheet" href="./css/profile.css">
-  <link rel="stylesheet" href="./css/expertHome.css">
+
+  <!-- 
+    - preload images
+  -->
 
 </head>
 
@@ -93,7 +93,7 @@
         <!-- Dropdown Menu (Hidden by default) -->
         <div class="profile-dropdown" id="profileDropdown">
           <ul class="dropdown-list">
-            <li class="dropdown-item"><a href="./profile.HTML">Profile</a></li>
+            <li class="dropdown-item"><a href="profile.html">Profile</a></li>
             <li class="dropdown-item"><a href="./index.html" id="logoutBtn">Logout</a></li>
           </ul>
         </div>
@@ -108,160 +108,144 @@
     </div>
   </header>
 
-  <!-- 
-    - #PROFILE SECTION
-  -->
+    <main>
+        <section class="section profile-section" style="padding-top: 150px;">
+            <div class="container">
+                <!-- قسم معلومات المستخدم -->
+                <div class="profile-header" data-reveal="bottom">
+                    <h1 class="profile-name title" id="userName"></h1>
+                    <div class="profile-meta">
+                        <span class="profile-role" id="userRole"></span>
+                        <span class="profile-specialty" id="userSpecialty"></span>
+                    </div>
+                    <div class="profile-email" id="userEmail"></div>
+                </div>
 
-  <section class="section profile" id="profile">
-    <div class="container">
-      <h2 class="h2 section-title">My Profile</h2>
+                <!-- قسم الشهادات -->
+                <div class="certificate-box" data-reveal="left" id="certificateSection" style="display: none;">
+                    <h2 class="section-subtitle">شهاداتي</h2>
+                    <div class="certificate-container">
+                        <a href="#" id="certificateLink" target="_blank" class="certificate-preview">
+                            <img src="" alt="شهادة المستخدم" id="certificateImage" class="img-cover">
+                            <span class="preview-text">معاينة الشهادة</span>
+                        </a>
+                    </div>
+                </div>
 
-      <div class="profile-container">
-        <!-- Basic Info Card -->
-        <div class="profile-card basic-info">
-          <div class="card-header">
-            <h3>Basic Information</h3>
-          </div>
-          <div class="card-body">
-            <div class="info-item">
-              <span class="info-label">Name:</span>
-              <span class="info-value" id="profile-name">Loading...</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Email:</span>
-              <span class="info-value" id="profile-email">Loading...</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Role:</span>
-              <span class="info-value" id="profile-role">Loading...</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Specialty:</span>
-              <span class="info-value" id="profile-specialty">Loading...</span>
-            </div>
-            <div class="info-item certificate" id="certificate-item" style="display: none;">
-              <span class="info-label">Certificate:</span>
-              <a href="#" class="info-value" id="certificate-link" target="_blank">View Certificate</a>
-            </div>
-          </div>
-        </div>
+                <!-- قسم الرودماب المتابعة -->
+                <div class="profile-box" data-reveal="right">
+                    <h2 class="section-subtitle">الرودماب التي أتابعها</h2>
+                    <div class="roadmaps-container" id="followedRoadmaps">
+                        <!-- سيتم ملؤها بالبيانات من API -->
+                        <p class="empty-message">لا يوجد رودماب متابعة حتى الآن</p>
+                    </div>
+                </div>
 
-        <!-- Created Roadmaps Card -->
-        <div class="profile-card created-roadmaps">
-          <div class="card-header">
-            <h3>Created Roadmaps</h3>
-          </div>
-          <div class="card-body">
-            <div class="roadmaps-list" id="created-roadmaps-list">
-              <div class="empty-state">Loading created roadmaps...</div>
+                <!-- قسم الرودماب المنشأة -->
+                <div class="profile-box" data-reveal="left">
+                    <h2 class="section-subtitle">الرودماب التي أنشأتها</h2>
+                    <div class="roadmaps-container" id="createdRoadmaps">
+                        <!-- سيتم ملؤها بالبيانات من API -->
+                        <p class="empty-message">لا يوجد رودماب منشأة حتى الآن</p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
+        </section>
+    </main>
 
-        <!-- Followed Roadmaps Card -->
-        <div class="profile-card followed-roadmaps">
-          <div class="card-header">
-            <h3>Followed Roadmaps</h3>
-          </div>
-          <div class="card-body">
-            <div class="roadmaps-list" id="followed-roadmaps-list">
-              <div class="empty-state">Loading followed roadmaps...</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
+    
   <!-- 
     - #FOOTER
   -->
 
   <footer class="footer">
+
     <div class="section footer-top">
       <div class="container">
+
         <div class="footer-brand">
+
           <a href="#" class="logo">
             <img src="./Images/logo-page.png" width="150" height="73" loading="lazy" alt="TechGalaxy logo">
           </a>
+
           <p class="footer-text">
             Our success in developing this project is largely attributed to the guidance and support of the professors
             at Jordan University of Science and Technology.
           </p>
+
         </div>
 
         <div class="footer-list">
+
           <p class="title footer-list-title has-after">Usefull Links</p>
+
           <ul>
+
             <li>
               <a href="#Home" class="footer-link">Home</a>
             </li>
             <li>
               <a href="#Discover" class="footer-link">Discover</a>
             </li>
+
             <li>
               <a href="#Roadmap" class="footer-link">Roadmap</a>
             </li>
+
           </ul>
+
         </div>
 
         <div class="footer-list">
+
           <p class="title footer-list-title has-after" id="contact">Contact Us</p>
+
           <div class="contact-item">
             <span class="span">AHMAD THA'ER MOHAMMAD ALBOZEYAH:</span>
             <a href="mailto:atalbozeyah21@cit.just.edu.jo" class="contact-link">atalbozeyah21@cit.just.edu.jo</a>
           </div>
+
           <div class="contact-item">
             <span class="span">AMRO MARWAN FAWZI ALQURAN:</span>
+
             <a href="mailto:amalquran21@cit.just.edu.jo" class="contact-link">amalquran21@cit.just.edu.jo</a>
           </div>
+
           <div class="contact-item">
             <span class="span">MO'MEN MOHAMMAD MAHMOUD MAKABLEH:</span>
+
             <a href="mailto:mmmakableh21@cit.just.edu.jo" class="contact-link">mmmakableh21@cit.just.edu.jo</a>
           </div>
           <div class="contact-item">
             <span class="span">MOHAMMAD ZAHIR MOHAMMAD ALKHALEEL:</span>
+
             <a href="mailto:mzalkhaleel20@cit.just.edu.jo" class="contact-link">mzalkhaleel20@cit.just.edu.jo</a>
           </div>
+
           <div class="contact-item">
             <span class="span">HATEM AHMAD ABDALLAH EID:</span>
+
             <a href="mailto:haeid21@cit.just.edu.jo" class="contact-link">haeid21@cit.just.edu.jo</a>
           </div>
+
         </div>
+
       </div>
     </div>
 
     <div class="footer-bottom">
       <div class="container">
+
         <p class="copyright">
-          &copy; All Rights Reserved for Jordan University of Science and Technology.
+          &copy; All Rights Reserved for Jordan University of Science and Technology .
+
         </p>
+
       </div>
     </div>
+
   </footer>
-
-  <!-- 
-    - #BACK TO TOP
-  -->
-  <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
-    <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
-  </a>
-
-  <!-- 
-    - #CUSTOM CURSOR
-  -->
-  <div class="cursor" data-cursor></div>
-
-  <!-- 
-    - custom js link
-  -->
-  <script src="./js/profile.JS"></script>
-
-  <!-- 
-    - ionicon link
-  -->
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="./js/profile.js"></script>
 </body>
-
 </html>
