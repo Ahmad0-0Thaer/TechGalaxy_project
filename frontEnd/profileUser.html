@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 
+    - primary meta tags
+  -->
+  <title>TechGalaxy | Profile</title>
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./Images/logo-icon.png" type="image/png">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Work+Sans:wght@600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./css/profile.css">
+
+  <!-- 
+    - preload images
+  -->
+
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header active" data-header>
+    <div class="container">
+
+      <a href="#" class="logo">
+        <img src="./Images/logo-page.png" width="110" height="53" alt="TechGalaxy">
+      </a>
+
+      <nav class="navbar" data-navbar>
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <a href="./expertHome.html" class="navbar-link" data-nav-link>Home</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="./roadmap.html" class="navbar-link" data-nav-link>All Roadmap</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="createRoadmap.html" class="navbar-link" data-nav-link>Create Roadmap</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#contact" class="navbar-link" data-nav-link>contact</a>
+          </li>
+
+        </ul>
+      </nav>
+
+      <div class="profile-icon-container" id="profileContainer" style="display: flex;">
+        <div class="user-info" id="userInfo" style="display: block;">
+          <div class="user-type" id="userType">Learner</div>
+          <div class="user-name" id="headerUserName"><span id="header-user-name"></span></div>
+        </div>
+        <button class="profile-icon-btn" id="profileBtn">
+          <svg class="profile-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+              stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M6 19C6 16.7909 8.68629 15 12 15C15.3137 15 18 16.7909 18 19" stroke="currentColor"
+              stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+
+        <!-- Dropdown Menu (Hidden by default) -->
+        <div class="profile-dropdown" id="profileDropdown">
+          <ul class="dropdown-list">
+            <li class="dropdown-item"><a href="profile.html">Profile</a></li>
+            <li class="dropdown-item"><a href="./index.html" id="logoutBtn">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="nav-toggle-btn" aria-label="toggle menu" data-nav-toggler>
+        <span class="line line-1"></span>
+        <span class="line line-2"></span>
+        <span class="line line-3"></span>
+      </button>
+
+    </div>
+  </header>
+
+  <main>
+    <section class="section profile-section" style="padding-top: 150px;">
+      <div class="container">
+        <!-- قسم معلومات المستخدم -->
+        <div class="profile-header" data-reveal="bottom">
+          <h1 class="profile-name title" id="profileUserName"></h1>
+          <div class="profile-meta">
+            <span class="profile-role" id="userRole"></span>
+            <span class="profile-specialty" id="userSpecialty"></span>
+          </div>
+          <div class="profile-email" id="userEmail"></div>
+        </div>
+
+        <!-- قسم الشهادات -->
+        <div class="certificate-box" data-reveal="left" id="certificateSection" style="display: none;">
+          <h2 class="section-subtitle">My certificates</h2>
+          <div class="certificate-container">
+            <a href="#" id="certificateLink" target="_blank" class="certificate-preview">
+              <img src="" alt="User Certificate" id="certificateImage" class="img-cover">
+              <span class="preview-text">Certificate Preview</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- قسم الرودماب المتابعة -->
+        <div class="profile-box" data-reveal="right">
+          <h2 class="section-subtitle">Followed Roadmaps</h2>
+          <div class="roadmaps-container" id="followedRoadmaps">
+            <!-- سيتم ملؤها بالبيانات من API -->
+            <p class="empty-message">No Roadmaps Followed</p>
+          </div>
+        </div>
+
+        <!-- قسم الرودماب المنشأة -->
+        <div class="profile-box" data-reveal="left">
+          <h2 class="section-subtitle">Created Roadmaps</h2>
+          <div class="roadmaps-container" id="createdRoadmaps">
+            <!-- سيتم ملؤها بالبيانات من API -->
+            <p class="empty-message">No Roadmap Created</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+
+    <div class="section footer-top">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <a href="#" class="logo">
+            <img src="./Images/logo-page.png" width="150" height="73" loading="lazy" alt="TechGalaxy logo">
+          </a>
+
+          <p class="footer-text">
+            Our success in developing this project is largely attributed to the guidance and support of the professors
+            at Jordan University of Science and Technology.
+          </p>
+
+        </div>
+
+        <div class="footer-list">
+
+          <p class="title footer-list-title has-after">Usefull Links</p>
+
+          <ul>
+
+            <li>
+              <a href="./expertHome.html" class="footer-link">Home</a>
+            </li>
+            <li>
+              <a href="./roadmap.html" class="footer-link"> All Roadmap</a>
+            </li>
+
+            <li>
+              <a href="./createRoadmap.html" class="footer-link">Create Roadmap</a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="footer-list">
+
+          <p class="title footer-list-title has-after" id="contact">Contact Us</p>
+
+          <div class="contact-item">
+            <span class="span">AHMAD THA'ER MOHAMMAD ALBOZEYAH:</span>
+            <a href="mailto:atalbozeyah21@cit.just.edu.jo" class="contact-link">atalbozeyah21@cit.just.edu.jo</a>
+          </div>
+
+          <div class="contact-item">
+            <span class="span">AMRO MARWAN FAWZI ALQURAN:</span>
+
+            <a href="mailto:amalquran21@cit.just.edu.jo" class="contact-link">amalquran21@cit.just.edu.jo</a>
+          </div>
+
+          <div class="contact-item">
+            <span class="span">MO'MEN MOHAMMAD MAHMOUD MAKABLEH:</span>
+
+            <a href="mailto:mmmakableh21@cit.just.edu.jo" class="contact-link">mmmakableh21@cit.just.edu.jo</a>
+          </div>
+          <div class="contact-item">
+            <span class="span">MOHAMMAD ZAHIR MOHAMMAD ALKHALEEL:</span>
+
+            <a href="mailto:mzalkhaleel20@cit.just.edu.jo" class="contact-link">mzalkhaleel20@cit.just.edu.jo</a>
+          </div>
+
+          <div class="contact-item">
+            <span class="span">HATEM AHMAD ABDALLAH EID:</span>
+
+            <a href="mailto:haeid21@cit.just.edu.jo" class="contact-link">haeid21@cit.just.edu.jo</a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+
+        <p class="copyright">
+          &copy; All Rights Reserved for Jordan University of Science and Technology .
+
+        </p>
+
+      </div>
+    </div>
+
+  </footer>
+  <!-- 
+    - #BACK TO TOP
+  -->
+
+  <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="arrow-up-outline" aria-hidden="true"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - #CUSTOM CURSOR
+  -->
+
+  <div class="cursor" data-cursor></div>
+
+
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="./js/profile.js"></script>
+</body>
+
+</html>
