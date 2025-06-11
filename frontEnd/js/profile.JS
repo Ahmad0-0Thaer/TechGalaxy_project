@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(data => {
+            console.log('User data received:', data); // إضافة سجل للتحقق من البيانات
+
             // عرض بيانات المستخدم
             document.getElementById('headerUserName').textContent = data.name;
             document.getElementById('profileUserName').textContent = data.name;
@@ -22,10 +24,15 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('userEmail').textContent = data.email;
 
             // عرض الشهادة إذا كانت موجودة
-            if (data.certificatePath) {
+            console.log('Certificate path:', data.certificatePath); // إضافة سجل للتحقق من مسار الشهادة
+            if (data.certificatePath && data.certificatePath.trim() !== '') {
+                console.log('Displaying certificate section'); // إضافة سجل عند عرض قسم الشهادة
                 document.getElementById('certificateSection').style.display = 'block';
                 document.getElementById('certificateImage').src = data.certificatePath;
                 document.getElementById('certificateLink').href = data.certificatePath;
+            } else {
+                console.log('No certificate path found'); // إضافة سجل عندما لا يوجد مسار للشهادة
+                document.getElementById('certificateSection').style.display = 'none';
             }
 
             // عرض الرودماب المتابعة
