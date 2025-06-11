@@ -59,9 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // عرض الرودماب المتابعة
             const followedContainer = document.getElementById('followedRoadmaps');
-            console.log('Followed Roadmaps data:', data.followedRoadmap); // إضافة سجل للتحقق من البيانات
+            console.log('Followed Roadmaps data:', data.followedRoadmaps); // إضافة سجل للتحقق من البيانات
 
-            if (data.followedRoadmap && Array.isArray(data.followedRoadmap) && data.followedRoadmap.length > 0) {
+            if (data.followedRoadmaps && Array.isArray(data.followedRoadmaps) && data.followedRoadmaps.length > 0) {
                 console.log('Displaying followed roadmaps');
                 const emptyMessage = followedContainer.querySelector('.empty-message');
                 if (emptyMessage) {
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 followedContainer.innerHTML = '';
 
                 // إضافة كل رودماب
-                data.followedRoadmap.forEach(roadmap => {
+                data.followedRoadmaps.forEach(roadmap => {
                     console.log('Creating card for roadmap:', roadmap);
                     const card = createRoadmapCard(roadmap, false);
                     followedContainer.appendChild(card);
