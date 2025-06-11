@@ -145,19 +145,19 @@ document.addEventListener('DOMContentLoaded', function () {
             let icon, color;
             switch ((roadmap.difficultyLevel || 'beginner').toLowerCase()) {
                 case 'beginner':
-                    icon = '📗';
+                    icon = '<i class="fas fa-signal"></i>';
                     color = '#00a97f';
                     break;
                 case 'intermediate':
-                    icon = '📙';
+                    icon = '<i class="fas fa-signal"></i>';
                     color = '#f59e0b';
                     break;
                 case 'advanced':
-                    icon = '📕';
+                    icon = '<i class="fas fa-signal"></i>';
                     color = '#ef4444';
                     break;
                 default:
-                    icon = '📘';
+                    icon = '<i class="fas fa-signal"></i>';
                     color = '#3b82f6';
             }
 
