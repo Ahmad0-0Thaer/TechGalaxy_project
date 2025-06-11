@@ -59,20 +59,58 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // عرض الرودماب المتابعة
             const followedContainer = document.getElementById('followedRoadmaps');
-            if (data.followedRoadmap && data.followedRoadmap.length > 0) {
-                followedContainer.querySelector('.empty-message').style.display = 'none';
+            console.log('Followed Roadmaps data:', data.followedRoadmap); // إضافة سجل للتحقق من البيانات
+
+            if (data.followedRoadmap && Array.isArray(data.followedRoadmap) && data.followedRoadmap.length > 0) {
+                console.log('Displaying followed roadmaps');
+                const emptyMessage = followedContainer.querySelector('.empty-message');
+                if (emptyMessage) {
+                    emptyMessage.style.display = 'none';
+                }
+
+                // مسح المحتوى السابق
+                followedContainer.innerHTML = '';
+
+                // إضافة كل رودماب
                 data.followedRoadmap.forEach(roadmap => {
-                    followedContainer.appendChild(createRoadmapCard(roadmap, true));
+                    console.log('Creating card for roadmap:', roadmap);
+                    const card = createRoadmapCard(roadmap, false);
+                    followedContainer.appendChild(card);
                 });
+            } else {
+                console.log('No followed roadmaps found');
+                const emptyMessage = followedContainer.querySelector('.empty-message');
+                if (emptyMessage) {
+                    emptyMessage.style.display = 'block';
+                }
             }
 
             // عرض الرودماب المنشأة
             const createdContainer = document.getElementById('createdRoadmaps');
-            if (data.createdRoadmaps && data.createdRoadmaps.length > 0) {
-                createdContainer.querySelector('.empty-message').style.display = 'none';
+            console.log('Created Roadmaps data:', data.createdRoadmaps); // إضافة سجل للتحقق من البيانات
+
+            if (data.createdRoadmaps && Array.isArray(data.createdRoadmaps) && data.createdRoadmaps.length > 0) {
+                console.log('Displaying created roadmaps');
+                const emptyMessage = createdContainer.querySelector('.empty-message');
+                if (emptyMessage) {
+                    emptyMessage.style.display = 'none';
+                }
+
+                // مسح المحتوى السابق
+                createdContainer.innerHTML = '';
+
+                // إضافة كل رودماب
                 data.createdRoadmaps.forEach(roadmap => {
-                    createdContainer.appendChild(createRoadmapCard(roadmap, true));
+                    console.log('Creating card for roadmap:', roadmap);
+                    const card = createRoadmapCard(roadmap, true);
+                    createdContainer.appendChild(card);
                 });
+            } else {
+                console.log('No created roadmaps found');
+                const emptyMessage = createdContainer.querySelector('.empty-message');
+                if (emptyMessage) {
+                    emptyMessage.style.display = 'block';
+                }
             }
 
             // إظهار العناصر بعد تحميل البيانات
@@ -84,26 +122,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // وظيفة لإنشاء بطاقة رودماب
     function createRoadmapCard(roadmap, isCreated) {
+        console.log('Creating roadmap card with data:', roadmap); // إضافة سجل للتحقق من البيانات
+
         const card = document.createElement('div');
         card.className = 'roadmap-card';
 
         const title = document.createElement('h3');
         title.className = 'h3';
-        title.textContent = roadmap.title;
+        title.textContent = roadmap.title || 'Untitled Roadmap';
 
         const category = document.createElement('p');
         category.className = 'roadmap-category';
-        category.innerHTML = `<ion-icon name="pricetag-outline"></ion-icon> ${roadmap.category}`;
+        category.innerHTML = `<ion-icon name="pricetag-outline"></ion-icon> ${roadmap.category || 'Uncategorized'}`;
 
         card.appendChild(title);
         card.appendChild(category);
 
         if (isCreated) {
             const difficulty = document.createElement('div');
-            difficulty.className = `badge ${roadmap.difficultyLevel.toLowerCase()}`;
+            difficulty.className = `badge ${(roadmap.difficultyLevel || 'beginner').toLowerCase()}`;
 
             let icon, color;
-            switch (roadmap.difficultyLevel.toLowerCase()) {
+            switch ((roadmap.difficultyLevel || 'beginner').toLowerCase()) {
                 case 'beginner':
                     icon = '📗';
                     color = '#00a97f';
@@ -121,13 +161,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     color = '#3b82f6';
             }
 
-            difficulty.innerHTML = `${icon} ${roadmap.difficultyLevel}`;
+            difficulty.innerHTML = `${icon} ${roadmap.difficultyLevel || 'Beginner'}`;
             difficulty.style.color = color;
             card.appendChild(difficulty);
 
             const date = document.createElement('p');
             date.className = 'roadmap-date';
-            date.innerHTML = `<ion-icon name="calendar-outline"></ion-icon> ${new Date(roadmap.createdAt).toLocaleDateString()}`;
+            date.innerHTML = `<ion-icon name="calendar-outline"></ion-icon> ${new Date(roadmap.createdAt || Date.now()).toLocaleDateString()}`;
             card.appendChild(date);
         }
 
