@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.followedRoadmap && data.followedRoadmap.length > 0) {
                     followedContainer.querySelector('.empty-message').style.display = 'none';
                     data.followedRoadmap.forEach(roadmap => {
-                        followedContainer.appendChild(createRoadmapCard(roadmap, false));
+                        followedContainer.appendChild(createRoadmapCard(roadmap, true));
                     });
                 }
                 
