@@ -207,7 +207,7 @@ function renderRoadmap(data) {
         <p>${node.description}</p><hr>
         <p><strong>Resources:</strong></p><ul>${resLinks}</ul><hr>
         <label class="custom-checkbox">
-          <input type="checkbox" class="node-check" />
+          <input type="checkbox" class="node-check" ${node.isCompleted ? "checked" : ""} />
           Mark this section as completed once you're done
           <span class="checkmark"></span>
         </label>
