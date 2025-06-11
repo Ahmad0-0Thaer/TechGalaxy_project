@@ -122,10 +122,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // وظيفة لإنشاء بطاقة رودماب
     function createRoadmapCard(roadmap, isCreated) {
-        console.log('Creating roadmap card with data:', roadmap); // إضافة سجل للتحقق من البيانات
+        console.log('Creating roadmap card with data:', roadmap);
 
         const card = document.createElement('div');
         card.className = 'roadmap-card';
+        card.style.border = '1px solid red'; // إضافة حدود حمراء مؤقتة للتحقق
+        card.style.margin = '10px 0'; // إضافة هامش للفصل بين البطاقات
+        card.style.padding = '10px'; // إضافة حشوة داخلية
 
         const title = document.createElement('h3');
         title.className = 'h3';
@@ -177,8 +180,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // وظيفة لإظهار العناصر المتحركة
     function revealElements() {
         const elements = document.querySelectorAll('[data-reveal]');
+        console.log('Revealing elements:', elements); // إضافة سجل للتحقق من العناصر التي يتم إظهارها
         elements.forEach(el => {
             el.classList.add('revealed');
+            console.log('Added revealed class to:', el); // إضافة سجل لتأكيد إضافة الفئة
         });
     }
 });
