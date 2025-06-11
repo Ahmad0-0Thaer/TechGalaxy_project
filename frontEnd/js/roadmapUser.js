@@ -140,7 +140,7 @@ document.addEventListener("click", function (e) {
 const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", function (e) {
   e.preventDefault();
-    
+
   // Add your logout logic here
   window.location.href = "./index.html"; // Redirect to home page or login page
 });
@@ -157,10 +157,91 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 const roadmapList = document.getElementById("roadmapList");
+
+// Add search functionality
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const difficultyFilter = document.getElementById("difficultyFilter");
+
+let allRoadmaps = []; // Store all roadmaps for filtering
+
+// Function to filter roadmaps
+function filterRoadmaps() {
+  const searchTerm = searchInput.value.toLowerCase();
+  const selectedCategory = categoryFilter.value;
+  const selectedDifficulty = difficultyFilter.value;
+
+  const filteredRoadmaps = allRoadmaps.filter(roadmap => {
+    const matchesSearch = roadmap.title.toLowerCase().includes(searchTerm) ||
+      roadmap.description.toLowerCase().includes(searchTerm);
+    const matchesCategory = !selectedCategory || roadmap.category === selectedCategory;
+    const matchesDifficulty = !selectedDifficulty || roadmap.difficultyLevel === selectedDifficulty;
+
+    return matchesSearch && matchesCategory && matchesDifficulty;
+  });
+
+  displayRoadmaps(filteredRoadmaps);
+}
+
+// Function to display roadmaps
+function displayRoadmaps(roadmaps) {
+  roadmapList.innerHTML = '';
+  roadmaps.forEach(roadmap => {
+    const li = document.createElement("li");
+    const card = document.createElement("div");
+    card.classList.add("roadmap-card");
+
+    card.innerHTML = `
+      <figure class="card-banner img-holder" style="--width: 600; --height: 400; position: relative;">
+        <a href="./showRoadmapUser.html?id=${roadmap.id}">
+          <img src="${roadmap.coverImageUrl}" width="600" height="400" loading="lazy"
+            alt="${roadmap.title}" class="img-cover">
+          <span class="preview-bar">${roadmap.category || "Uncategorized"}</span>
+        </a>
+      </figure>
+
+      <div class="card-content">
+        <ul class="card-meta-list">
+          <li class="card-meta-item">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <time class="card-meta-text">${roadmap.createdAt}</time>
+          </li>
+          <li class="card-meta-item">
+            <ion-icon name="person-outline"></ion-icon>
+            <p class="card-meta-text">${roadmap.expertName}</p>
+          </li>
+        </ul>
+
+        <h3 class="h3">
+          <a href="./showRoadmapUser.html?id=${roadmap.id}" class="card-title">${roadmap.title}</a>
+        </h3>
+
+        <a href="./showRoadmapUser.html?id=${roadmap.id}">
+          <p class="card-text">${roadmap.description}</p>
+        </a>
+
+        <span class="badge ${roadmap.difficultyLevel.toLowerCase()}">
+          <i class="fas fa-signal"></i>
+          ${roadmap.difficultyLevel}
+        </span>
+      </div>
+    `;
+
+    li.appendChild(card);
+    roadmapList.appendChild(li);
+  });
+}
+
+// Add event listeners for search and filters
+searchInput.addEventListener("input", filterRoadmaps);
+categoryFilter.addEventListener("change", filterRoadmaps);
+difficultyFilter.addEventListener("change", filterRoadmaps);
+
+// Modify the fetch call to store all roadmaps
 fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/all", {
   headers: {
     "Authorization": `Bearer ${localStorage.getItem("token")}`
-  }
+  }
 })
   .then(response => {
     if (!response.ok) {
@@ -169,100 +250,49 @@ fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/ap
     return response.json();
   })
   .then(roadmaps => {
-    roadmaps.forEach(roadmap => {
-      const li = document.createElement("li");
-      const card = document.createElement("div");
-      card.classList.add("roadmap-card");
-
-      card.innerHTML = `
-        <figure class="card-banner img-holder" style="--width: 600; --height: 400; position: relative;">
-          <a href="./showRoadmapUser.html?id=${roadmap.id}">
-            <img src="${roadmap.coverImageUrl}" width="600" height="400" loading="lazy"
-              alt="${roadmap.title}" class="img-cover">
-            <span class="preview-bar">${roadmap.category || "Uncategorized"}</span>
-          </a>
-        </figure>
-
-        <div class="card-content">
-          <ul class="card-meta-list">
-            <li class="card-meta-item">
-              <ion-icon name="calendar-outline"></ion-icon>
-              <time class="card-meta-text">${roadmap.createdAt}</time>
-            </li>
-            <li class="card-meta-item">
-              <ion-icon name="person-outline"></ion-icon>
-              <p class="card-meta-text">${roadmap.expertName}</p>
-            </li>
-          </ul>
-
-          <h3 class="h3">
-            <a href="./roadmap.html?id=${roadmap.id}" class="card-title">${roadmap.title}</a>
-          </h3>
-
-          <a href="./roadmap.html?id=${roadmap.id}">
-            <p class="card-text">${roadmap.description}</p>
-          </a>
-
-          <span class="badge ${roadmap.difficultyLevel.toLowerCase()}">
-            <i class="fas fa-signal"></i>
-            ${roadmap.difficultyLevel}
-          </span>
-
-          <button class="like-btn" data-id="${roadmap.id}" data-liked="${roadmap.likedByCurrentUser}">
-            <i class="fas fa-heart"></i>
-            <span class="like-count">${roadmap.likesCount}</span>
-          </button>
-        </div>
-      `;
-
-      li.appendChild(card);
-      roadmapList.appendChild(li);
-      if (roadmap.likedByCurrentUser) {
-      li.querySelector(".like-btn").classList.add("liked");
-}
-    });
+    allRoadmaps = roadmaps; // Store all roadmaps
+    displayRoadmaps(roadmaps); // Display initial roadmaps
   })
   .catch(error => {
-    console.error("Failed to fetch roadmaps:", error);
-    roadmapList.innerHTML = "<li>Failed to load data.</li>";
+    console.error("Error fetching roadmaps:", error);
   });
 
-  document.addEventListener("click", function (e) {
-    if (e.target.closest(".like-btn")) {
-      const btn = e.target.closest(".like-btn");
-      const liked = btn.getAttribute("data-liked") === "true";
-      const roadmapId = btn.getAttribute("data-id");
-      const likeCountSpan = btn.querySelector(".like-count");
-      let likesCount = parseInt(likeCountSpan.textContent);
+document.addEventListener("click", function (e) {
+  if (e.target.closest(".like-btn")) {
+    const btn = e.target.closest(".like-btn");
+    const liked = btn.getAttribute("data-liked") === "true";
+    const roadmapId = btn.getAttribute("data-id");
+    const likeCountSpan = btn.querySelector(".like-count");
+    let likesCount = parseInt(likeCountSpan.textContent);
 
-      // إرسال الطلب إلى السيرفر
-  fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/like/${roadmapId}`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}` // إذا كان عندك توكن
-  }
-})
-.then(response => {
-  if (!response.ok) {
-    throw new Error("Failed to update like status");
-  }
-  return response.json();
-})
-.then(data => {
-  if (data.liked) {
-    btn.setAttribute("data-liked", "true");
-    btn.classList.add("liked");
-  } else {
-    btn.setAttribute("data-liked", "false");
-    btn.classList.remove("liked");
-  }
+    // إرسال الطلب إلى السيرفر
+    fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/like/${roadmapId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}` // إذا كان عندك توكن
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to update like status");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.liked) {
+          btn.setAttribute("data-liked", "true");
+          btn.classList.add("liked");
+        } else {
+          btn.setAttribute("data-liked", "false");
+          btn.classList.remove("liked");
+        }
 
-  likeCountSpan.textContent = data.likesCount;
-})
-.catch(error => {
-  console.error("Failed to update like status:", error);
+        likeCountSpan.textContent = data.likesCount;
+      })
+      .catch(error => {
+        console.error("Failed to update like status:", error);
+      });
+  }
 });
-    }
-  });
-  
+
