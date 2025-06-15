@@ -224,11 +224,19 @@ function displayRoadmaps(roadmaps) {
           <i class="fas fa-signal"></i>
           ${roadmap.difficultyLevel}
         </span>
+
+        <button class="like-btn" data-id="${roadmap.id}" data-liked="${roadmap.likedByCurrentUser}">
+          <ion-icon name="heart-outline" class="like-icon"></ion-icon>
+          <span class="like-count">${roadmap.likesCount}</span>
+        </button>
       </div>
     `;
 
     li.appendChild(card);
     roadmapList.appendChild(li);
+    if (roadmap.likedByCurrentUser) {
+      li.querySelector(".like-btn").classList.add("liked");
+    }
   });
 }
 
