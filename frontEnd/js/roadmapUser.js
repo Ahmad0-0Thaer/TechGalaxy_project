@@ -271,6 +271,7 @@ document.addEventListener("click", function (e) {
     const liked = btn.getAttribute("data-liked") === "true";
     const roadmapId = btn.getAttribute("data-id");
     const likeCountSpan = btn.querySelector(".like-count");
+    const likeIcon = btn.querySelector(".like-icon");
     let likesCount = parseInt(likeCountSpan.textContent);
 
     // إرسال الطلب إلى السيرفر
@@ -278,7 +279,7 @@ document.addEventListener("click", function (e) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}` // إذا كان عندك توكن
+        "Authorization": `Bearer ${localStorage.getItem("token")}`
       }
     })
       .then(response => {
@@ -291,9 +292,11 @@ document.addEventListener("click", function (e) {
         if (data.liked) {
           btn.setAttribute("data-liked", "true");
           btn.classList.add("liked");
+          likeIcon.setAttribute("name", "heart");
         } else {
           btn.setAttribute("data-liked", "false");
           btn.classList.remove("liked");
+          likeIcon.setAttribute("name", "heart-outline");
         }
 
         likeCountSpan.textContent = data.likesCount;
