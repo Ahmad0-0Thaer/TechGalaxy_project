@@ -168,13 +168,13 @@ signUpForm.addEventListener('submit', async function (e) {
 
 		console.log('Registration success:', data);
 
-		alert(data.message || 'User registered successfully');
+		alert('Registration successful! You can now log in.');
+		container.classList.remove("right-panel-active");
+		signUpForm.reset();
 
 		if (data.requiresApproval) {
 			return;
 		}
-
-		window.location.href = userType === 'Expert' ? 'expertHome.html' : 'userHome.html';
 
 		const userNameStored = formData.get("userName");
 		localStorage.setItem("userName", userNameStored);
@@ -195,10 +195,10 @@ signInForm.addEventListener('submit', async function (e) {
 	const password = formData.get("password");
 
 	// ✅ تحقق من الأدمن أولاً
-		if (email === "admin@techgalaxy" && password === "Admin123!") {
-			window.location.href = "adminHome.html";
-		}
-		
+	if (email === "admin@techgalaxy" && password === "Admin123!") {
+		window.location.href = "adminHome.html";
+	}
+
 	try {
 		const response = await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Account/Login', {
 			method: 'POST',
@@ -219,17 +219,17 @@ signInForm.addEventListener('submit', async function (e) {
 
 		const data = await response.json();
 		console.log("Login success:", data);
-		localStorage.setItem("token", data.token); // ⬅ مهم جدًا
+		localStorage.setItem("token", data.token); //⬅ مهم جدًا
 
-		
+
 		if (data.role === "Expert") {
 			window.location.href = "expertHome.html";
 		} else if (data.role === "Learner") {
 			window.location.href = "userHome.html";
 		} else {
-		alert("Unknown user type.");
+			alert("Unknown user type.");
 		}
-		
+
 
 		localStorage.setItem("userName", data.userName || data.name || "");
 
