@@ -226,17 +226,14 @@ function displayRoadmaps(roadmaps) {
         </span>
 
         <button class="like-btn" data-id="${roadmap.id}" data-liked="${roadmap.likedByCurrentUser}">
-          <ion-icon name="heart-outline" class="like-icon"></ion-icon>
-          <span class="like-count">${roadmap.likesCount}</span>
+          <ion-icon name="${roadmap.likedByCurrentUser ? 'heart' : 'heart-outline'}" class="like-icon"></ion-icon>
+          <span class="like-count">${roadmap.likesCount || 0}</span>
         </button>
       </div>
     `;
 
     li.appendChild(card);
     roadmapList.appendChild(li);
-    if (roadmap.likedByCurrentUser) {
-      li.querySelector(".like-btn").classList.add("liked");
-    }
   });
 }
 
@@ -246,24 +243,52 @@ categoryFilter.addEventListener("change", filterRoadmaps);
 difficultyFilter.addEventListener("change", filterRoadmaps);
 
 // Modify the fetch call to store all roadmaps
-fetch("https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/all", {
-  headers: {
-    "Authorization": `Bearer ${localStorage.getItem("token")}`
-  }
-})
-  .then(response => {
+async function fetchRoadmaps() {
+  try {
+    const response = await fetch('https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error('Failed to fetch roadmaps');
     }
-    return response.json();
-  })
-  .then(roadmaps => {
-    allRoadmaps = roadmaps; // Store all roadmaps
-    displayRoadmaps(roadmaps); // Display initial roadmaps
-  })
-  .catch(error => {
-    console.error("Error fetching roadmaps:", error);
-  });
+
+    const roadmaps = await response.json();
+
+    // Fetch like status for each roadmap
+    const roadmapsWithLikeStatus = await Promise.all(roadmaps.map(async (roadmap) => {
+      try {
+        const likeResponse = await fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/like-status/${roadmap.id}`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        if (likeResponse.ok) {
+          const likeData = await likeResponse.json();
+          return {
+            ...roadmap,
+            likedByCurrentUser: likeData.isLiked,
+            likesCount: likeData.likesCount
+          };
+        }
+        return roadmap;
+      } catch (error) {
+        console.error(`Failed to fetch like status for roadmap ${roadmap.id}:`, error);
+        return roadmap;
+      }
+    }));
+
+    displayRoadmaps(roadmapsWithLikeStatus);
+  } catch (error) {
+    console.error('Error fetching roadmaps:', error);
+  }
+}
+
+// Call fetchRoadmaps when the page loads
+fetchRoadmaps();
 
 document.addEventListener("click", function (e) {
   if (e.target.closest(".like-btn")) {
@@ -274,7 +299,6 @@ document.addEventListener("click", function (e) {
     const likeIcon = btn.querySelector(".like-icon");
     let likesCount = parseInt(likeCountSpan.textContent);
 
-    // إرسال الطلب إلى السيرفر
     fetch(`https://techgalaxy-ejdjesbvb4d6h9dd.israelcentral-01.azurewebsites.net/api/Roadmaps/like/${roadmapId}`, {
       method: "POST",
       headers: {
@@ -291,11 +315,9 @@ document.addEventListener("click", function (e) {
       .then(data => {
         if (data.liked) {
           btn.setAttribute("data-liked", "true");
-          btn.classList.add("liked");
           likeIcon.setAttribute("name", "heart");
         } else {
           btn.setAttribute("data-liked", "false");
-          btn.classList.remove("liked");
           likeIcon.setAttribute("name", "heart-outline");
         }
 
